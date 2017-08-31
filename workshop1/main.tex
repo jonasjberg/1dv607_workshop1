@@ -1,0 +1,132 @@
+% ______________________________________________________________________________
+%
+%     1DV607 Object-oriented Analysis and Design 
+%   Workshop 1 --- "Domain Modeling"
+%
+%   Author:  Jonas Sjöberg
+%            Linnaeus University
+%            js224eh@student.lnu.se
+%            github.com/jonasjberg
+%            www.jonasjberg.com
+%
+%  License:  Creative Commons Attribution 4.0 International (CC BY 4.0)
+%            <http://creativecommons.org/licenses/by/4.0/legalcode>
+%            See LICENSE.md for additional licensing information.
+% ______________________________________________________________________________
+
+
+\documentclass[11pt,a4paper]{article}
+
+
+\usepackage[utf8]{inputenc}
+\inputencoding{utf8}
+\usepackage[swedish,english]{babel}
+\usepackage[swedish]{isodate}
+\usepackage[T1]{fontenc}
+
+\usepackage{lmodern}
+\usepackage{fullpage}
+
+\usepackage{csquotes}
+\usepackage[natbib=true,
+            style=ieee,
+            backend=biber]{biblatex}
+\addbibresource{refs.bib}
+
+\usepackage[binary-units=true]{siunitx}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{graphicx}
+%\usepackage{amssymb}
+%\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+%\usepackage{microtype}
+
+
+\usepackage[pdfusetitle,
+            bookmarks=true,
+            bookmarksnumbered=true,
+            bookmarksopen=false,
+            breaklinks=false,
+            pdfborder={0 0 0},
+            backref=false,
+            colorlinks=false,
+            hidelinks]{hyperref}
+
+\usepackage{minted}
+\usemintedstyle{bw}
+
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{listings}
+
+% Used to remove numbering of some sections.
+% \renewcommand*\thesection{\arabic{section}}
+
+\renewcommand\listingscaption{Listing}
+\renewcommand\listoflistingscaption{List of listings}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\usepackage{pdfpages}
+
+
+\title{\textsc{1DV607}                              \\
+       Object-oriented Analysis and Design with UML \\
+       Workshop 1                                   \\
+       Domain Modeling               
+
+\author{
+  Jonas Sjöberg                          \\
+  860224-xxxx                            \\
+  Linnaeus University                    \\
+  \texttt{js224eh@student.lnu.se}        \\
+  \texttt{https://github.com/jonasjberg} \\
+  \texttt{http://www.jonasjberg.com}
+}
+
+% \setcounter{section}{-1}
+\date{}
+
+\begin{document}
+  \maketitle
+
+  \begin{center}
+    \begin{tabular}{l r}
+      Written during:      & \isodate\printdate{2017-08-31} -- \isodate\printdate{2017-09-06} \\
+      Teacher responsible: & Tobias Ohlsson
+    \end{tabular}
+  \end{center}
+
+  \begin{abstract}
+    The first workshop assignment in the course \emph{1DV607 -- Object-oriented
+    Design and Analysis with UML} at Linnaeus University during the autumn term
+    of 2017.  This workshop primarily covers initial domain modeling for some
+    set of given fictional requirements, problem description and other
+    background information provided by a simulated customer.
+  \end{abstract}
+
+  \clearpage
+  %\hypersetup{linkcolor=black}
+  \setcounter{tocdepth}{3}
+  \tableofcontents
+
+  \bigskip
+
+  %\listoffigures
+  %\listoftables
+  %\listoflistings
+
+
+  \input{intro.tex}
+  \input{analysis.tex}
+  \input{conclusion.tex}
+
+
+  \addcontentsline{toc}{section}{References}
+  \printbibliography{}
+
+\end{document}
