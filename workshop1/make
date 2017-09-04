@@ -33,6 +33,8 @@ ICON_GOOD="/usr/share/icons/Adwaita/scalable/emotes/emote-love-symbolic.svg"
 [ -e "$ICON_GOOD" ] || unset ICON_GOOD
 ICON_BAD="/usr/share/icons/Adwaita/scalable/emotes/face-sick-symbolic.svg"
 [ -e "$ICON_BAD" ] || unset ICON_BAD
+ICON_INFO="/usr/share/icons/Adwaita/scalable/emotes/face-devilish-symbolic.svg"
+[ -e "$ICON_INFO" ] || unset ICON_INFO
 
 
 # Settings used when running notify-send:
