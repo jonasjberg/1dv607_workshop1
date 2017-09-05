@@ -15,10 +15,7 @@
 
 
 % ______________________________________________________________________________
-\section{Problem Description}
-%
-% TODO: ..
-%
+\section{Problem Description}\label{probdesc}
 The problem description \cite{1dv607:workshop1-instructions} is stated as
 follows:
 
@@ -104,20 +101,20 @@ bankrupt.
 \end{description}
 
 
+
 \subsection{Use Cases}\label{use-cases}
 
+% USE CASE #1
+% ----------------------------------------------------------------------------
+\subsubsection{Authenticate}\label{usecase1}
+
+A person wants to be authenticated as a role. The person is authenticated and
+assigned a role.
+
+Precondition: The person is not already assigned a user role.
+
+\subsubsubsection{Main scenario}
 \begin{enumerate}
-  % USE CASE #1
-  % ----------------------------------------------------------------------------
-  \item
-  Authenticate
-  
-  A person wants to be authenticated as a role. The person is authenticated and assigned a role.
-  
-  Precondition: The person is not already assigned a user role.
-  
-  \subsubsection*{Main scenario}
-  \begin{enumerate}
   \tightlist
   \item
     The person wants to be authenticated.
@@ -129,278 +126,264 @@ bankrupt.
     The system controls the username and password and authenticates the
     person as a user role (Member, Treasurer, Secretary) in the system,
     the assigned user role is presented.
-  \end{enumerate}
-  
-  \subsubsection*{Secondary Scenarios}
-  \paragraph{The combination of user name and password is wrong}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The system presents an error message and asks for log in information
-      again.
-    \item
-      Go to step 3 in main scenario.
-  \end{enumerate}
-
-
-  % USE CASE #2
-  % ----------------------------------------------------------------------------
-  \item
-  Pay Membership Fee
-  
-  A member wants to pay their dues. The fee and payment options are presented
-  and Member proceeds with payment. The payment is recorded and its status is
-  updated, a receipt is presented.
-  
-  Primary Actor: User
-  
-  \subsubsection*{Main Scenario}
-  
-  \begin{enumerate}
-    \tightlist
-    \item
-      The member wants to pay their dues.
-    \item
-      The system presents the calculation of membership and a total amount due.
-    \item
-      The member chooses to pay via credit card.
-    \item
-      The system transmits a transaction id and a total to third-party system
-      for Credit Card Payment.
-    \item
-      Third Party Credit Card Payments System for process the transaction and
-      reply with a positive result.
-    \item
-      The system updates the Member's pay status to paid and presents a receipt
-      of the transaction.
-  \end{enumerate}
-  
-  \subsubsection*{Secondary Scenarios}
-  \paragraph{The member chooses to pay via invoice}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The system presents an invoice for printing with a unique invoice id,
-      boat club account number and amount due. The amount due is the total
-      membership fee plus an administrative service charge of currently 45
-      swedish crowns.
-    \item
-      The user confirms the invoice.
-    \item
-      The system updates the member's payment status to invoiced and presents
-      that the payment status changed.
-  \end{enumerate}
-  
-  \paragraph{The member chooses to pay via SMS payment}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The system contacts the Third Party System for SMS payment and enclose
-      the sum total of the transaction.
-    \item
-      The third-party systems for SMS payment replies with the SMS message to
-      be sent to process the payment.
-    \item
-      The system updates member's payment status to waiting. SMS message to be
-      sent is presented.
-  \end{enumerate}
-  
-  \paragraph{The member chooses to pay via third party systems for Direct Payment}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The system transmits a transaction id and a total to third-party systems
-      for Direct Payment.
-    \item
-      Third Party System for Direct Payment process the payment and reply with
-      a positive result.
-    \item
-      The System updates the Member's pay status to paid and presents a receipt
-      of the transaction.
-  \end{enumerate}
-
-
-
-  % USE CASE #3
-  % ----------------------------------------------------------------------------
-  \item
-  View Member Profile Information
-  
-  A member wants to view their member data. Membership details are presented
-  including registreade boats booked berths and payment history.
-
-
-  % USE CASE #4
-  % ----------------------------------------------------------------------------
-  \item
-  Register Boat
-
-  A member wants to register a new boat and the boat's data. The boat is
-  registered, the membership fee is updated and a confirmation appears.
-
-  \subsubsection*{Main Scenario}
-  \begin{enumerate}
-    \tightlist
-    \item
-      A member wants to register a new boat.
-    \item
-      The system asks for Boat Details.
-    \item
-      The member input the boat's size and type (sailboat, motorsailer,
-      powerboat, kayak/canoe, other) and an optional image of the boat.
-    \item
-      The system presents the information for the boat to be registered,
-      including cost of berth.
-    \item
-      The member confirms the correct information.
-    \item
-      The System registers the boat and assigns a berth using the current rules
-      for berth assigment, updates the membership fee and presents a confirmation.
-  \end{enumerate}
-
-  \subsubsection*{Secondary Scenarios}
-  \paragraph{The boat is registered during the ``offseason'' (October 1 to December 31)}
-  \begin{enumerate}
-    \tightlist
-    \item
-      System assigns no berth and the membership fee for the current year is
-      unchanged.
-  \end{enumerate}
-  
-  \paragraph{The boat is registered in pre-season (January 1 to April 1) when no berth assignment has been made yet.}
-  \begin{enumerate}
-    \tightlist
-    \item
-      System assigns no berth. This is done by the Secretary before the start
-      of the season.
-  \end{enumerate}
-
-
-  % USE CASE #5
-  % ----------------------------------------------------------------------------
-  \item
-  Remove a Boat
-  
-  A Member To remove one of their registered boats. The boat is removed
-  and a confirmation appears.
-  
-
-  % USE CASE #6
-  % ----------------------------------------------------------------------------
-  \item
-  Change a boat
-  
-  A Member wants to change a boat's data. The boat's data is updated and a
-  confirmation appears.
-  
-
-  % USE CASE #7
-  % ----------------------------------------------------------------------------
-  \item
-  Send Payment Reminder
-  
-  The treasurer lists and send a reminder to those members who have not
-  paid enough dues for a calendar year.
-  
-  \subsubsection*{Main Scenario}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The treasurer wants to send a reminder to those members who have not
-      paid enough dues for a previous year and indicates the year
-      considered.
-    \item
-      The system lists the members who have a debt to the boat club during
-      the year.
-    \item
-      The treasurer choose to print an invoice for each member (see 2.3.1)
-      in the invoice also includes a reminder fee of 25\% per year behind
-      schedule.
-    \item
-      The system prints an invoice per member and records that the member
-      received a payment reminder.
-  \end{enumerate}
-  
-
-  % USE CASE #8
-  % ----------------------------------------------------------------------------
-  \item
-  Assign Berths
-  
-  The Secretary wants to assign this season berths. The system assign and
-  book berths in accordance with applicable rules and update member
-  information.
-  
-  \subsubsection*{Main Scenario}
-  \begin{enumerate}
-    \tightlist
-    \item
-      The Secretary wants to book this season berths.
-    \item
-      The system presents a proposal on the allocation under the current
-      rules, the available berths and the previous year's allocation.
-    \item
-      The Secretary approves the proposal.
-    \item
-      The system assigns moorings for members' boats according to the
-      proposal.
-  \end{enumerate}
-  
-
-  % USE CASE #9
-  % ----------------------------------------------------------------------------
-  \item
-  List Berths
-  
-  The secretary chooses to list all berths. A list of unbooked and booked
-  berths with information about the boat and member is presented.
-  
-
-  % USE CASE #10
-  % ----------------------------------------------------------------------------
-  \item
-  Manage Calendar Events
-  
-  The Secretary wants to add, delete or change a calendar event. Boat club
-  calendar is updated.
-  
-
-  % USE CASE #11
-  % ----------------------------------------------------------------------------
-  \item
-  List Calendar Events
-  
-  A Member wish to list calendar events in a certain time interval. A list
-  of calendar events are presented with a short title and start date.
-  
-
-  % USE CASE #12
-  % ----------------------------------------------------------------------------
-  \item
-  View Calendar Events
-  
-  Member to view all details for a particular calendar event. Calendar
-  event is presented including start and end dates.
-  
-
-  % USE CASE #13
-  % ----------------------------------------------------------------------------
-  \item
-  Update Payment Status
-  
-  The Treasurer would like to update the status of payments. The system
-  will contact third party services and check the status of payments and
-  update these.
-  
-
-  % USE CASE #14
-  % ----------------------------------------------------------------------------
-  \item
-  Update Invoice Status
-  
-  The Treasurer wants to change a Member's payment status to paid. The
-  system updates the Member's payment status to paid.
-
 \end{enumerate}
+
+\subsubsubsection{Secondary Scenarios}
+\paragraph{The combination of user name and password is wrong}
+\begin{enumerate}
+  \tightlist
+  \item
+    The system presents an error message and asks for log in information
+    again.
+  \item
+    Go to step 3 in main scenario.
+\end{enumerate}
+
+
+% USE CASE #2
+% ----------------------------------------------------------------------------
+\subsubsection{Pay Membership Fee}\label{usecase2}
+
+A member wants to pay their dues. The fee and payment options are presented
+and Member proceeds with payment. The payment is recorded and its status is
+updated, a receipt is presented.
+
+Primary Actor: User
+
+\subsubsubsection{Main Scenario}
+
+\begin{enumerate}
+  \tightlist
+  \item
+    The member wants to pay their dues.
+  \item
+    The system presents the calculation of membership and a total amount due.
+  \item
+    The member chooses to pay via credit card.
+  \item
+    The system transmits a transaction id and a total to third-party system
+    for Credit Card Payment.
+  \item
+    Third Party Credit Card Payments System for process the transaction and
+    reply with a positive result.
+  \item
+    The system updates the Member's pay status to paid and presents a receipt
+    of the transaction.
+\end{enumerate}
+
+\subsubsubsection{Secondary Scenarios}
+\paragraph{The member chooses to pay via invoice}
+\begin{enumerate}
+  \tightlist
+  \item
+    The system presents an invoice for printing with a unique invoice id,
+    boat club account number and amount due. The amount due is the total
+    membership fee plus an administrative service charge of currently 45
+    swedish crowns.
+  \item
+    The user confirms the invoice.
+  \item
+    The system updates the member's payment status to invoiced and presents
+    that the payment status changed.
+\end{enumerate}
+
+\paragraph{The member chooses to pay via SMS payment}
+\begin{enumerate}
+  \tightlist
+  \item
+    The system contacts the Third Party System for SMS payment and enclose
+    the sum total of the transaction.
+  \item
+    The third-party systems for SMS payment replies with the SMS message to
+    be sent to process the payment.
+  \item
+    The system updates member's payment status to waiting. SMS message to be
+    sent is presented.
+\end{enumerate}
+
+\paragraph{The member chooses to pay via third party systems for Direct Payment}
+\begin{enumerate}
+  \tightlist
+  \item
+    The system transmits a transaction id and a total to third-party systems
+    for Direct Payment.
+  \item
+    Third Party System for Direct Payment process the payment and reply with
+    a positive result.
+  \item
+    The System updates the Member's pay status to paid and presents a receipt
+    of the transaction.
+\end{enumerate}
+
+
+
+% USE CASE #3
+% ----------------------------------------------------------------------------
+\subsubsection{View Member Profile Information}\label{usecase3}
+
+A member wants to view their member data. Membership details are presented
+including registreade boats booked berths and payment history.
+
+
+% USE CASE #4
+% ----------------------------------------------------------------------------
+\subsubsection{Register Boat}\label{usecase4}
+
+A member wants to register a new boat and the boat's data. The boat is
+registered, the membership fee is updated and a confirmation appears.
+
+\subsubsubsection{Main Scenario}
+\begin{enumerate}
+  \tightlist
+  \item
+    A member wants to register a new boat.
+  \item
+    The system asks for Boat Details.
+  \item
+    The member input the boat's size and type (sailboat, motorsailer,
+    powerboat, kayak/canoe, other) and an optional image of the boat.
+  \item
+    The system presents the information for the boat to be registered,
+    including cost of berth.
+  \item
+    The member confirms the correct information.
+  \item
+    The System registers the boat and assigns a berth using the current rules
+    for berth assigment, updates the membership fee and presents a confirmation.
+\end{enumerate}
+
+\subsubsubsection{Secondary Scenarios}
+\paragraph{The boat is registered during the ``offseason'' (October 1 to December 31)}
+\begin{enumerate}
+  \tightlist
+  \item
+    System assigns no berth and the membership fee for the current year is
+    unchanged.
+\end{enumerate}
+
+\paragraph{The boat is registered in pre-season (January 1 to April 1) when no berth assignment has been made yet.}
+\begin{enumerate}
+  \tightlist
+  \item
+    System assigns no berth. This is done by the Secretary before the start
+    of the season.
+\end{enumerate}
+
+
+% USE CASE #5
+% ----------------------------------------------------------------------------
+\subsubsection{Remove a Boat}\label{usecase5}
+
+A Member To remove one of their registered boats. The boat is removed
+and a confirmation appears.
+
+
+% USE CASE #6
+% ----------------------------------------------------------------------------
+\subsubsection{Change a boat}\label{usecase6}
+
+A Member wants to change a boat's data. The boat's data is updated and a
+confirmation appears.
+
+
+% USE CASE #7
+% ----------------------------------------------------------------------------
+\subsubsection{Send Payment Reminder}\label{usecase7}
+
+The treasurer lists and send a reminder to those members who have not
+paid enough dues for a calendar year.
+
+\subsubsubsection{Main Scenario}
+\begin{enumerate}
+  \tightlist
+  \item
+    The treasurer wants to send a reminder to those members who have not
+    paid enough dues for a previous year and indicates the year
+    considered.
+  \item
+    The system lists the members who have a debt to the boat club during
+    the year.
+  \item
+    The treasurer choose to print an invoice for each member (see 2.3.1)
+    in the invoice also includes a reminder fee of 25\% per year behind
+    schedule.
+  \item
+    The system prints an invoice per member and records that the member
+    received a payment reminder.
+\end{enumerate}
+
+
+% USE CASE #8
+% ----------------------------------------------------------------------------
+\subsubsection{Assign Berths}\label{usecase8}
+
+The Secretary wants to assign this season berths. The system assign and
+book berths in accordance with applicable rules and update member
+information.
+
+\subsubsubsection{Main Scenario}
+\begin{enumerate}
+  \tightlist
+  \item
+    The Secretary wants to book this season berths.
+  \item
+    The system presents a proposal on the allocation under the current
+    rules, the available berths and the previous year's allocation.
+  \item
+    The Secretary approves the proposal.
+  \item
+    The system assigns moorings for members' boats according to the
+    proposal.
+\end{enumerate}
+
+
+% USE CASE #9
+% ----------------------------------------------------------------------------
+\subsubsection{List Berths}\label{usecase9}
+
+The secretary chooses to list all berths. A list of unbooked and booked
+berths with information about the boat and member is presented.
+
+
+% USE CASE #10
+% ----------------------------------------------------------------------------
+\subsubsection{Manage Calendar Events}\label{usecase10}
+
+The Secretary wants to add, delete or change a calendar event. Boat club
+calendar is updated.
+
+
+% USE CASE #11
+% ----------------------------------------------------------------------------
+\subsubsection{List Calendar Events}\label{usecase11}
+
+A Member wish to list calendar events in a certain time interval. A list
+of calendar events are presented with a short title and start date.
+
+
+% USE CASE #12
+% ----------------------------------------------------------------------------
+\subsubsection{View Calendar Events}\label{usecase12}
+
+Member to view all details for a particular calendar event. Calendar
+event is presented including start and end dates.
+
+
+% USE CASE #13
+% ----------------------------------------------------------------------------
+\subsubsection{Update Payment Status}\label{usecase13}
+
+The Treasurer would like to update the status of payments. The system
+will contact third party services and check the status of payments and
+update these.
+
+
+% USE CASE #14
+% ----------------------------------------------------------------------------
+\subsubsection{Update Invoice Status}\label{usecase14}
+
+The Treasurer wants to change a Member's payment status to paid. The
+system updates the Member's payment status to paid.
+
 \end{quote}
 
