@@ -38,31 +38,39 @@ agent Treasurer
 agent Secretary
 
 agent AccessControl
+agent Berth
 agent Boat
 agent BoatDescription
 agent Calendar
 agent Event
 agent Fee
 agent Registration
+agent AssignmentRules
 
-AccessControl ..> Member : delegates permissions
+AccessControl ..> Member
 AccessControl ..> Administrator
 
-BoatDescription -> Boat : describes
+BoatDescription --> Boat : describes
 
 Treasurer --|> Administrator : equivalent roles
 Secretary --|> Administrator
 
-User "1..*" .> AccessControl : requests\naccess
+User "1..*" ..> AccessControl : requests\naccess
 
 Administrator "1..*" --> "1" Calendar : manages
+Administrator "1..*" --> "1" AssignmentRules : manages
+Administrator "1..*" -> "1" Registration : approves
 
 Member "1" --> "0..*" Boat : owns
-Member "1" -> "0..*" Registration : applies for
+Member "1" --> "0..*" Registration : applies for
 
 Registration -- Fee : Paid By
-Registration "1" --> "1" Boat : specifies
+Registration "1" --> "1" Boat
+Registration "1" -> "1" Berth : reserves
 
 Calendar "1..*" --> "0..*" Event : Contains
+
+Boat ..> AssignmentRules
+AssignmentRules ..> Berth : delegates
 
 @enduml
