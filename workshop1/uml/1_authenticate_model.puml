@@ -1,0 +1,68 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 1: Domain Modeling
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-09-04.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+@startuml
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ USECASE DIAGRAM _________________________________________________________
+
+header
+1DV607 - Workshop 1: Domain Modeling
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nDomain Model #1\n(Requirements for grade 2)\n
+
+agent User
+agent Administrator
+agent Member
+agent Treasurer
+agent Secretary
+
+agent AccessControl
+agent Boat
+agent BoatDescription
+agent Calendar
+agent Event
+agent Fee
+agent Registration
+
+AccessControl ..> Member : delegates permissions
+AccessControl ..> Administrator
+
+BoatDescription -> Boat : describes
+
+Treasurer --|> Administrator : equivalent roles
+Secretary --|> Administrator
+
+User "1..*" .> AccessControl : requests\naccess
+
+Administrator "1..*" --> "1" Calendar : manages
+
+Member "1" --> "0..*" Boat : owns
+Member "1" -> "0..*" Registration : applies for
+
+Registration -- Fee : Paid By
+Registration "1" --> "1" Boat : specifies
+
+Calendar "1..*" --> "0..*" Event : Contains
+
+@enduml
