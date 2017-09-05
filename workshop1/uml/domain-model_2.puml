@@ -29,7 +29,7 @@ header
 Jonas Sjöberg <""js224eh@student.lnu.se"">
 end header
 
-title \nDomain Model #1\n(Requirements for grade 2)\n
+title \nDomain Model #2\n(Requirements for grade 3)\n
 
 agent User
 agent Administrator
@@ -47,10 +47,12 @@ agent Fee
 agent Registration
 agent AssignmentRules
 
+agent PaymentServiceProvider
+
 AccessControl ..> Member
 AccessControl ..> Administrator
 
-BoatDescription --> Boat : describes
+BoatDescription -> Boat : describes
 
 Treasurer --|> Administrator : equivalent roles
 Secretary --|> Administrator
@@ -64,7 +66,7 @@ Administrator "1..*" -> "1" Registration : approves
 Member "1" --> "0..*" Boat : owns
 Member "1" --> "0..*" Registration : applies for
 
-Registration -- Fee : Paid By
+Registration <-- Fee : Paid By
 Registration "1" --> "1" Boat
 Registration "1" -> "1" Berth : reserves
 
@@ -72,5 +74,10 @@ Calendar "1..*" --> "0..*" Event : Contains
 
 Boat ..> AssignmentRules
 AssignmentRules ..> Berth : delegates
+
+Fee <-- PaymentServiceProvider : transferred by
+Member --> PaymentServiceProvider : pays dues
+
+Administrator --> PaymentServiceProvider : manages
 
 @enduml
