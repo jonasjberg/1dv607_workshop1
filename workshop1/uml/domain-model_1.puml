@@ -43,34 +43,32 @@ agent Boat
 agent BoatDescription
 agent Calendar
 agent Event
-agent Fee
 agent Registration
 agent AssignmentRules
+
+User "1..*" ..> AccessControl : requests\naccess
 
 AccessControl ..> Member
 AccessControl ..> Administrator
 
-BoatDescription --> Boat : describes
 
 Treasurer --|> Administrator : equivalent roles
 Secretary --|> Administrator
 
-User "1..*" ..> AccessControl : requests\naccess
-
-Administrator "1..*" --> "1" Calendar : manages
 Administrator "1..*" --> "1" AssignmentRules : manages
-Administrator "1..*" -> "1" Registration : approves
-
-Member "1" --> "0..*" Boat : owns
-Member "1" --> "0..*" Registration : applies for
-
-Registration -- Fee : Paid By
-Registration "1" --> "1" Boat
-Registration "1" -> "1" Berth : reserves
-
+Administrator "1..*" --> "1" Registration : approves
+Administrator "1..*" --> "1" Calendar : manages
 Calendar "1..*" --> "0..*" Event : Contains
 
+Member "1" --> "0..*" Registration : applies for
+Member "1" --> "0..*" Boat : owns
+
+Registration "1" --> "1" Boat
+Registration "1" --> "1" Berth : reserves
+
 Boat ..> AssignmentRules
-AssignmentRules ..> Berth : delegates
+AssignmentRules .> Berth : delegates
+
+BoatDescription --> Boat : describes
 
 @enduml
