@@ -1,0 +1,65 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 1: Domain Modeling
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-09-04.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+@startuml
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+allow_mixing
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ USECASE DIAGRAM _________________________________________________________
+
+header
+1DV607 - Workshop 1: Domain Modeling
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nDomain Model #3\n(Requirements for grade 4)\nautonameow File Renaming\n
+
+agent MeowURI
+agent DataField
+agent DataExtractors
+agent DataRepository
+agent FileObject
+agent NameBuilder
+agent DataFieldMatcher
+
+
+MeowURI "1" -> "1" DataField : uniquely\nidentifies
+
+'DataField <|-- PlainText
+
+
+DataField "*" *- "1" DataRepository : stores
+
+DataExtractors ..> DataField : produces
+DataExtractors "1..*" -> "1" FileObject : extracts data from
+
+DataFieldMatcher "1" <.. "1" NameBuilder : queries
+DataRepository "1" <.. "1" DataFieldMatcher : queries
+
+NameBuilder --> FileObject : renames
+
+
+
+
+
+'Analyzer --> DataField : analyzes
+
+@enduml
