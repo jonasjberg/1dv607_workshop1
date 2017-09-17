@@ -1,5 +1,5 @@
 .idea
 _minted-main/*
-build/*
+*/build/*
 *-converted-to.pdf
 
