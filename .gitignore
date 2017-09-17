@@ -1,4 +1,5 @@
-*/_minted-main/*
-*/build/*
+.idea
+_minted-main/*
+build/*
 *-converted-to.pdf
 
