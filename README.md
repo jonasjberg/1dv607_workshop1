@@ -1,4 +1,6 @@
-Workshop Assignments for `1DV607` *Object-Oriented Analysis and Design*
+### 1DV607 --- Object-Oriented Analysis and Design
+
+Workshop Assignments
 =======================================================================
 *Copyright(c) 2017 Jonas Sjöberg*  
 <https://github.com/jonasjberg>  
@@ -15,5 +17,3 @@ Written by Jonas Sjöberg.
 
 
 * __Workshop #1__
-
-
