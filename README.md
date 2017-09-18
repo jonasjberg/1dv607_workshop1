@@ -17,3 +17,6 @@ Written by Jonas Sjöberg.
 
 
 * __Workshop #1__
+    * [Version #1 (peer reviewed)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-1-peer-reviewed.pdf)
+    * [Version #2 (FINAL)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-1-peer-reviewed.pd://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-2-final.pdf)
+
