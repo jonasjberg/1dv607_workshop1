@@ -43,12 +43,33 @@ This analysis delimits the domain model to the following requirements:
   \label{fig:uml-domain1}
 \end{figure}
 
-\subsubsection{Notes on the initial domain model}
-The first domain model includes the concept of ``AccessControl'', just to
-illustrate that the roles of ``Secretary'' and ``Treasurer'' are assumed to be
-equivalent and are both treated as a form of ``Administrator''.
+\subsubsection{Notes on the revised domain model}
+The first domain model included the concept of ``AccessControl'' as an attempt
+to illustrate that the roles of ``Secretary'' and ``Treasurer'' are assumed to
+be equivalent and are both treated as a form of ``Administrator''.
+
+However, as fellow students have pointed out in peer reviews, and as I've come
+to better understand the revelant modeling concepts; this class entity has been
+removed for this version.
+
+I've stuck with the decision to reduce the three different roles to just two.
+The concept of roles dictated by the requirement documents should not be a hard
+limit, as the role descriptions esentially are arbitrarily chosen names for
+arbitrarily chosen rules. Even though there are conventions, modeling the user
+roles exactly as stated in the requirements would be counter-productive.
 
 The administrators have elevated privileges, as compared to the ``Members''.
+
+
+The peer reviews also objected to the lack of attributes in the classes, the
+``Registration'' class in particular.  But I feel that adding an attribute to
+this class would not improve the models readability, nor would it provide any
+improvements of the conceptual system design. Adding some arbitrary field to
+symbolize the unique identifier that maps entities related to a registration
+to each other would confuse the matter.
+
+This conceptual model does not contain this information, because it should not
+be relevant at this level of abstraction.
 
 
 
