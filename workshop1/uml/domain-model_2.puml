@@ -31,16 +31,14 @@ end header
 
 title \nDomain Model #2\n(Requirements for grade 3)\n
 
-agent User
 agent Administrator
 agent Member
 agent Treasurer
 agent Secretary
 
-agent SystemBoundary
 agent Berth
 agent Boat
-agent BoatDescription
+agent BoatInformation
 agent Calendar
 agent Event
 agent Fee
@@ -49,26 +47,23 @@ agent AssignmentRules
 
 agent PaymentServiceProvider
 
-SystemBoundary ..> Member
-SystemBoundary ..> Administrator
-
-BoatDescription -> Boat : describes
+BoatInformation -> Boat : describes
 
 Treasurer --|> Administrator
 Secretary --|> Administrator
 
-User "1..*" ..> SystemBoundary : requests\naccess
 
 Administrator "1..*" --> "1" Calendar : manages
 Administrator "1..*" --> "1" AssignmentRules : manages
 Administrator "1..*" -> "1" Registration : approves
 
-Member "1" --> "0..*" Boat : owns
+Boat "0..*" <- "1" Member : owns
 Member "1" --> "0..*" Registration : applies for
 
 Registration <-- Fee : Paid By
 Registration "1" --> "1" Boat
-Registration "1" -> "1" Berth : reserves
+'Registration "1" -> "1" Berth : reserves
+Berth "1" <-- "1" Registration : reserves
 
 Event "0..*" <- "1..*" Calendar : Contains
 
