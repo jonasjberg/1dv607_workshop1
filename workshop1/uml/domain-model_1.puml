@@ -42,7 +42,7 @@ agent Boat
 agent BoatInformation
 agent Calendar
 agent Event
-class Registration
+agent Registration
 
 Treasurer --|> Administrator
 Secretary --|> Administrator
