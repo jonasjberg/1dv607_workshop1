@@ -9,3 +9,6 @@
 class BoatController(object):
     def __init__(self, view):
         self.view = view
+
+    def delete(self):
+        pass
