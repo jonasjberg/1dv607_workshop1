@@ -14,6 +14,8 @@ class BaseController(object):
         self.model = model
         self.view = view
 
+        self.member_registry = model.MemberRegistry()
+
     @property
     def model(self):
         return self._model

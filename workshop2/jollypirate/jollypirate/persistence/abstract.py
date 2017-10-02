@@ -25,7 +25,7 @@ import os
 from jollypirate import util
 from jollypirate.exceptions import JollyPirateException
 from jollypirate.persistence import JOLLYPIRATE_APPDATA_ABSPATH
-from  import PickleStorage
+from jollypirate.persistence.implementation import PickleStorage
 from jollypirate.util import encoding as enc
 from jollypirate.util import types
 
