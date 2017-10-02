@@ -5,6 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .application import ApplicationView
-from .boat import BoatView
-from .member import MemberView
+# from .application import ApplicationView
+# from .boat import BoatView
+# from .member import MemberView

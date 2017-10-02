@@ -18,21 +18,23 @@ log = logging.getLogger(__name__)
 
 
 class ApplicationController(object):
-    def __init__(self, view):
+    def __init__(self, view, member_controller, boat_controller):
         self._view = None
 
         self.view = view
+        self._member_controller = member_controller
+        self._boat_controller = boat_controller
 
         self.event_handlers = {
             Events.APP_QUIT: self.quit,
-            Events.BOAT_DELETE: BoatController.delete,
-            Events.BOAT_REGISTER: BoatController.register,
-            Events.BOAT_UPDATE: BoatController.update,
-            Events.MEMBER_DELETE: MemberController.delete,
-            Events.MEMBER_INFOQUERY: MemberController.get_info,
-            Events.MEMBER_REGISTER: MemberController.register,
-            Events.MEMBER_UPDATE: MemberController.update,
-            Events.MEMBERS_LIST: MemberController.list_all,
+            # Events.BOAT_DELETE: BoatController.delete,
+            # Events.BOAT_REGISTER: BoatController.register,
+            # Events.BOAT_UPDATE: BoatController.update,
+            # Events.MEMBER_DELETE: MemberController.delete,
+            # Events.MEMBER_INFOQUERY: MemberController.get_info,
+            # Events.MEMBER_REGISTER: MemberController.register,
+            # Events.MEMBER_UPDATE: MemberController.update,
+            Events.MEMBERS_LIST: self._member_controller.list_all,
         }
 
         # self._member_registry = MemberRegistry.fromfile(
@@ -50,7 +52,7 @@ class ApplicationController(object):
                     event_func = self.event_handlers.get(event)
                     break
 
-            if not event_func:
+            if not event_func or not callable(event_func):
                 log.warning('Invalid selection: "{!s}"'.format(choice))
             else:
                 log.debug('Calling event handler "{!s}"'.format(event_func))

@@ -5,7 +5,9 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .view import *
+from .view.application import ApplicationView
+from .view.member import MemberView
+from .view.boat import BoatView
 
 from jollypirate.jollypirate.controller import *
 
@@ -17,8 +19,9 @@ def initialize_application():
 
     member_controller = MemberController(member_view)
     boat_controller = BoatController(boat_view)
-    app_controller = ApplicationController(app_view)
-
+    app_controller = ApplicationController(app_view,
+                                           member_controller,
+                                           boat_controller)
     return app_controller
 
 

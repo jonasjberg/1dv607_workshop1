@@ -14,7 +14,7 @@ from .jollypirate import constants
 log = logging.getLogger(__name__)
 
 
-if __name__ == '__main__':
+def main(args):
     try:
         app = jollypirate.application()
         app.run()
@@ -23,3 +23,6 @@ if __name__ == '__main__':
     else:
         sys.exit(constants.EXIT_SUCCESS)
 
+
+if __name__ == '__main__':
+    main(sys.argv)
