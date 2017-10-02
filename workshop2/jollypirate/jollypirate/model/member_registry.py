@@ -7,4 +7,16 @@
 
 
 class MemberRegistry(object):
-    pass
+    def __init__(self):
+        self._members = set()
+
+    def add(self, new_member):
+        self._members.add(new_member)
+
+    def remove(self, member_to_remove):
+        self._members.remove(member_to_remove)
+
+    def get(self, member_id):
+        self._members.remove(new_member)
+
+

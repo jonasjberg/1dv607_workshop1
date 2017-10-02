@@ -9,8 +9,8 @@ from ..util import types
 
 
 class MemberModel(object):
-    def __init__(self, uuid):
-        self.uuid = uuid
+    def __init__(self, id, first_name=None, last_name=None, ssn=None):
+        self.id = id
 
         self._name_first = None
         self._name_last = None

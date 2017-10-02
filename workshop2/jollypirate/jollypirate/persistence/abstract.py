@@ -22,34 +22,26 @@
 import logging
 import os
 
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
-
 from jollypirate import util
 from jollypirate.exceptions import JollyPirateException
+from jollypirate.persistence import JOLLYPIRATE_APPDATA_ABSPATH
+from  import PickleStorage
 from jollypirate.util import encoding as enc
+from jollypirate.util import types
 
 
 log = logging.getLogger(__name__)
 
 
-# TODO: [TD0097] Add proper handling of cache directories.
-DEFAULT_CACHE_DIRECTORY_ROOT = '/tmp'
-DEFAULT_CACHE_DIRECTORY_LEAF = 'autonameow_cache'
-assert DEFAULT_CACHE_DIRECTORY_ROOT not in ('', '/', None)
-assert DEFAULT_CACHE_DIRECTORY_ROOT not in ('', None)
-
-CACHE_DIR_ABSPATH = enc.normpath(
-    os.path.join(
-        enc.syspath(DEFAULT_CACHE_DIRECTORY_ROOT),
-        enc.syspath(DEFAULT_CACHE_DIRECTORY_LEAF)
-    )
-)
+CACHE_DIR_ABSPATH = enc.normpath(JOLLYPIRATE_APPDATA_ABSPATH)
+assert CACHE_DIR_ABSPATH not in ('', None)
 
 
-class BaseCache(object):
+class DataPersistenceError(JollyPirateException):
+    """Irrecoverable error while reading or writing data to disk."""
+
+
+class BaseStorage(object):
     """
     Abstract base class for all file-based cache implementations.
 
@@ -87,7 +79,7 @@ class BaseCache(object):
         self.cachefile_prefix = _prefix
 
         if not os.path.exists(enc.syspath(CACHE_DIR_ABSPATH)):
-            raise CacheError(
+            raise DataPersistenceError(
                 'Cache directory does not exist: "{!s}"'.format(
                     enc.displayable_path(CACHE_DIR_ABSPATH)
                 )
@@ -103,7 +95,7 @@ class BaseCache(object):
             #     )
         else:
             if not util.has_permissions(CACHE_DIR_ABSPATH, 'rwx'):
-                raise CacheError(
+                raise DataPersistenceError(
                     'Cache directory path requires RWX-permissions: '
                     '"{!s}'.format(enc.displayable_path(CACHE_DIR_ABSPATH))
                 )
@@ -165,7 +157,7 @@ class BaseCache(object):
                 )
                 raise KeyError
             except Exception as e:
-                raise CacheError('Error while reading cache; {!s}'.format(e))
+                raise DataPersistenceError('Error while reading cache; {!s}'.format(e))
 
         return self._data.get(key)
 
@@ -202,7 +194,7 @@ class BaseCache(object):
             # TODO: [TD0097] Double-check this and actually delete the file ..
             pass
         except OSError as e:
-            raise CacheError(
+            raise DataPersistenceError(
                 'Error when trying to delete "{!s}"; {!s}'.format(_dp, e)
             )
 
@@ -229,19 +221,7 @@ class BaseCache(object):
         return self.__class__.__name__
 
 
-class PickleCache(BaseCache):
-    def _load(self, file_path):
-        with open(enc.syspath(file_path), 'rb') as fh:
-            return pickle.load(fh, encoding='bytes')
-
-    def _dump(self, value, file_path):
-        with open(enc.syspath(file_path), 'wb') as fh:
-            pickle.dump(value, fh, pickle.HIGHEST_PROTOCOL)
+def get_persistence(cachefile_prefix):
+    return PickleStorage(cachefile_prefix)
 
 
-def get_cache(cachefile_prefix):
-    return PickleCache(cachefile_prefix)
-
-
-class CacheError(JollyPirateException):
-    """Irrecoverable error while reading or writing to caches."""
