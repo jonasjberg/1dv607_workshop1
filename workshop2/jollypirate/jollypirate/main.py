@@ -5,11 +5,10 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .view.application import ApplicationView
-from .view.member import MemberView
-from .view.boat import BoatView
-
-from jollypirate.jollypirate.controller import *
+from jollypirate.view.application import ApplicationView
+from jollypirate.view.member import MemberView
+from jollypirate.view.boat import BoatView
+from jollypirate.controller import *
 
 
 def initialize_application():

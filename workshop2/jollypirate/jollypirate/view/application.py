@@ -7,7 +7,7 @@
 
 import logging
 
-from jollypirate.jollypirate.controller import Events
+from ..controller.event import Events
 from .base import (
     BaseView,
     MenuItem
@@ -39,7 +39,7 @@ class ApplicationView(BaseView):
             ): Events.MEMBER_DELETE,
             MenuItem(
                 shortcut='j', description='Get Information on a Specific Member'
-            ): Events.MEMBER_INFOQUERY,
+            ): Events.MEMBER_LIST,
             MenuItem(
                 shortcut='m', description='Register a Member'
             ): Events.MEMBER_REGISTER,
@@ -48,7 +48,7 @@ class ApplicationView(BaseView):
             ): Events.MEMBER_UPDATE,
             MenuItem(
                 shortcut='l', description='List all Members'
-            ): Events.MEMBERS_LIST,
+            ): Events.MEMBER_LISTALL,
         }
 
     def get_selection_from(self, events):

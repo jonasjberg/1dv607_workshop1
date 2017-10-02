@@ -31,10 +31,10 @@ class ApplicationController(object):
             # Events.BOAT_REGISTER: BoatController.register,
             # Events.BOAT_UPDATE: BoatController.update,
             # Events.MEMBER_DELETE: MemberController.delete,
-            # Events.MEMBER_INFOQUERY: MemberController.get_info,
+            Events.MEMBER_LIST: MemberController.get_info,
             # Events.MEMBER_REGISTER: MemberController.register,
             # Events.MEMBER_UPDATE: MemberController.update,
-            Events.MEMBERS_LIST: self._member_controller.list_all,
+            Events.MEMBER_LISTALL: self._member_controller.list_all,
         }
 
         # self._member_registry = MemberRegistry.fromfile(

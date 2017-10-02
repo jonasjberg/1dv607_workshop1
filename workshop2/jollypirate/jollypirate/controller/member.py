@@ -9,6 +9,7 @@
 class MemberController(object):
     def __init__(self, view):
         self.view = view
+        self._members = ['member_foo', 'member_bar']
 
     @classmethod
     def delete(cls):
@@ -26,6 +27,9 @@ class MemberController(object):
     def update(cls):
         print('TODO: MemberController.update()')
 
-    @classmethod
-    def list_all(cls):
-        print('TODO: MemberController.list_all()')
+    def list_all(self):
+        self.view.list(self._members)
+
+    def _filter(self, members):
+        # TODO:  Return a subset of all members.
+        return []

@@ -8,8 +8,8 @@
 import logging
 import sys
 
-from jollypirate import jollypirate
-from .jollypirate import constants
+import jollypirate
+
 
 log = logging.getLogger(__name__)
 
@@ -19,9 +19,11 @@ def main(args):
         app = jollypirate.application()
         app.run()
     except KeyboardInterrupt:
-        sys.exit(constants.EXIT_FAILURE)
+        # sys.exit(jollypirate.constants.EXIT_FAILURE)
+        pass
     else:
-        sys.exit(constants.EXIT_SUCCESS)
+        # sys.exit(jollypirate.constants.EXIT_SUCCESS)
+        pass
 
 
 if __name__ == '__main__':
