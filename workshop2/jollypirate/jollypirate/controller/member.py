@@ -5,30 +5,28 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from .base import BaseController
 
-class MemberController(object):
-    def __init__(self, view):
-        self.view = view
-        self._members = ['member_foo', 'member_bar']
 
-    @classmethod
-    def delete(cls):
+class MemberController(BaseController):
+    def __init__(self, model, view):
+        super().__init__(model, view)
+
+    def delete(self):
         print('TODO: MemberController.delete()')
 
-    @classmethod
-    def get_info(cls):
+    def get_info(self):
         print('TODO: MemberController.get_info()')
 
-    @classmethod
-    def register(cls):
+    def register(self):
         print('TODO: MemberController.register()')
 
-    @classmethod
-    def update(cls):
+    def update(self):
         print('TODO: MemberController.update()')
 
     def list_all(self):
-        self.view.list(self._members)
+        _members = self.member_registry.getall()
+        self.view.list(_members)
 
     def _filter(self, members):
         # TODO:  Return a subset of all members.

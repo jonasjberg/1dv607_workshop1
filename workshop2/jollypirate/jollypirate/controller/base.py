@@ -5,6 +5,8 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from jollypirate.model import MemberRegistry
+
 
 class BaseController(object):
     def __init__(self, model, view):
@@ -14,7 +16,7 @@ class BaseController(object):
         self.model = model
         self.view = view
 
-        self.member_registry = model.MemberRegistry()
+        self.member_registry = MemberRegistry()
 
     @property
     def model(self):

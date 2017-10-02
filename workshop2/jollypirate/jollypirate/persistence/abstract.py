@@ -23,18 +23,24 @@ import logging
 import os
 
 from jollypirate import util
+from jollypirate import constants
 from jollypirate.exceptions import JollyPirateException
-from jollypirate.persistence import JOLLYPIRATE_APPDATA_ABSPATH
-from jollypirate.persistence.implementation import PickleStorage
 from jollypirate.util import encoding as enc
 from jollypirate.util import types
 
 
-log = logging.getLogger(__name__)
+# Absolute path to persistent storage.
+JOLLYPIRATE_APPDATA_ABSPATH = os.path.normpath(
+    os.path.realpath(os.path.join(constants.PROJECT_ROOT_ABSPATH,
+                                  'appdata'))
+)
 
 
 CACHE_DIR_ABSPATH = enc.normpath(JOLLYPIRATE_APPDATA_ABSPATH)
 assert CACHE_DIR_ABSPATH not in ('', None)
+
+
+log = logging.getLogger(__name__)
 
 
 class DataPersistenceError(JollyPirateException):
@@ -219,9 +225,3 @@ class BaseStorage(object):
 
     def __str__(self):
         return self.__class__.__name__
-
-
-def get_persistence(cachefile_prefix):
-    return PickleStorage(cachefile_prefix)
-
-

@@ -8,12 +8,8 @@
 import os
 
 from jollypirate import constants
+from .implementation import PickleStorage
 
 
-# Absolute path to persistent storage.
-JOLLYPIRATE_APPDATA_ABSPATH = os.path.normpath(
-    os.path.realpath(os.path.join(constants.PROJECT_ROOT_ABSPATH,
-                                  'appdata'))
-)
-
-
+def get_implementation(cachefile_prefix):
+    return PickleStorage(cachefile_prefix)

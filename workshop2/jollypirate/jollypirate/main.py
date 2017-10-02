@@ -5,6 +5,7 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from jollypirate.model import MemberModel
 from jollypirate.view.application import ApplicationView
 from jollypirate.view.member import MemberView
 from jollypirate.view.boat import BoatView
@@ -16,7 +17,9 @@ def initialize_application():
     member_view = MemberView()
     boat_view = BoatView()
 
-    member_controller = MemberController(member_view)
+    member_model = MemberModel()
+
+    member_controller = MemberController(member_model, member_view)
     boat_controller = BoatController(boat_view)
     app_controller = ApplicationController(app_view,
                                            member_controller,
