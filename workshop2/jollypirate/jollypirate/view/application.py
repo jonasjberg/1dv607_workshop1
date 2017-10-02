@@ -5,11 +5,10 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from collections import namedtuple
 import logging
+from collections import namedtuple
 
-from jollypirate.controller import Events
-
+from jollypirate.jollypirate.controller import Events
 
 log = logging.getLogger(__name__)
 

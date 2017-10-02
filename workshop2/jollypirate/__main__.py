@@ -8,29 +8,15 @@
 import logging
 import sys
 
-from jollypirate import constants
-from jollypirate.controller import *
-from jollypirate.view import *
-
+from jollypirate import jollypirate
+from .jollypirate import constants
 
 log = logging.getLogger(__name__)
 
 
-def initialize_application():
-    app_view = ApplicationView()
-    member_view = MemberView()
-    boat_view = BoatView()
-
-    member_controller = MemberController(member_view)
-    boat_controller = BoatController(boat_view)
-    app_controller = ApplicationController(app_view)
-
-    return app_controller
-
-
 if __name__ == '__main__':
     try:
-        app = initialize_application()
+        app = jollypirate.application()
         app.run()
     except KeyboardInterrupt:
         sys.exit(constants.EXIT_FAILURE)

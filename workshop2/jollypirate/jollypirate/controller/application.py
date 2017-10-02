@@ -8,14 +8,11 @@
 import logging
 import sys
 
-from jollypirate import constants
-from jollypirate.controller import (
-    Events,
-    BoatController,
-    MemberController
-)
-from jollypirate.model import MemberRegistry
-
+from .. import constants
+from .boat import BoatController
+from .event import Events
+from .member import MemberController
+from ..model import MemberRegistry
 
 log = logging.getLogger(__name__)
 
@@ -38,9 +35,9 @@ class ApplicationController(object):
             Events.MEMBERS_LIST: MemberController.list_all,
         }
 
-        self._member_registry = MemberRegistry.fromfile(
-            constants.PERSISTANCE_MEMBERREGISTRY_PATH
-        )
+        # self._member_registry = MemberRegistry.fromfile(
+        #     constants.PERSISTANCE_MEMBERREGISTRY_PATH
+        # )
 
     def run(self):
         while True:
