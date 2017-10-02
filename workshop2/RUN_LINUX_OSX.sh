@@ -68,6 +68,6 @@ fi
 
 # Execute the main module in a subshell.
 (
-    cd "$JOLLYPIRATE_PATH" && python3 -m jollypirate "$@"
+    cd "$JOLLYPIRATE_PATH" && python3 jollypirate "$@"
 )
 
