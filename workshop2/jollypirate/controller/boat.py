@@ -10,5 +10,14 @@ class BoatController(object):
     def __init__(self, view):
         self.view = view
 
-    def delete(self):
-        pass
+    @classmethod
+    def delete(cls):
+        print('TODO: BoatController.delete()')
+
+    @classmethod
+    def register(cls):
+        print('TODO: BoatController.register()')
+
+    @classmethod
+    def update(cls):
+        print('TODO: BoatController.register()')
