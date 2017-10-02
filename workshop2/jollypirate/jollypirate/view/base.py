@@ -19,7 +19,7 @@ class BaseView(object):
         print('\n\n')
         print('Please Make a Selection')
         print('~~~~~~~~~~~~~~~~~~~~~~~')
-        for item in menu_items.keys():
+        for item in menu_items:
             self._print_menu_entry(item.shortcut, item.description)
 
     @staticmethod
