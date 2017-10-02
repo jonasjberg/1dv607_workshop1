@@ -9,6 +9,7 @@ import logging
 import sys
 
 import jollypirate
+from jollypirate import persistence
 
 
 log = logging.getLogger(__name__)
