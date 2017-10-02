@@ -6,18 +6,21 @@
 #   University mail: js224eh[a]student.lnu.se
 
 import logging
-from collections import namedtuple
 
 from jollypirate.jollypirate.controller import Events
+from .base import (
+    BaseView,
+    MenuItem
+)
+
 
 log = logging.getLogger(__name__)
 
 
-MenuItem = namedtuple('MenuItem', ['shortcut', 'description'])
-
-
-class ApplicationView(object):
+class ApplicationView(BaseView):
     def __init__(self):
+        super(ApplicationView).__init__()
+
         self.menuitems_event_map = {
             MenuItem(
                 shortcut='q', description='Exit Program'
@@ -81,15 +84,3 @@ class ApplicationView(object):
             for menu_item, event in self.menuitems_event_map.items()
             if event in events
         }
-
-    def _print_menu(self, menu_items):
-        print('\n\n')
-        print('Please Make a Selection')
-        print('~~~~~~~~~~~~~~~~~~~~~~~')
-        for item in menu_items.keys():
-            self._print_menu_entry(item.shortcut, item.description)
-
-    @staticmethod
-    def _print_menu_entry(shortcut, description):
-        _s = '[{shortcut}]  {desc}'.format(shortcut=shortcut, desc=description)
-        print(_s)
