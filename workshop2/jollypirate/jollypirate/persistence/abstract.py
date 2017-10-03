@@ -77,7 +77,7 @@ class BaseStorage(object):
     CACHEFILE_PREFIX_SEPARATOR = '_'
 
     def __init__(self, cachefile_prefix):
-        self._data = {}
+        self._data = dict()
 
         _prefix = types.force_string(cachefile_prefix)
         if not _prefix.strip():
@@ -89,11 +89,13 @@ class BaseStorage(object):
         if not os.path.exists(enc.syspath(DATA_STORAGE_ABSPATH)):
             # TODO: [TD0097] Add proper handling of cache directories.
             try:
-                os.makedirs(enc.syspath(self._cache_dir))
+                os.makedirs(enc.syspath(JOLLYPIRATE_APPDATA_ABSPATH))
             except OSError as e:
                 raise DataPersistenceError(
                     'Error while creating cache directory "{!s}": '
-                    '{!s}'.format(enc.displayable_path(self._cache_dir), e)
+                    '{!s}'.format(
+                        enc.displayable_path(JOLLYPIRATE_APPDATA_ABSPATH), e
+                    )
                 )
         else:
             if not util.has_permissions(DATA_STORAGE_ABSPATH, 'rwx'):
