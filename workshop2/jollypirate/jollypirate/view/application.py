@@ -82,3 +82,16 @@ class ApplicationView(BaseView):
             for menu_item, event in self.menuitems_event_map.items()
             if event in events
         }
+
+    def msg_application_start(self):
+        self.display_msg_success(
+            'Started the Jolly Pirate Boat Club Management Suite'
+        )
+
+    def msg_application_success(self):
+        print('\n')
+        self.display_msg_success('Exiting successfully! ')
+
+    def msg_application_failure(self):
+        print('\n')
+        self.display_msg_failure('Exiting with ERRORS ..')

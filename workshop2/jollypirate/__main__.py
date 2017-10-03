@@ -106,15 +106,8 @@ def main(args):
     opts = parse_args(args)
     init_logging(opts)
 
-    try:
-        app = jollypirate.application()
-        app.run()
-    except KeyboardInterrupt:
-        # sys.exit(jollypirate.constants.EXIT_FAILURE)
-        pass
-    else:
-        # sys.exit(jollypirate.constants.EXIT_SUCCESS)
-        pass
+    app = jollypirate.application()
+    app.run()
 
 
 if __name__ == '__main__':

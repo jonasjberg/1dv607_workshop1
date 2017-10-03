@@ -16,6 +16,7 @@ from jollypirate.controller import *
 
 
 def initialize_application():
+
     app_view = ApplicationView()
     member_view = MemberView()
     boat_view = BoatView()

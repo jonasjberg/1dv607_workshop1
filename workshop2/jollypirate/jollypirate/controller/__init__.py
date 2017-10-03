@@ -6,6 +6,7 @@
 #   University mail: js224eh[a]student.lnu.se
 
 from .application import ApplicationController
+from .base import BaseController
 from .boat import BoatController
 from .event import Events
 from .member import MemberController

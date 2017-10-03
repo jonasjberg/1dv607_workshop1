@@ -7,9 +7,12 @@
 
 import sys
 
-from .base import BaseController
-from .. import constants
-from .event import Events
+from jollypirate import (
+    exceptions,
+    constants
+)
+from jollypirate.controller.event import Events
+from jollypirate.controller.base import BaseController
 
 
 class ApplicationController(BaseController):
@@ -21,7 +24,7 @@ class ApplicationController(BaseController):
         self._boat_controller = boat_controller
 
         self.event_handlers = {
-            Events.APP_QUIT: self.quit,
+            Events.APP_QUIT: self.exit_success,
             Events.BOAT_DELETE: self._boat_controller.delete,
             Events.BOAT_REGISTER: self._boat_controller.register,
             Events.BOAT_MODIFY: self._boat_controller.modify,
@@ -33,6 +36,18 @@ class ApplicationController(BaseController):
         }
 
     def run(self):
+        self.view.msg_application_start()
+
+        try:
+            self.infinite_loop()
+        except exceptions.JollyPirateException as e:
+            self.exit_failure()
+        except KeyboardInterrupt:
+            self.exit_success()
+        else:
+            self.exit_success()
+
+    def infinite_loop(self):
         while True:
             choice = self.view.get_selection_from(self.event_handlers.keys())
             self.log.debug('User entered "{!s}"'.format(choice))
@@ -49,7 +64,11 @@ class ApplicationController(BaseController):
                 self.log.debug('Calling event handler "{!s}"'.format(event_func))
                 event_func()
 
-    @classmethod
-    def quit(cls):
-        print('Exiting Application')
+    def exit_success(self):
+        self.view.msg_application_success()
         sys.exit(constants.EXIT_SUCCESS)
+
+    def exit_failure(self):
+        self.view.msg_application_failure()
+        sys.exit(constants.EXIT_SUCCESS)
+
