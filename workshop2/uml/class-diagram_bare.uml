@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/home/jonas/Dropbox/LNU/1DV607_OOAD/src/workshops.git/workshop2/jollypirate/jollypirate</OriginalElement>
+  <nodes>
+    <node x="308.0" y="716.0">jollypirate.controller.boat.BoatController</node>
+    <node x="283.5" y="158.0">jollypirate.exceptions.JollyPirateException</node>
+    <node x="889.0" y="563.0">jollypirate.model.boat.BoatModel</node>
+    <node x="297.0" y="563.0">jollypirate.model.member.MemberModel</node>
+    <node x="565.0" y="563.0">jollypirate.model.member_registry.MemberRegistry</node>
+    <node x="23.5" y="943.0">jollypirate.persistence.abstract.BaseStorage</node>
+    <node x="251.0" y="790.0">jollypirate.view.base.BaseView</node>
+    <node x="462.0" y="869.0">jollypirate.view.application.ApplicationView</node>
+    <node x="0.0" y="1096.0">jollypirate.model.boat.BoatType</node>
+    <node x="582.0" y="237.0">jollypirate.exceptions.JollyPirateModelError</node>
+    <node x="308.0" y="637.0">jollypirate.controller.base.BaseController</node>
+    <node x="251.0" y="869.0">jollypirate.view.boat.BoatView</node>
+    <node x="827.0" y="410.0">jollypirate.util.types.Boolean</node>
+    <node x="492.5" y="79.0">Exception</node>
+    <node x="554.5" y="158.0">jollypirate.util.types.AWTypeError</node>
+    <node x="1212.0" y="410.0">jollypirate.util.types.Integer</node>
+    <node x="465.0" y="484.0">jollypirate.model.base.BaseModel</node>
+    <node x="352.0" y="943.0">jollypirate.util.cli.ColumnFormatter</node>
+    <node x="1029.0" y="410.0">jollypirate.util.types.Date</node>
+    <node x="480.5" y="0.0">BaseException</node>
+    <node x="619.0" y="410.0">jollypirate.util.types.TimeDate</node>
+    <node x="256.0" y="237.0">jollypirate.persistence.abstract.DataPersistenceError</node>
+    <node x="613.0" y="943.0">jollypirate.controller.event.Events</node>
+    <node x="374.0" y="410.0">jollypirate.util.types.PathComponent</node>
+    <node x="721.5" y="311.0">jollypirate.util.types.BaseType</node>
+    <node x="0.0" y="869.0">jollypirate.view.member.MemberView</node>
+    <node x="0.0" y="1022.0">jollypirate.persistence.implementation.PickleStorage</node>
+    <node x="576.0" y="716.0">jollypirate.controller.application.ApplicationController</node>
+    <node x="0.0" y="716.0">jollypirate.controller.member.MemberController</node>
+    <node x="191.0" y="410.0">jollypirate.util.types.Path</node>
+    <node x="1410.0" y="410.0">jollypirate.util.types.Float</node>
+    <node x="0.0" y="237.0">jollypirate.exceptions.InvalidUserInput</node>
+    <node x="0.0" y="563.0">jollypirate.model.application.ApplicationModel</node>
+    <node x="0.0" y="410.0">jollypirate.util.types.String</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="jollypirate.controller.boat.BoatController" target="jollypirate.controller.base.BaseController">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.model.application.ApplicationModel" target="jollypirate.model.base.BaseModel">
+      <point x="0.0" y="-14.5" />
+      <point x="138.5" y="533.0" />
+      <point x="491.0" y="533.0" />
+      <point x="-78.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.persistence.implementation.PickleStorage" target="jollypirate.persistence.abstract.BaseStorage">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Exception" target="BaseException">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.Float" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="1492.5" y="360.0" />
+      <point x="897.75" y="360.0" />
+      <point x="82.25" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.String" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="85.5" y="360.0" />
+      <point x="733.25" y="360.0" />
+      <point x="-82.25" y="14.5" />
+    </edge>
+    <edge source="jollypirate.view.boat.BoatView" target="jollypirate.view.base.BaseView">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.model.member_registry.MemberRegistry" target="jollypirate.model.base.BaseModel">
+      <point x="0.0" y="-14.5" />
+      <point x="717.0" y="543.0" />
+      <point x="595.0" y="543.0" />
+      <point x="26.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.exceptions.JollyPirateModelError" target="jollypirate.exceptions.JollyPirateException">
+      <point x="0.0" y="-14.5" />
+      <point x="712.5" y="212.0" />
+      <point x="492.6666666666667" y="212.0" />
+      <point x="83.66666666666669" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.TimeDate" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="713.0" y="390.0" />
+      <point x="803.75" y="390.0" />
+      <point x="-11.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.PathComponent" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="486.5" y="380.0" />
+      <point x="780.25" y="380.0" />
+      <point x="-35.25" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.AWTypeError" target="Exception">
+      <point x="0.0" y="-14.5" />
+      <point x="659.0" y="133.0" />
+      <point x="554.75" y="133.0" />
+      <point x="20.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.controller.member.MemberController" target="jollypirate.controller.base.BaseController">
+      <point x="0.0" y="-14.5" />
+      <point x="144.0" y="691.0" />
+      <point x="349.33333333333337" y="691.0" />
+      <point x="-82.66666666666663" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.Path" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="272.5" y="370.0" />
+      <point x="756.75" y="370.0" />
+      <point x="-58.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.controller.application.ApplicationController" target="jollypirate.controller.base.BaseController">
+      <point x="0.0" y="-14.5" />
+      <point x="734.5" y="691.0" />
+      <point x="514.6666666666667" y="691.0" />
+      <point x="82.66666666666674" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.Date" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="1110.5" y="380.0" />
+      <point x="850.75" y="380.0" />
+      <point x="35.25" y="14.5" />
+    </edge>
+    <edge source="jollypirate.model.boat.BoatModel" target="jollypirate.model.base.BaseModel">
+      <point x="0.0" y="-14.5" />
+      <point x="993.0" y="533.0" />
+      <point x="647.0" y="533.0" />
+      <point x="78.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.model.member.MemberModel" target="jollypirate.model.base.BaseModel">
+      <point x="0.0" y="-14.5" />
+      <point x="421.0" y="543.0" />
+      <point x="543.0" y="543.0" />
+      <point x="-26.0" y="14.5" />
+    </edge>
+    <edge source="jollypirate.exceptions.JollyPirateException" target="Exception">
+      <point x="0.0" y="-14.5" />
+      <point x="409.0" y="133.0" />
+      <point x="513.25" y="133.0" />
+      <point x="-20.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.Boolean" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="918.0" y="390.0" />
+      <point x="827.25" y="390.0" />
+      <point x="11.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.exceptions.InvalidUserInput" target="jollypirate.exceptions.JollyPirateException">
+      <point x="0.0" y="-14.5" />
+      <point x="118.0" y="212.0" />
+      <point x="325.3333333333333" y="212.0" />
+      <point x="-83.66666666666669" y="14.5" />
+    </edge>
+    <edge source="jollypirate.util.types.Integer" target="jollypirate.util.types.BaseType">
+      <point x="0.0" y="-14.5" />
+      <point x="1301.0" y="370.0" />
+      <point x="874.25" y="370.0" />
+      <point x="58.75" y="14.5" />
+    </edge>
+    <edge source="jollypirate.view.member.MemberView" target="jollypirate.view.base.BaseView">
+      <point x="0.0" y="-14.5" />
+      <point x="115.5" y="844.0" />
+      <point x="282.8333333333335" y="844.0" />
+      <point x="-63.666666666666515" y="14.5" />
+    </edge>
+    <edge source="jollypirate.view.application.ApplicationView" target="jollypirate.view.base.BaseView">
+      <point x="0.0" y="-14.5" />
+      <point x="592.0" y="844.0" />
+      <point x="410.1666666666665" y="844.0" />
+      <point x="63.666666666666515" y="14.5" />
+    </edge>
+    <edge source="jollypirate.persistence.abstract.DataPersistenceError" target="jollypirate.exceptions.JollyPirateException">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="790.9219538558558" y="706.6626342133936" />
+  <SelectedNodes />
+  <Categories />
+</Diagram>
+
