@@ -40,7 +40,7 @@ class ApplicationView(BaseView):
             ): Events.MEMBER_REGISTER,
             MenuItem(
                 shortcut='k', description='Update a Member'
-            ): Events.MEMBER_UPDATE,
+            ): Events.MEMBER_MODIFY,
             MenuItem(
                 shortcut='l', description='List all Members'
             ): Events.MEMBER_LISTALL,

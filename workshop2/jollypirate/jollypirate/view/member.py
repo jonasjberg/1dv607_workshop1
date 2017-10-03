@@ -113,11 +113,11 @@ class MemberView(BaseView):
     def msg_member_deletion_failure(self):
         self.display_msg_failure('No member was deleted ..')
 
-    def msg_member_update_start(self):
+    def msg_member_modify_start(self):
         self.display_msg_heading('Modify an existing Member')
 
-    def msg_member_update_success(self):
+    def msg_member_modify_success(self):
         self.display_msg_success('The Member has been Modified!')
 
-    def msg_member_update_failure(self):
+    def msg_member_modify_failure(self):
         self.display_msg_failure('The Member has nott been modified ..')

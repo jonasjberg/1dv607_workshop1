@@ -34,7 +34,7 @@ class ApplicationController(object):
             Events.MEMBER_DELETE: self._member_controller.delete,
             Events.MEMBER_LIST: self._member_controller.get_info,
             Events.MEMBER_REGISTER: self._member_controller.register,
-            Events.MEMBER_UPDATE: self._member_controller.update,
+            Events.MEMBER_MODIFY: self._member_controller.modify,
             Events.MEMBER_LISTALL: self._member_controller.list_all,
         }
 

@@ -6,6 +6,7 @@
 #   University mail: js224eh[a]student.lnu.se
 
 import string
+from copy import deepcopy
 
 from jollypirate import exceptions
 from jollypirate.model import MemberModel
@@ -19,10 +20,10 @@ class MemberController(BaseController):
 
     def delete(self):
         self.view.msg_member_deletion_start()
-        _members = self.member_registry.getall()
 
-        _deletion_candidates = self._members_as_menu_items(_members)
-        _should_delete = self.view.get_selection_from(_deletion_candidates)
+        _members = self.member_registry.getall()
+        _candidates = self._members_as_menu_items(_members)
+        _should_delete = self.view.get_selection_from(_candidates)
         if _should_delete:
             try:
                 self.member_registry.remove(_should_delete)
@@ -61,9 +62,36 @@ class MemberController(BaseController):
         else:
             self.view.msg_member_registration_success()
 
-    def update(self):
-        self.view.msg_member_update_start()
-        print('TODO: MemberController.update()')
+    def modify(self):
+        self.view.msg_member_modify_start()
+
+        _members = self.member_registry.getall()
+        _candidates = self._members_as_menu_items(_members)
+        _should_modify = self.view.get_selection_from(_candidates)
+        if not _should_modify:
+            self.view.msg_member_modify_failure()
+            return
+
+        _member = deepcopy(_should_modify)
+        self._populate_model_data(
+            _member, model_field='name_first', field_name='First Name'
+        )
+        self._populate_model_data(
+            _member, model_field='name_last', field_name='Last Name'
+        )
+        self._populate_model_data(
+            _member, model_field='social_sec_number',
+            field_name='Social Security Number'
+        )
+
+        try:
+            self.member_registry.remove(_should_modify)
+            self.member_registry.add(_member)
+        except exceptions.JollyPirateModelError as e:
+            self.view.display_msg_failure(str(e))
+            self.view.msg_member_modify_failure()
+        else:
+            self.view.msg_member_modify_success()
 
     def list_all(self):
         _members = self.member_registry.getall()
@@ -88,14 +116,10 @@ class MemberController(BaseController):
 
     def _members_as_menu_items(self, members):
         out = {}
-
         for i, member in enumerate(members):
-            _key = MenuItem(
-                shortcut=int_to_char(i+1), description=member.name_full
-            )
-            _value = member
-            out[_key] = _value
-
+            _key = MenuItem(shortcut=int_to_char(i+1),
+                            description=member.name_full)
+            out[_key] = member
         return out
 
 
