@@ -35,7 +35,7 @@ class MemberView(BaseView):
     def _list_verbose(self, members):
         cf = ColumnFormatter()
         cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
-        cf.addrow('==========', '=========', '======================', '=========')
+        cf.addrow(*['=' * width for width in cf.column_widths])
         cf.setalignment('left', 'left', 'right', 'right')
 
         for m in members:
@@ -43,7 +43,14 @@ class MemberView(BaseView):
                 m.name_first, m.name_last, m.social_sec_number, str(m.id)[1:10]
             )
 
-            # TODO: List any boats and boat information.
+            _boats = m.boats
+            if _boats:
+                cf.addrow(*['.' * width for width in cf.column_widths])
+                cf.addrow(':', 'Boat Type', 'Boat Length', ':')
+                cf.addrow(':', '=========', '===========', ':')
+                for b in _boats:
+                    cf.addrow(':', b.type_, str(b.length), '.')
+                cf.addrow(*[':' * width for width in cf.column_widths])
 
         self.display_msg_heading('Detailed Listing of all Registered Members:')
         print(str(cf))

@@ -5,6 +5,8 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from copy import deepcopy
+
 from jollypirate import exceptions
 from jollypirate.controller.base import BaseController
 from jollypirate.model import BoatModel
@@ -33,12 +35,15 @@ class BoatController(BaseController):
 
         _members = self.member_registry.getall()
         _candidates = self._members_as_menu_items(_members)
-        _boat_owner = self.view.get_selection_from(_candidates)
-        if not _boat_owner:
+        _member = self.view.get_selection_from(_candidates)
+        if not _member:
             self.view.msg_boat_registration_failure()
             return
 
+        _boat_owner = deepcopy(_member)
         _boat_owner.add_boat(_new_boat)
+        self.member_registry.remove(_member)
+        self.member_registry.add(_boat_owner)
         self.view.msg_boat_registration_success()
 
     def update(self):
