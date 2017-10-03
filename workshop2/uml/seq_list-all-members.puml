@@ -8,6 +8,7 @@
 ' ""http://www.jonasjberg.com""
 ' ""https://github.com/jonasjberg""
 
+@startuml
 ' ______________________________________________________________________________
 ' ____ CONFIGURATION OPTIONS ___________________________________________________
 ' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
@@ -31,9 +32,29 @@ end header
 
 title \nSequence Diagram\nList all Members\n
 
-ApplicationController -> ApplicationView: Authentication Request
-' Bob --> Alice: Authentication Response
+ApplicationController -> ApplicationView: get_selection_from(events)
+activate ApplicationView
 
-' Alice -> Bob: Another authentication Request
-' Alice <-- Bob: another authentication Response
+ApplicationController <-- ApplicationView: chosen_event
+deactivate ApplicationView
+
+activate ApplicationController
+
+ApplicationController -> ApplicationController: event_func() (bound method)
+
+ApplicationController -> MemberController: _list_all()
+deactivate ApplicationController
+
+MemberController -> MemberRegistry: getall()
+activate MemberRegistry
+MemberController <-- MemberRegistry: member_list
+deactivate MemberRegistry
+
+MemberController -> MemberView: list(member_list)
+activate MemberView
+
+MemberView -> MemberView: get_selection_from(verbosity_map)
+MemberController <-- MemberView: exceptions.InvalidUserInput
+MemberView -> MemberView: display(selected_verobosity)
+
 @enduml
