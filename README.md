@@ -17,10 +17,22 @@ Written by Jonas Sjöberg.
 
 
 
-Downloadable PDFs
-=================
+Workshop 1 --- Domain Modeling
+==============================
+Reports in PDF-format.
 
-* __Workshop #1__
-    * [Version #1 (peer reviewed)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-1-peer-reviewed.pdf)
-    * [Version #2 (FINAL)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-2-final.pdf)
+* [Version #1 (peer reviewed)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-1-peer-reviewed.pdf)
+* [Version #2 (FINAL)](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-2-final.pdf)
 
+
+
+Workshop 2 --- Design
+=====================
+Application implementation written in Python.
+
+* Version #1 (peer reviewed)
+    * [Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-peer-review-submission.zip)
+    * [Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-peer-review-submission.tar.gz)
+    * [Stand-alone Windows Executable](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop2/build/jollypirate.exe)
+* Version #2 (FINAL)
+    * N/A
