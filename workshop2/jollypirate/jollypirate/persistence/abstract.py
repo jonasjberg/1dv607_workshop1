@@ -87,20 +87,14 @@ class BaseStorage(object):
         self.cachefile_prefix = _prefix
 
         if not os.path.exists(enc.syspath(DATA_STORAGE_ABSPATH)):
-            raise DataPersistenceError(
-                'Cache directory does not exist: "{!s}"'.format(
-                    enc.displayable_path(DATA_STORAGE_ABSPATH)
-                )
-            )
-
             # TODO: [TD0097] Add proper handling of cache directories.
-            # try:
-            #     os.makedirs(enc.syspath(self._cache_dir))
-            # except OSError as e:
-            #     raise CacheError(
-            #         'Error while creating cache directory "{!s}": '
-            #         '{!s}'.format(enc.displayable_path(self._cache_dir), e)
-            #     )
+            try:
+                os.makedirs(enc.syspath(self._cache_dir))
+            except OSError as e:
+                raise DataPersistenceError(
+                    'Error while creating cache directory "{!s}": '
+                    '{!s}'.format(enc.displayable_path(self._cache_dir), e)
+                )
         else:
             if not util.has_permissions(DATA_STORAGE_ABSPATH, 'rwx'):
                 raise DataPersistenceError(
@@ -159,7 +153,7 @@ class BaseStorage(object):
                 )
                 self.delete(key)
             except OSError as e:
-                log.warning(
+                log.debug(
                     'Error while trying to read key "{!s}" from cache file '
                     '"{!s}"; {!s}'.format(key, _dp, e)
                 )

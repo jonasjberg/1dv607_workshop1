@@ -5,12 +5,13 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from .base import BaseModel
+from .member import MemberModel
 from .. import (
     exceptions,
     persistence
 )
-from .member import MemberModel
-from .base import BaseModel
+from ..persistence.abstract import DataPersistenceError
 
 
 class MemberRegistry(BaseModel):
@@ -20,7 +21,10 @@ class MemberRegistry(BaseModel):
         super().__init__()
 
         self._members = set()
-        self._persistence = persistence.get_implementation(self.STORAGE_KEY)
+        try:
+            self._persistence = persistence.get_implementation(self.STORAGE_KEY)
+        except DataPersistenceError as e:
+            raise exceptions.JollyPirateException(e)
 
         try:
             _stored_data = self._persistence.get('members')
