@@ -9,7 +9,10 @@ from collections import namedtuple
 import logging
 
 from jollypirate import exceptions
-from jollypirate.util import types
+from jollypirate.util import (
+    types,
+    cli
+)
 
 
 MenuItem = namedtuple('MenuItem', ['shortcut', 'description'])
@@ -18,7 +21,7 @@ MenuItem = namedtuple('MenuItem', ['shortcut', 'description'])
 log = logging.getLogger()
 
 
-CHAR_HEADING_UNDERLINE = '='
+CHAR_HEADING_UNDERLINE = '~'
 
 
 class BaseView(object):
@@ -27,9 +30,7 @@ class BaseView(object):
         self.log = logging.getLogger(str(self))
 
     def display_menu(self, menu_items):
-        print('\n\n')
-        print('Please Make a Selection')
-        print('~~~~~~~~~~~~~~~~~~~~~~~')
+        self.display_msg_heading('Please Make a Selection')
         for item in menu_items:
             self._display_menu_entry(item.shortcut, item.description)
 
@@ -40,18 +41,20 @@ class BaseView(object):
 
     @staticmethod
     def display_msg_heading(message):
-        print('')
+        print('\n')
         print(message)
         print(CHAR_HEADING_UNDERLINE * len(message))
-        print('\n')
+        print('')
 
     @staticmethod
     def display_msg_failure(message):
-        print('[FAILURE] {!s}'.format(message))
+        _prefix = cli.colorize('[FAILURE]', fore='RED')
+        print('{!s} {!s}'.format(_prefix, message))
 
     @staticmethod
     def display_msg_success(message):
-        print('[SUCCESS] {!s}'.format(message))
+        _prefix = cli.colorize('[SUCCESS]', fore='GREEN')
+        print('{!s} {!s}'.format(_prefix, message))
 
     @staticmethod
     def should_abort():

@@ -53,7 +53,7 @@ class MemberModel(BaseModel):
 
     @property
     def name_full(self):
-        return str(self.name_first + self.name_last) or ''
+        return '{!s} {!s}'.format(self.name_first, self.name_last) or ''
 
     @property
     def social_sec_number(self):

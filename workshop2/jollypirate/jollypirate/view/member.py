@@ -103,3 +103,6 @@ class MemberView(BaseView):
 
     def msg_member_registration_failure(self):
         self.display_msg_success('The member has not been registered ..')
+
+    def msg_member_deletion_start(self):
+        self.display_msg_heading('Delete an existing Member')

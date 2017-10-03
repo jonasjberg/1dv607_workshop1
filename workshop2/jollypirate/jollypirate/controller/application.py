@@ -31,7 +31,7 @@ class ApplicationController(object):
             # Events.BOAT_DELETE: self._boat_controller.delete,
             # Events.BOAT_REGISTER: self._boat_controller.register,
             # Events.BOAT_UPDATE: self._boat_controller.update,
-            # Events.MEMBER_DELETE: MemberController.delete,
+            Events.MEMBER_DELETE: self._member_controller.delete,
             Events.MEMBER_LIST: self._member_controller.get_info,
             Events.MEMBER_REGISTER: self._member_controller.register,
             # Events.MEMBER_UPDATE: self._member_controller.update,

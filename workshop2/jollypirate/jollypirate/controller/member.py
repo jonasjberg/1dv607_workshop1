@@ -5,8 +5,11 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+import string
+
 from jollypirate import exceptions
 from jollypirate.model import MemberModel
+from jollypirate.view.base import MenuItem
 from .base import BaseController
 
 
@@ -15,8 +18,13 @@ class MemberController(BaseController):
         super().__init__(model, view)
 
     def delete(self):
-        # TODO: ..
-        print('TODO: MemberController.delete()')
+        self.view.msg_member_deletion_start()
+        _members = self.member_registry.getall()
+
+        _deletion_candidates = self._members_as_menu_items(_members)
+        _should_delete = self.view.get_selection_from(_deletion_candidates)
+        if _should_delete:
+            self.member_registry.remove(_should_delete)
 
     def get_info(self):
         # TODO: ..
@@ -66,15 +74,32 @@ class MemberController(BaseController):
             try:
                 setattr(model_, model_field, _user_input)
             except exceptions.InvalidUserInput as e:
-                self.view.display_error(e)
+                self.view.display_msg_failure(e)
                 if self.view.should_abort():
                     return
             else:
                 _valid = True
 
+    def _members_as_menu_items(self, members):
+        out = {}
+
+        for i, member in enumerate(members):
+            _key = MenuItem(
+                shortcut=int_to_char(i+1), description=member.name_full
+            )
+            _value = member
+            out[_key] = _value
+
+        return out
 
 
+# Dictionary keyed by integers storing lower-case characters.
+INT_CHAR_LOOKUP = {k: v for k, v in enumerate(string.ascii_lowercase, 1)}
 
 
+def int_to_char(number):
+    _num_chars = len(INT_CHAR_LOOKUP)
+    _default = min(max(0, _num_chars - number), _num_chars)
+    return INT_CHAR_LOOKUP.get(number, INT_CHAR_LOOKUP.get(_default))
 
 

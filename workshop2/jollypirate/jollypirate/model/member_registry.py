@@ -61,6 +61,7 @@ class MemberRegistry(BaseModel):
 
     def remove(self, member_to_remove):
         self._members.remove(member_to_remove)
+        self.log.debug('Removed member "{!r}"'.format(member_to_remove))
         self._update_persistent_data()
 
     def contains(self, member_id):
