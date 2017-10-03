@@ -32,6 +32,7 @@ end header
 
 title \nSequence Diagram\nList all Members\n
 
+ApplicationController -> ApplicationView: msg_application_start()
 ApplicationController -> ApplicationView: get_selection_from(events)
 activate ApplicationView
 
@@ -54,7 +55,9 @@ MemberController -> MemberView: list(member_list)
 activate MemberView
 
 MemberView -> MemberView: get_selection_from(verbosity_map)
-MemberController <-- MemberView: exceptions.InvalidUserInput
 MemberView -> MemberView: display(selected_verobosity)
+MemberController <-- MemberView: exceptions.InvalidUserInput
+deactivate MemberView
 
+ApplicationController <-- MemberController: exceptions.InvalidUserInput
 @enduml
