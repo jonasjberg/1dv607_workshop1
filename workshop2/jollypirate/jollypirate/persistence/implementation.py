@@ -10,8 +10,8 @@ try:
 except ImportError:
     import pickle
 
-from jollypirate.persistence.abstract import BaseStorage
-from jollypirate.util import encoding as enc
+from ..persistence.abstract import BaseStorage
+from ..util import encoding as enc
 
 
 class PickleStorage(BaseStorage):

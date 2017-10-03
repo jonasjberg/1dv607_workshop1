@@ -29,10 +29,8 @@ except ImportError:
     colorama = None
 
 
-from jollypirate.util import (
-    sanity,
-    types
-)
+from . import sanity
+from . import types
 
 
 CLI_MSG_HEADING_CHAR = '~'

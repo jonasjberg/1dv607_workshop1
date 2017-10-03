@@ -5,13 +5,13 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate import (
+from .. import (
     exceptions,
     util
 )
-from jollypirate.model import BoatModel
-from jollypirate.model.base import BaseModel
-from jollypirate.util import types
+from ..util import types
+from .boat import BoatModel
+from .base import BaseModel
 
 
 class MemberModel(BaseModel):

@@ -7,9 +7,8 @@
 
 from copy import deepcopy
 
-from jollypirate import exceptions
-from jollypirate.model import MemberModel
-from jollypirate.view.base import MenuItem
+from .. import exceptions
+from ..model import MemberModel
 from .base import BaseController
 
 

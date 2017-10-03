@@ -8,9 +8,9 @@
 import logging
 import string
 
-from jollypirate import exceptions
-from jollypirate.model import MemberRegistry
-from jollypirate.view.base import MenuItem
+from .. import exceptions
+from ..model import MemberRegistry
+from ..view import MenuItem
 
 
 # Dictionary keyed by integers storing lower-case characters.

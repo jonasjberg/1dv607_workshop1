@@ -5,7 +5,7 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate.util.cli import ColumnFormatter
+from ..util import cli
 from .base import (
     BaseView,
     MenuItem
@@ -21,7 +21,7 @@ class MemberView(BaseView):
                 shortcut='v', description='Verbose Listing'
             ): self._list_verbose,
             MenuItem(
-                shortcut='b', description='Compact Listing'
+                shortcut='c', description='Compact Listing'
             ): self._list_compact,
         }
 
@@ -35,7 +35,7 @@ class MemberView(BaseView):
     def _list_verbose(self, members):
         print('Boats owned by members are inserted in the table in a '
               '_somewhat_ non-obvious way because command-line interfaces.')
-        cf = ColumnFormatter()
+        cf = cli.ColumnFormatter()
         cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
         cf.addrow(*['=' * width for width in cf.column_widths])
         cf.setalignment('left', 'left', 'right', 'right')
@@ -60,7 +60,7 @@ class MemberView(BaseView):
 
     def _list_compact(self, members):
         # name, id, num boats
-        cf = ColumnFormatter()
+        cf = cli.ColumnFormatter()
         cf.addrow('Name', 'Member ID', '#Boats')
         cf.addrow(*['=' * width for width in cf.column_widths])
 
@@ -138,7 +138,7 @@ class MemberView(BaseView):
         self.display_msg_failure('Requested information was NOT provided ..')
 
     def display_member_info(self, member):
-        cf = ColumnFormatter()
+        cf = cli.ColumnFormatter()
         cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
         cf.addrow('==========', '=========', '======================', '=========')
         cf.setalignment('left', 'left', 'right', 'right')

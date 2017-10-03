@@ -22,6 +22,6 @@ _abspath_self_dir = os.path.realpath(os.path.dirname(__file__))
 PROJECT_ROOT_ABSPATH = os.path.normpath(os.path.realpath(
     os.path.join(_abspath_self_dir, os.path.pardir))
 )
-assert os.path.isdir(PROJECT_ROOT_ABSPATH)
-assert os.path.isabs(PROJECT_ROOT_ABSPATH)
+# assert os.path.isdir(PROJECT_ROOT_ABSPATH)
+# assert os.path.isabs(PROJECT_ROOT_ABSPATH)
 

@@ -22,11 +22,13 @@
 import logging
 import os
 
-from jollypirate import util
-from jollypirate import constants
-from jollypirate.exceptions import JollyPirateException
-from jollypirate.util import encoding as enc
-from jollypirate.util import types
+from .. import (
+    constants,
+    exceptions,
+    util
+)
+from ..util import encoding as enc
+from ..util import types
 
 
 # Absolute path to persistent storage.
@@ -43,7 +45,7 @@ assert DATA_STORAGE_ABSPATH not in ('', None)
 log = logging.getLogger(__name__)
 
 
-class DataPersistenceError(JollyPirateException):
+class DataPersistenceError(exceptions.JollyPirateException):
     """Irrecoverable error while reading or writing data to disk."""
 
 

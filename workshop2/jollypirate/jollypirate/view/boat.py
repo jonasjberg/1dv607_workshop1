@@ -5,7 +5,7 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate.view.base import BaseView
+from .base import BaseView
 
 
 class BoatView(BaseView):

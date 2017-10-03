@@ -7,12 +7,12 @@
 
 import sys
 
-from jollypirate import (
+from .. import (
     exceptions,
     constants
 )
-from jollypirate.controller.event import Events
-from jollypirate.controller.base import BaseController
+from .event import Events
+from .base import BaseController
 
 
 class ApplicationController(BaseController):

@@ -8,8 +8,8 @@
 from collections import namedtuple
 import logging
 
-from jollypirate import exceptions
-from jollypirate.util import (
+from .. import exceptions
+from ..util import (
     types,
     cli
 )

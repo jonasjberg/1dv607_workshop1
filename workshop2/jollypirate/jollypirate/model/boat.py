@@ -5,9 +5,9 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate import exceptions
-from jollypirate.model.base import BaseModel
-from jollypirate.util import types
+from .base import BaseModel
+from .. import exceptions
+from ..util import types
 
 
 class BoatType(object):

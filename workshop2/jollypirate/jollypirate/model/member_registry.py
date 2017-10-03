@@ -5,12 +5,12 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate import (
+from .. import (
     exceptions,
     persistence
 )
-from jollypirate.model import MemberModel
-from jollypirate.model.base import BaseModel
+from .member import MemberModel
+from .base import BaseModel
 
 
 class MemberRegistry(BaseModel):

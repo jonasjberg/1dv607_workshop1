@@ -7,10 +7,10 @@
 
 from copy import deepcopy
 
-from jollypirate import exceptions
-from jollypirate.controller.base import BaseController
-from jollypirate.model import BoatModel
-from jollypirate.view.base import MenuItem
+from .. import exceptions
+from ..controller import BaseController
+from ..model import BoatModel
+from ..view import MenuItem
 
 
 class BoatController(BaseController):
@@ -95,7 +95,7 @@ class BoatController(BaseController):
             self.view.msg_boat_registration_failure()
             return
         else:
-            self.view.msg_member_modify_success()
+            self.view.msg_boat_registration_success()
 
     def modify(self):
         self.view.msg_member_modify_start()

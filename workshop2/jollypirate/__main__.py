@@ -7,9 +7,14 @@
 
 import argparse
 import logging
+import os
 import sys
 
 import jollypirate
+
+
+path = os.path.realpath(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(os.path.dirname(path)))
 
 
 def init_argparser():
