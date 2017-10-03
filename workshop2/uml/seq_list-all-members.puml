@@ -1,0 +1,39 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 2: Design
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-10-03.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+' allow_mixing
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ USECASE DIAGRAM _________________________________________________________
+
+header
+1DV607 - Workshop 2: Design
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nSequence Diagram\nList all Members\n
+
+ApplicationController -> ApplicationView: Authentication Request
+' Bob --> Alice: Authentication Response
+
+' Alice -> Bob: Another authentication Request
+' Alice <-- Bob: another authentication Response
+@enduml
