@@ -5,32 +5,30 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-import logging
-
 from jollypirate import (
     exceptions,
     persistence
 )
 from jollypirate.model import MemberModel
+from jollypirate.model.base import BaseModel
 
 
-log = logging.getLogger(__name__)
-
-
-class MemberRegistry(object):
+class MemberRegistry(BaseModel):
     STORAGE_KEY = 'registry'
 
     def __init__(self):
+        super().__init__()
+
         self._members = set()
         self._persistence = persistence.get_implementation(self.STORAGE_KEY)
 
         try:
             _stored_data = self._persistence.get('members')
         except KeyError as e:
-            log.error('Error when reading persistent data; {!s}'.format(e))
+            self.log.error('Error when reading persistent data; {!s}'.format(e))
         else:
-            log.debug('Loaded persistent data:')
-            log.debug(str(_stored_data))
+            self.log.debug('Loaded persistent data:')
+            self.log.debug(str(_stored_data))
             # _stored_members =
 
             # self._members.union()
@@ -72,4 +70,8 @@ class MemberRegistry(object):
         return list(self._members)
 
     def _update_persistent_data(self):
-        self._persistence.set(self.STORAGE_KEY, {'members': self.getall()})
+        _data = {'members': self.getall()}
+        self.log.debug(
+            'Updating persistent data ({!s}) {!s}'.format(type(_data), _data)
+        )
+        self._persistence.set(self.STORAGE_KEY, _data)

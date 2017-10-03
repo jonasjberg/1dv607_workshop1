@@ -27,28 +27,21 @@ class MemberController(BaseController):
 
         _new_member = MemberModel()
 
-        _valid_first_name = False
-        while not _valid_first_name:
-            _user_input = self.view.get_member_field('First Name')
-            try:
-                _new_member.name_first = _user_input
-            except exceptions.InvalidUserInput as e:
-                self.view.display_error(e)
-                if self.view.should_abort():
-                    return
-            else:
-                _valid_first_name = True
+        self._populate_model_data(
+            _new_member, model_field='name_first', field_name='First Name'
+        )
+        self._populate_model_data(
+            _new_member, model_field='name_last', field_name='Last Name'
+        )
+        self._populate_model_data(
+            _new_member, model_field='social_security_number',
+            field_name='Social Security Number'
+        )
 
-        _user_input = self.view.get_member_field('Last Name')
         try:
-            _new_member.name_last = _user_input
-        except exceptions.InvalidUserInput as e:
+            self.member_registry.add(_new_member)
+        except exceptions.JollyPirateModelError as e:
             self.view.display_error(e)
-
-        # try:
-        #     self.member_registry.add(member)
-        # except exceptions.JollyPirateModelError as e:
-        #     self.view.display_error(str(e))
 
     def update(self):
         # TODO: ..
@@ -61,6 +54,19 @@ class MemberController(BaseController):
     def _filter(self, members):
         # TODO:  Return a subset of all members.
         return []
+
+    def _populate_model_data(self, model_, model_field, field_name):
+        _valid = False
+        while not _valid:
+            _user_input = self.view.get_member_field(field_name)
+            try:
+                setattr(model_, model_field, _user_input)
+            except exceptions.InvalidUserInput as e:
+                self.view.display_error(e)
+                if self.view.should_abort():
+                    return
+            else:
+                _valid = True
 
 
 

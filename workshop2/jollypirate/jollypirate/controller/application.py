@@ -14,6 +14,7 @@ from .event import Events
 from .member import MemberController
 from ..model import MemberRegistry
 
+
 log = logging.getLogger(__name__)
 
 
@@ -27,19 +28,15 @@ class ApplicationController(object):
 
         self.event_handlers = {
             Events.APP_QUIT: self.quit,
-            # Events.BOAT_DELETE: BoatController.delete,
-            # Events.BOAT_REGISTER: BoatController.register,
-            # Events.BOAT_UPDATE: BoatController.update,
+            # Events.BOAT_DELETE: self._boat_controller.delete,
+            # Events.BOAT_REGISTER: self._boat_controller.register,
+            # Events.BOAT_UPDATE: self._boat_controller.update,
             # Events.MEMBER_DELETE: MemberController.delete,
             Events.MEMBER_LIST: self._member_controller.get_info,
             Events.MEMBER_REGISTER: self._member_controller.register,
-            # Events.MEMBER_UPDATE: MemberController.update,
+            # Events.MEMBER_UPDATE: self._member_controller.update,
             Events.MEMBER_LISTALL: self._member_controller.list_all,
         }
-
-        # self._member_registry = MemberRegistry.fromfile(
-        #     constants.PERSISTANCE_MEMBERREGISTRY_PATH
-        # )
 
     def run(self):
         while True:

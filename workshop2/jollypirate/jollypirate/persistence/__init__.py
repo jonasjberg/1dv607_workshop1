@@ -5,9 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-import os
-
-from jollypirate import constants
 from .implementation import PickleStorage
 
 

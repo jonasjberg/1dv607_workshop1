@@ -36,8 +36,8 @@ JOLLYPIRATE_APPDATA_ABSPATH = os.path.normpath(
 )
 
 
-CACHE_DIR_ABSPATH = enc.normpath(JOLLYPIRATE_APPDATA_ABSPATH)
-assert CACHE_DIR_ABSPATH not in ('', None)
+DATA_STORAGE_ABSPATH = enc.normpath(JOLLYPIRATE_APPDATA_ABSPATH)
+assert DATA_STORAGE_ABSPATH not in ('', None)
 
 
 log = logging.getLogger(__name__)
@@ -59,7 +59,7 @@ class BaseStorage(object):
     This will cache the data in memory by storing in a class instance dict,
     and also write the data to disk using the path:
 
-        "CACHE_DIR_ABSPATH/mycache_mydata"
+        "DATA_STORAGE_ABSPATH/mycache_mydata"
 
     Example retrieval:
 
@@ -84,10 +84,10 @@ class BaseStorage(object):
             )
         self.cachefile_prefix = _prefix
 
-        if not os.path.exists(enc.syspath(CACHE_DIR_ABSPATH)):
+        if not os.path.exists(enc.syspath(DATA_STORAGE_ABSPATH)):
             raise DataPersistenceError(
                 'Cache directory does not exist: "{!s}"'.format(
-                    enc.displayable_path(CACHE_DIR_ABSPATH)
+                    enc.displayable_path(DATA_STORAGE_ABSPATH)
                 )
             )
 
@@ -100,13 +100,13 @@ class BaseStorage(object):
             #         '{!s}'.format(enc.displayable_path(self._cache_dir), e)
             #     )
         else:
-            if not util.has_permissions(CACHE_DIR_ABSPATH, 'rwx'):
+            if not util.has_permissions(DATA_STORAGE_ABSPATH, 'rwx'):
                 raise DataPersistenceError(
                     'Cache directory path requires RWX-permissions: '
-                    '"{!s}'.format(enc.displayable_path(CACHE_DIR_ABSPATH))
+                    '"{!s}'.format(enc.displayable_path(DATA_STORAGE_ABSPATH))
                 )
         log.debug('{!s} Using _cache_dir "{!s}'.format(
-            self, enc.displayable_path(CACHE_DIR_ABSPATH))
+            self, enc.displayable_path(DATA_STORAGE_ABSPATH))
         )
 
     def _cache_file_abspath(self, key):
@@ -120,7 +120,7 @@ class BaseStorage(object):
             key=key
         )
         _p = enc.normpath(
-            os.path.join(enc.syspath(CACHE_DIR_ABSPATH),
+            os.path.join(enc.syspath(DATA_STORAGE_ABSPATH),
                          enc.syspath(enc.encode_(_basename)))
         )
         return _p

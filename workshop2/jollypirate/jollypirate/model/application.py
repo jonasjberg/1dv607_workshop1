@@ -5,7 +5,11 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from jollypirate.model.base import BaseModel
 
-class ApplicationModel(object):
+
+class ApplicationModel(BaseModel):
     def __init__(self):
-        pass
+        super().__init__()
+
+        # TODO: ..

@@ -5,13 +5,18 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate import exceptions
-from .. import util
-from ..util import types
+from jollypirate import (
+    exceptions,
+    util
+)
+from jollypirate.model.base import BaseModel
+from jollypirate.util import types
 
 
-class MemberModel(object):
+class MemberModel(BaseModel):
     def __init__(self, first_name=None, last_name=None, ssn=None):
+        super().__init__()
+
         self._name_first = None
         self._name_last = None
         self._social_security_number = None
