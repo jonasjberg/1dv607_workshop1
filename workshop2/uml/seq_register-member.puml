@@ -1,0 +1,89 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 2: Design
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-10-03.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+@startuml
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+' allow_mixing
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ USECASE DIAGRAM _________________________________________________________
+
+header
+1DV607 - Workshop 2: Design
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nSequence Diagram\nRegister Member\n
+
+ApplicationController -> ApplicationView: msg_application_start()
+ApplicationController -> ApplicationView: get_selection_from(events)
+activate ApplicationView
+
+ApplicationController <-- ApplicationView: chosen_event
+deactivate ApplicationView
+
+activate ApplicationController
+
+ApplicationController -> ApplicationController: event_func() (bound method)
+
+ApplicationController -> MemberController: _register()
+deactivate ApplicationController
+
+MemberController -> MemberView: msg_registration_start()
+MemberController -> MemberModel: _new_member()
+activate MemberModel
+MemberController <-- MemberModel: member_instance
+deactivate MemberModel
+
+loop until valid or aborted
+MemberController -> MemberView: get_field_data(field)
+activate MemberController
+activate MemberView
+MemberView -> MemberView: display_field_input()
+MemberView -> MemberView: get_user_input()
+MemberView -> MemberModel: set_attribute(field)
+deactivate MemberView
+
+activate MemberModel
+MemberModel -> MemberModel: validate
+MemberController <-- MemberModel: exceptions.InvalidUserInput
+deactivate MemberModel
+end
+
+
+
+MemberController -> MemberRegistry: add(member_instance)
+
+activate MemberRegistry
+MemberRegistry -> Storage: update_persistent_data()
+activate Storage
+Storage -> Persistence: write_to_disk()
+Storage <-- Persistence: critical errors
+MemberRegistry <-- Storage: exceptions.JollyPirateError
+deactivate Storage
+
+MemberController <-- MemberRegistry: Success/Failure (exceptions)
+deactivate MemberRegistry
+
+MemberController -> MemberView: msg_registration_success/failure
+
+ApplicationController <-- MemberController: (exceptions)
+deactivate MemberController
+@enduml
