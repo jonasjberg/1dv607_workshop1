@@ -60,13 +60,21 @@ class MemberRegistry(BaseModel):
         self._update_persistent_data()
 
     def remove(self, member_to_remove):
+        if not self.contains(member_to_remove):
+            raise exceptions.JollyPirateModelError(
+                'The specified member is not registered'
+            )
+
         self._members.remove(member_to_remove)
         self.log.debug('Removed member "{!r}"'.format(member_to_remove))
         self._update_persistent_data()
 
-    def contains(self, member_id):
+    def contains(self, member):
+        if not isinstance(member, MemberModel):
+            return False
+
         return bool(
-            any(member.id == member_id for member in self._members)
+            any(member.id == member.id for member in self._members)
         )
 
     def get(self, member_id):

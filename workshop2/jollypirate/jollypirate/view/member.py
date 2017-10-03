@@ -82,7 +82,7 @@ class MemberView(BaseView):
                         self.log.debug('Valid choice: {!s}'.format(choice))
                         return handler
 
-                self.log.debug('Invalid Selection')
+            self.log.debug('Invalid Selection')
 
     def _map_events_to_menuitem(self, events):
         return {
@@ -106,3 +106,18 @@ class MemberView(BaseView):
 
     def msg_member_deletion_start(self):
         self.display_msg_heading('Delete an existing Member')
+
+    def msg_member_deletion_success(self):
+        self.display_msg_success('The Member has been Deleted!')
+
+    def msg_member_deletion_failure(self):
+        self.display_msg_failure('No member was deleted ..')
+
+    def msg_member_update_start(self):
+        self.display_msg_heading('Modify an existing Member')
+
+    def msg_member_update_success(self):
+        self.display_msg_success('The Member has been Modified!')
+
+    def msg_member_update_failure(self):
+        self.display_msg_failure('The Member has nott been modified ..')

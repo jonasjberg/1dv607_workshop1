@@ -71,7 +71,7 @@ class ApplicationView(BaseView):
                         self.log.debug('Valid choice: {!s}'.format(choice))
                         return event
 
-                self.log.debug('Invalid Selection')
+            self.log.debug('Invalid Selection')
 
     def _map_events_to_menuitem(self, events):
         return {

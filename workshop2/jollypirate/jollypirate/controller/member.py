@@ -24,7 +24,13 @@ class MemberController(BaseController):
         _deletion_candidates = self._members_as_menu_items(_members)
         _should_delete = self.view.get_selection_from(_deletion_candidates)
         if _should_delete:
-            self.member_registry.remove(_should_delete)
+            try:
+                self.member_registry.remove(_should_delete)
+            except exceptions.JollyPirateModelError as e:
+                self.view.display_msg_failure(str(e))
+                self.view.msg_member_deletion_failure()
+            else:
+                self.view.msg_member_deletion_success()
 
     def get_info(self):
         # TODO: ..
@@ -56,7 +62,7 @@ class MemberController(BaseController):
             self.view.msg_member_registration_success()
 
     def update(self):
-        # TODO: ..
+        self.view.msg_member_update_start()
         print('TODO: MemberController.update()')
 
     def list_all(self):
