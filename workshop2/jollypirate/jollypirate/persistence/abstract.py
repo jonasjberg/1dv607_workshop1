@@ -179,13 +179,18 @@ class BaseStorage(object):
         self._data[key] = value
 
         _file_path = self._cache_file_abspath(key)
+        _dp = enc.displayable_path(_file_path)
         try:
             self._dump(value, _file_path)
         except OSError as e:
-            _dp = enc.displayable_path(_file_path)
             log.error(
                 'Error while trying to write key "{!s}" with value "{!s}" to '
                 'cache file "{!s}"; {!s}'.format(key, value, _dp, e)
+            )
+        else:
+            log.debug(
+                'Wrote key "{!s}" with value "{!s}" to '
+                'cache file "{!s}"'.format(key, value, _dp)
             )
 
     def delete(self, key):

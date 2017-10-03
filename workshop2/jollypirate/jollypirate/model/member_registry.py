@@ -27,8 +27,10 @@ class MemberRegistry(BaseModel):
         except KeyError as e:
             self.log.error('Error when reading persistent data; {!s}'.format(e))
         else:
-            self.log.debug('Loaded persistent data:')
-            self.log.debug(str(_stored_data))
+            self.log.debug(
+                'Loaded persistent data ({!s}) {!s}'.format(type(_stored_data),
+                                                            _stored_data)
+            )
             # _stored_members =
 
             # self._members.union()
@@ -70,8 +72,8 @@ class MemberRegistry(BaseModel):
         return list(self._members)
 
     def _update_persistent_data(self):
-        _data = {'members': self.getall()}
+        _data = {'all': self.getall()}
         self.log.debug(
             'Updating persistent data ({!s}) {!s}'.format(type(_data), _data)
         )
-        self._persistence.set(self.STORAGE_KEY, _data)
+        self._persistence.set('members', _data)

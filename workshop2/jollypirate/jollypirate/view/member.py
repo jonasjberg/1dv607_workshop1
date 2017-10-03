@@ -4,7 +4,9 @@
 #   Personal site:   http://www.jonasjberg.com
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
+
 from jollypirate import exceptions
+from jollypirate.util.cli import ColumnFormatter
 from .base import (
     BaseView,
     MenuItem
@@ -25,14 +27,25 @@ class MemberView(BaseView):
         }
 
     def list(self, members):
-        choice = self.get_selection_from(self.menuitem_list_verbosity_map)
-        if callable(choice):
-            choice(members)
+        lister = self.get_selection_from(self.menuitem_list_verbosity_map)
+        if callable(lister):
+            lister(members)
         else:
-            self.log.warning('Invalid selection: "{!s}"'.format(choice))
+            self.log.warning('Invalid selection: "{!s}"'.format(lister))
 
     def _list_verbose(self, members):
-        print('TODO: view/member._list_verbose()')
+        cf = ColumnFormatter()
+        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Unique Identifier')
+        cf.addrow('==========', '=========', '======================', '=================')
+        cf.setalignment('left', 'left', 'right', 'right')
+
+        for m in members:
+            cf.addrow(m.name_first, m.name_last, m.social_security_number, str(m.id))
+
+            # TODO: List any boats
+
+        print('\n\nDetailed Listing of all Registered Members:\n')
+        print(str(cf))
 
     def _list_terse(self, members):
         print('TODO: view/member._list_terse()')
