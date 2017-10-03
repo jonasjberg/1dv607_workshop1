@@ -19,7 +19,7 @@ class MemberModel(BaseModel):
 
         self._name_first = None
         self._name_last = None
-        self._social_security_number = None
+        self._social_sec_number = None
 
     @property
     def name_first(self):
@@ -50,14 +50,14 @@ class MemberModel(BaseModel):
             )
 
     @property
-    def social_security_number(self):
-        return self._social_security_number or 1337
+    def social_sec_number(self):
+        return self._social_sec_number or 1337
 
-    @social_security_number.setter
-    def social_security_number(self, new_ssn):
+    @social_sec_number.setter
+    def social_sec_number(self, new_ssn):
         valid = _to_digits(new_ssn)
         if valid:
-            self._social_security_number = valid
+            self._social_sec_number = valid
         else:
             raise exceptions.InvalidUserInput(
                 'Expected social security number to contain at least one digit'
@@ -65,15 +65,15 @@ class MemberModel(BaseModel):
 
     def __hash__(self):
         return hash(
-            (self.name_first, self.name_last, self.social_security_number)
+            (self.name_first, self.name_last, self.social_sec_number)
         )
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
         return (
-            (self.name_first, self.name_last, self.social_security_number) ==
-            (other.name_first, other.name_last, other.social_security_number)
+            (self.name_first, self.name_last, self.social_sec_number) ==
+            (other.name_first, other.name_last, other.social_sec_number)
         )
 
     def __ne__(self, other):
@@ -81,7 +81,7 @@ class MemberModel(BaseModel):
 
     def __repr__(self):
         _r = 'Member(first="{!s}", last="{!s}", ssn="{!s}", id="{!s}")'.format(
-            self.name_first, self.name_last, self.social_security_number, self.id
+            self.name_first, self.name_last, self.social_sec_number, self.id
         )
         return _r
 

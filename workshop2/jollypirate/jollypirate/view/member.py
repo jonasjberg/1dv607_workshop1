@@ -22,8 +22,8 @@ class MemberView(BaseView):
                 shortcut='v', description='Verbose Listing'
             ): self._list_verbose,
             MenuItem(
-                shortcut='b', description='Terse Listing'
-            ): self._list_terse,
+                shortcut='b', description='Compact Listing'
+            ): self._list_compact,
         }
 
     def list(self, members):
@@ -35,20 +35,26 @@ class MemberView(BaseView):
 
     def _list_verbose(self, members):
         cf = ColumnFormatter()
-        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Unique Identifier')
-        cf.addrow('==========', '=========', '======================', '=================')
+        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
+        cf.addrow('==========', '=========', '======================', '=========')
         cf.setalignment('left', 'left', 'right', 'right')
 
         for m in members:
-            cf.addrow(m.name_first, m.name_last, m.social_security_number, str(m.id)[1:18])
+            cf.addrow(
+                m.name_first, m.name_last, m.social_sec_number, str(m.id)[1:10]
+            )
 
-            # TODO: List any boats
+            # TODO: List any boats and boat information.
 
         print('\n\nDetailed Listing of all Registered Members:\n')
         print(str(cf))
 
-    def _list_terse(self, members):
-        print('TODO: view/member._list_terse()')
+    def _list_compact(self, members):
+        # name, id, num boats
+        cf = ColumnFormatter()
+        cf.addrow('Name', 'Member ID')
+        cf.addrow()
+        print('TODO: view/member._list_compact()')
 
     def get_selection_from(self, menu_items):
         while True:
