@@ -13,6 +13,10 @@ from jollypirate.model import MemberRegistry
 from jollypirate.view.base import MenuItem
 
 
+# Dictionary keyed by integers storing lower-case characters.
+INT_CHAR_LOOKUP = {k: v for k, v in enumerate(string.ascii_lowercase, 1)}
+
+
 class BaseController(object):
     def __init__(self, model, view):
         self.log = logging.getLogger(str(self))
@@ -44,12 +48,12 @@ class BaseController(object):
     def _members_as_menu_items(self, members):
         out = {}
         for i, member in enumerate(members):
-            _key = MenuItem(shortcut=int_to_char(i+1),
+            _key = MenuItem(shortcut=self.int_to_char(i+1),
                             description=member.name_full)
             out[_key] = member
         return out
 
-    def _populate_model_data(self, model_, model_field, field_name):
+    def populate_model_data(self, model_, model_field, field_name):
         _valid = False
         while not _valid:
             _user_input = self.view.get_field_data(field_name)
@@ -62,13 +66,9 @@ class BaseController(object):
             else:
                 _valid = True
 
-
-# Dictionary keyed by integers storing lower-case characters.
-INT_CHAR_LOOKUP = {k: v for k, v in enumerate(string.ascii_lowercase, 1)}
-
-
-def int_to_char(number):
-    _num_chars = len(INT_CHAR_LOOKUP)
-    _default = min(max(0, _num_chars - number), _num_chars)
-    return INT_CHAR_LOOKUP.get(number, INT_CHAR_LOOKUP.get(_default))
-
+    @staticmethod
+    def int_to_char(number):
+        _num_chars = len(INT_CHAR_LOOKUP)
+        _default = min(max(0, _num_chars - number), _num_chars)
+        assert _default >= 0
+        return INT_CHAR_LOOKUP.get(number, INT_CHAR_LOOKUP.get(_default))

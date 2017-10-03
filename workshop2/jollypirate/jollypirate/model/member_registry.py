@@ -90,6 +90,9 @@ class MemberRegistry(BaseModel):
     def getall(self):
         return list(self._members)
 
+    def flush(self):
+        self._update_persistent_data()
+
     def _update_persistent_data(self):
         _data = {'all': self.getall()}
         self.log.debug(

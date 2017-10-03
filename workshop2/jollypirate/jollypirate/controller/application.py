@@ -22,7 +22,7 @@ class ApplicationController(BaseController):
 
         self.event_handlers = {
             Events.APP_QUIT: self.quit,
-            # Events.BOAT_DELETE: self._boat_controller.delete,
+            Events.BOAT_DELETE: self._boat_controller.delete,
             Events.BOAT_REGISTER: self._boat_controller.register,
             # Events.BOAT_UPDATE: self._boat_controller.update,
             Events.MEMBER_DELETE: self._member_controller.delete,

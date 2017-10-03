@@ -81,11 +81,12 @@ class MemberModel(BaseModel):
     def boats(self):
         return self._boats or []
 
-    def remove_boat(self, boat_id):
-        if any(boat.id == boat_id for boat in self.boats):
-            self.log.info(
-                'TODO: Remove boat "{!s}'.format(self.boats.get(boat_id))
-            )
+    def remove_boat(self, boat_to_remove):
+        if boat_to_remove in self.boats:
+            # self.log.debug(
+            #     'Removing boat "{!r}'.format(boat_to_remove)
+            # )
+            self._boats = [b for b in self.boats if b != boat_to_remove]
 
     def __hash__(self):
         return hash(

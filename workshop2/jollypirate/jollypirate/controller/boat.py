@@ -18,7 +18,42 @@ class BoatController(BaseController):
         super().__init__(model, view)
 
     def delete(self):
-        print('TODO: BoatController.delete()')
+        self.view.msg_boat_deletion_start()
+
+        _boats = []
+        _members = self.member_registry.getall()
+        for m in _members:
+            if m.boats:
+                _boats.extend(m.boats)
+
+        if not _boats:
+            self.view.display_msg_failure('No boats have been registered!')
+            self.view.msg_boat_deletion_failure()
+            return
+
+        _candidates = self._boats_as_menu_items(_boats)
+        _boat_to_delete = self.view.get_selection_from(_candidates)
+        if not _boat_to_delete:
+            self.view.msg_boat_deletion_failure()
+            return
+
+        # TODO: Move mapping boat-owner-mapping to 'registry' ..
+        _boat_owner = None
+        for m in _members:
+            if _boat_to_delete in m.boats:
+                _boat_owner = m
+                break
+
+        if not _boat_owner:
+            self.view.msg_boat_deletion_failure()
+            return
+
+        _boatless = deepcopy(_boat_owner)
+        _boatless.remove_boat(_boat_to_delete)
+        self.member_registry.remove(_boat_owner)
+        self.member_registry.add(_boatless)
+        self.member_registry.flush()
+        self.view.msg_boat_deletion_success()
 
     def register(self):
         self.view.msg_boat_registration_start()
@@ -26,10 +61,10 @@ class BoatController(BaseController):
         _new_boat = BoatModel()
 
         # Data validation is handled in the model.
-        self._populate_model_data(
+        self.populate_model_data(
             _new_boat, model_field='type_', field_name='Boat Type'
         )
-        self._populate_model_data(
+        self.populate_model_data(
             _new_boat, model_field='length', field_name='Length'
         )
 
@@ -44,12 +79,13 @@ class BoatController(BaseController):
         _boat_owner.add_boat(_new_boat)
         self.member_registry.remove(_member)
         self.member_registry.add(_boat_owner)
+        self.member_registry.flush()
         self.view.msg_boat_registration_success()
 
     def update(self):
         print('TODO: BoatController.register()')
 
-    def _populate_model_data(self, model_, model_field, field_name):
+    def populate_model_data(self, model_, model_field, field_name):
         _valid = False
         while not _valid:
             _user_input = self.view.get_field_data(field_name)
@@ -63,3 +99,11 @@ class BoatController(BaseController):
             else:
                 _valid = True
 
+    def _boats_as_menu_items(self, boats):
+        out = {}
+        for i, boat in enumerate(boats):
+            _description = '{!s} ({!s} meters)'.format(boat.type_, boat.length)
+            _key = MenuItem(shortcut=self.int_to_char(i+1),
+                            description=_description)
+            out[_key] = boat
+        return out

@@ -33,6 +33,8 @@ class MemberView(BaseView):
             self.log.warning('Invalid selection: "{!s}"'.format(lister))
 
     def _list_verbose(self, members):
+        print('Boats owned by members are inserted in the table in a '
+              '_somewhat_ non-obvious way because command-line interfaces.')
         cf = ColumnFormatter()
         cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
         cf.addrow(*['=' * width for width in cf.column_widths])
@@ -103,10 +105,10 @@ class MemberView(BaseView):
         self.display_msg_heading('Register a new Member')
 
     def msg_member_registration_success(self):
-        self.display_msg_success('The new member has been registered!')
+        self.display_msg_success('The new Member has been Registered!')
 
     def msg_member_registration_failure(self):
-        self.display_msg_success('The member has not been registered ..')
+        self.display_msg_success('The Member has NOT been Registered ..')
 
     def msg_member_deletion_start(self):
         self.display_msg_heading('Delete an existing Member')
@@ -115,7 +117,7 @@ class MemberView(BaseView):
         self.display_msg_success('The Member has been Deleted!')
 
     def msg_member_deletion_failure(self):
-        self.display_msg_failure('No member was deleted ..')
+        self.display_msg_failure('No Member was Deleted ..')
 
     def msg_member_modify_start(self):
         self.display_msg_heading('Modify an existing Member')
@@ -124,16 +126,16 @@ class MemberView(BaseView):
         self.display_msg_success('The Member has been Modified!')
 
     def msg_member_modify_failure(self):
-        self.display_msg_failure('The Member has nott been modified ..')
+        self.display_msg_failure('The Member was NOT Modified ..')
 
     def msg_member_info_start(self):
-        self.display_msg_heading('Get information about a specific Member')
+        self.display_msg_heading('Get information about a Specific Member')
 
     def msg_member_info_success(self):
         self.display_msg_success('The information was provided!')
 
     def msg_member_info_failure(self):
-        self.display_msg_failure('Requested information was not provided ..')
+        self.display_msg_failure('Requested information was NOT provided ..')
 
     def display_member_info(self, member):
         cf = ColumnFormatter()

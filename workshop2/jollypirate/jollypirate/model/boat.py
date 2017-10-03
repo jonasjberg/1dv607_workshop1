@@ -4,6 +4,7 @@
 #   Personal site:   http://www.jonasjberg.com
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
+
 from jollypirate import exceptions
 from jollypirate.model.base import BaseModel
 from jollypirate.util import types
@@ -38,8 +39,6 @@ class BoatModel(BaseModel):
         self._type = None
         self._length = None
 
-        # TODO: ..
-
     @property
     def type_(self):
         # Names that shadow built-ins get a trailing '_' by convention.
@@ -69,3 +68,24 @@ class BoatModel(BaseModel):
             )
 
         self._length = _number
+
+    def __hash__(self):
+        return hash((self.type_, self.length))
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (
+            (self.type_, self.length) == (other.type_, other.length)
+        )
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __repr__(self):
+        _r = 'Boat(type="{!s}", length="{!s}")'.format(self.type_, self.length)
+        return _r
+
+    @property
+    def id(self):
+        return abs(self.__hash__())

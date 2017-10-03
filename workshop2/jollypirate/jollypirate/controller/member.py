@@ -48,13 +48,13 @@ class MemberController(BaseController):
         _new_member = MemberModel()
 
         # Data validation is handled in the model.
-        self._populate_model_data(
+        self.populate_model_data(
             _new_member, model_field='name_first', field_name='First Name'
         )
-        self._populate_model_data(
+        self.populate_model_data(
             _new_member, model_field='name_last', field_name='Last Name'
         )
-        self._populate_model_data(
+        self.populate_model_data(
             _new_member, model_field='social_sec_number',
             field_name='Social Security Number'
         )
@@ -78,13 +78,13 @@ class MemberController(BaseController):
             return
 
         _member = deepcopy(_should_modify)
-        self._populate_model_data(
+        self.populate_model_data(
             _member, model_field='name_first', field_name='First Name'
         )
-        self._populate_model_data(
+        self.populate_model_data(
             _member, model_field='name_last', field_name='Last Name'
         )
-        self._populate_model_data(
+        self.populate_model_data(
             _member, model_field='social_sec_number',
             field_name='Social Security Number'
         )
