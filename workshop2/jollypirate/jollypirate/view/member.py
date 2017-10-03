@@ -40,7 +40,7 @@ class MemberView(BaseView):
         cf.setalignment('left', 'left', 'right', 'right')
 
         for m in members:
-            cf.addrow(m.name_first, m.name_last, m.social_security_number, str(m.id))
+            cf.addrow(m.name_first, m.name_last, m.social_security_number, str(m.id)[1:18])
 
             # TODO: List any boats
 
@@ -52,7 +52,7 @@ class MemberView(BaseView):
 
     def get_selection_from(self, menu_items):
         while True:
-            self._print_menu(menu_items.keys())
+            self.display_menu(menu_items.keys())
 
             _choice = input()
             try:
@@ -85,7 +85,10 @@ class MemberView(BaseView):
         return input(_prompt)
 
     def msg_member_registration_start(self):
-        print('')
-        print('Register new Member')
-        print('~~~~~~~~~~~~~~~~~~~')
-        print('')
+        self.display_msg_heading('Register new Member')
+
+    def msg_member_registration_success(self):
+        self.display_msg_success('The new member has been registered!')
+
+    def msg_member_registration_failure(self):
+        self.display_msg_success('The member has not been registered ..')

@@ -31,7 +31,17 @@ class MemberRegistry(BaseModel):
                 'Loaded persistent data ({!s}) {!s}'.format(type(_stored_data),
                                                             _stored_data)
             )
-            # _stored_members =
+
+            _stored_members = _stored_data.get('all')
+            if _stored_members:
+                self.log.debug('Got {!s} member(s) from persistent data'.format(
+                        len(_stored_members)
+                ))
+                for _member in _stored_members:
+                    self.log.debug('Loaded member "{!r}"'.format(_member))
+                    self._members.add(_member)
+            else:
+                self.log.debug('Got no members from persistent data')
 
             # self._members.union()
 

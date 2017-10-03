@@ -27,6 +27,7 @@ class MemberController(BaseController):
 
         _new_member = MemberModel()
 
+        # Data validation is handled in the model.
         self._populate_model_data(
             _new_member, model_field='name_first', field_name='First Name'
         )
@@ -42,6 +43,9 @@ class MemberController(BaseController):
             self.member_registry.add(_new_member)
         except exceptions.JollyPirateModelError as e:
             self.view.display_error(e)
+            self.view.msg_member_registration_failure()
+        else:
+            self.view.msg_member_registration_success()
 
     def update(self):
         # TODO: ..

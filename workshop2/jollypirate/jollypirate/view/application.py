@@ -51,7 +51,7 @@ class ApplicationView(BaseView):
         _menu_items_to_include = self._map_events_to_menuitem(events)
 
         while True:
-            self._print_menu(_menu_items_to_include.keys())
+            self.display_menu(_menu_items_to_include.keys())
 
             # Read input from stdin.
             _choice = input()

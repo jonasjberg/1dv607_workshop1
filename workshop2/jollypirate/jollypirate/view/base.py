@@ -18,25 +18,40 @@ MenuItem = namedtuple('MenuItem', ['shortcut', 'description'])
 log = logging.getLogger()
 
 
+CHAR_HEADING_UNDERLINE = '='
+
+
 class BaseView(object):
+
     def __init__(self):
         self.log = logging.getLogger(str(self))
 
-    def _print_menu(self, menu_items):
+    def display_menu(self, menu_items):
         print('\n\n')
         print('Please Make a Selection')
         print('~~~~~~~~~~~~~~~~~~~~~~~')
         for item in menu_items:
-            self._print_menu_entry(item.shortcut, item.description)
+            self._display_menu_entry(item.shortcut, item.description)
 
     @staticmethod
-    def _print_menu_entry(shortcut, description):
+    def _display_menu_entry(shortcut, description):
         _s = '[{shortcut}]  {desc}'.format(shortcut=shortcut, desc=description)
         print(_s)
 
     @staticmethod
-    def display_error(message):
-        print('[ERROR] {!s}'.format(message))
+    def display_msg_heading(message):
+        print('')
+        print(message)
+        print(CHAR_HEADING_UNDERLINE * len(message))
+        print('\n')
+
+    @staticmethod
+    def display_msg_failure(message):
+        print('[FAILURE] {!s}'.format(message))
+
+    @staticmethod
+    def display_msg_success(message):
+        print('[SUCCESS] {!s}'.format(message))
 
     @staticmethod
     def should_abort():

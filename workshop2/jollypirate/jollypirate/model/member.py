@@ -79,9 +79,15 @@ class MemberModel(BaseModel):
     def __ne__(self, other):
         return not (self == other)
 
+    def __repr__(self):
+        _r = 'Member(first="{!s}", last="{!s}", ssn="{!s}", id="{!s}")'.format(
+            self.name_first, self.name_last, self.social_security_number, self.id
+        )
+        return _r
+
     @property
     def id(self):
-        return self.__hash__()
+        return abs(self.__hash__())
 
 
 def _to_non_empty_string(input_):
