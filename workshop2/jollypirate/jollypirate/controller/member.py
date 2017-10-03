@@ -5,7 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-import string
 from copy import deepcopy
 
 from jollypirate import exceptions
@@ -102,40 +101,3 @@ class MemberController(BaseController):
     def list_all(self):
         _members = self.member_registry.getall()
         self.view.list(_members)
-
-    def _filter(self, members):
-        # TODO:  Return a subset of all members.
-        return []
-
-    def _populate_model_data(self, model_, model_field, field_name):
-        _valid = False
-        while not _valid:
-            _user_input = self.view.get_member_field(field_name)
-            try:
-                setattr(model_, model_field, _user_input)
-            except exceptions.InvalidUserInput as e:
-                self.view.display_msg_failure(e)
-                if self.view.should_abort():
-                    return
-            else:
-                _valid = True
-
-    def _members_as_menu_items(self, members):
-        out = {}
-        for i, member in enumerate(members):
-            _key = MenuItem(shortcut=int_to_char(i+1),
-                            description=member.name_full)
-            out[_key] = member
-        return out
-
-
-# Dictionary keyed by integers storing lower-case characters.
-INT_CHAR_LOOKUP = {k: v for k, v in enumerate(string.ascii_lowercase, 1)}
-
-
-def int_to_char(number):
-    _num_chars = len(INT_CHAR_LOOKUP)
-    _default = min(max(0, _num_chars - number), _num_chars)
-    return INT_CHAR_LOOKUP.get(number, INT_CHAR_LOOKUP.get(_default))
-
-

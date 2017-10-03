@@ -5,7 +5,41 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from jollypirate.view.base import BaseView
 
-class BoatView(object):
+
+class BoatView(BaseView):
     def __init__(self):
-        pass
+        super().__init__()
+
+    def get_selection_from(self, menu_items):
+        while True:
+            self.display_menu(menu_items.keys())
+
+            _choice = input()
+            try:
+                # Coerce the input to type str.
+                choice = str(_choice)
+            except (ValueError, TypeError):
+                # Silently ignore failed coercion.
+                pass
+            else:
+                # Make lower case and strip any leading/trailing whitespace.
+                choice = choice.lower().strip()
+
+                # Return the event associated with the users choice, if any.
+                for menu_item, handler in menu_items.items():
+                    if choice == menu_item.shortcut:
+                        self.log.debug('Valid choice: {!s}'.format(choice))
+                        return handler
+
+            self.log.debug('Invalid Selection')
+
+    def msg_boat_registration_start(self):
+        self.display_msg_heading('Register a New Boat')
+
+    def msg_boat_registration_success(self):
+        self.display_msg_heading('The new Boat has been registered!')
+
+    def msg_boat_registration_failure(self):
+        self.display_msg_heading('The new Boat has been registered!')

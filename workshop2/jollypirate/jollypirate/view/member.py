@@ -5,7 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate import exceptions
 from jollypirate.util.cli import ColumnFormatter
 from .base import (
     BaseView,
@@ -93,12 +92,8 @@ class MemberView(BaseView):
             if event in events
         }
 
-    def get_member_field(self, field):
-        _prompt = '[{}]:  '.format(field)
-        return input(_prompt)
-
     def msg_member_registration_start(self):
-        self.display_msg_heading('Register new Member')
+        self.display_msg_heading('Register a new Member')
 
     def msg_member_registration_success(self):
         self.display_msg_success('The new member has been registered!')

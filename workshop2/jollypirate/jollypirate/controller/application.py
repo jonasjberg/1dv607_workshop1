@@ -5,22 +5,16 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-import logging
 import sys
 
+from .base import BaseController
 from .. import constants
-from .boat import BoatController
 from .event import Events
-from .member import MemberController
-from ..model import MemberRegistry
 
 
-log = logging.getLogger(__name__)
-
-
-class ApplicationController(object):
+class ApplicationController(BaseController):
     def __init__(self, view, member_controller, boat_controller):
-        self._view = None
+        super().__init__(None, view)
 
         self.view = view
         self._member_controller = member_controller
@@ -29,7 +23,7 @@ class ApplicationController(object):
         self.event_handlers = {
             Events.APP_QUIT: self.quit,
             # Events.BOAT_DELETE: self._boat_controller.delete,
-            # Events.BOAT_REGISTER: self._boat_controller.register,
+            Events.BOAT_REGISTER: self._boat_controller.register,
             # Events.BOAT_UPDATE: self._boat_controller.update,
             Events.MEMBER_DELETE: self._member_controller.delete,
             Events.MEMBER_LIST: self._member_controller.get_info,
@@ -41,7 +35,7 @@ class ApplicationController(object):
     def run(self):
         while True:
             choice = self.view.get_selection_from(self.event_handlers.keys())
-            log.debug('User entered "{!s}"'.format(choice))
+            self.log.debug('User entered "{!s}"'.format(choice))
 
             event_func = None
             for event, handler in self.event_handlers.items():
@@ -50,20 +44,12 @@ class ApplicationController(object):
                     break
 
             if not event_func or not callable(event_func):
-                log.warning('Invalid selection: "{!s}"'.format(choice))
+                self.log.warning('Invalid selection: "{!s}"'.format(choice))
             else:
-                log.debug('Calling event handler "{!s}"'.format(event_func))
+                self.log.debug('Calling event handler "{!s}"'.format(event_func))
                 event_func()
-
-    @property
-    def view(self):
-        return self._view
-
-    @view.setter
-    def view(self, new_view):
-        self._view = new_view
 
     @classmethod
     def quit(cls):
-        log.info('Exiting!')
+        print('Exiting Application')
         sys.exit(constants.EXIT_SUCCESS)

@@ -5,11 +5,18 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+import logging
+import string
+
+from jollypirate import exceptions
 from jollypirate.model import MemberRegistry
+from jollypirate.view.base import MenuItem
 
 
 class BaseController(object):
     def __init__(self, model, view):
+        self.log = logging.getLogger(str(self))
+
         self._model = None
         self._view = None
 
@@ -33,3 +40,35 @@ class BaseController(object):
     @view.setter
     def view(self, new_view):
         self._view = new_view
+
+    def _members_as_menu_items(self, members):
+        out = {}
+        for i, member in enumerate(members):
+            _key = MenuItem(shortcut=int_to_char(i+1),
+                            description=member.name_full)
+            out[_key] = member
+        return out
+
+    def _populate_model_data(self, model_, model_field, field_name):
+        _valid = False
+        while not _valid:
+            _user_input = self.view.get_field_data(field_name)
+            try:
+                setattr(model_, model_field, _user_input)
+            except exceptions.InvalidUserInput as e:
+                self.view.display_msg_failure(e)
+                if self.view.should_abort():
+                    return
+            else:
+                _valid = True
+
+
+# Dictionary keyed by integers storing lower-case characters.
+INT_CHAR_LOOKUP = {k: v for k, v in enumerate(string.ascii_lowercase, 1)}
+
+
+def int_to_char(number):
+    _num_chars = len(INT_CHAR_LOOKUP)
+    _default = min(max(0, _num_chars - number), _num_chars)
+    return INT_CHAR_LOOKUP.get(number, INT_CHAR_LOOKUP.get(_default))
+

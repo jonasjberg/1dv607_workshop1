@@ -5,7 +5,10 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from jollypirate.model import MemberModel
+from jollypirate.model import (
+    MemberModel,
+    BoatModel
+)
 from jollypirate.view.application import ApplicationView
 from jollypirate.view.member import MemberView
 from jollypirate.view.boat import BoatView
@@ -18,9 +21,10 @@ def initialize_application():
     boat_view = BoatView()
 
     member_model = MemberModel()
+    boat_model = BoatModel()
 
     member_controller = MemberController(member_model, member_view)
-    boat_controller = BoatController(boat_view)
+    boat_controller = BoatController(boat_model, boat_view)
     app_controller = ApplicationController(app_view,
                                            member_controller,
                                            boat_controller)

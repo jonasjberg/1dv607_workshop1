@@ -87,3 +87,7 @@ class BaseView(object):
     def __str__(self):
         return self.__class__.__name__
 
+    def get_field_data(self, field):
+        _prompt = '[{}]:  '.format(field)
+        return input(_prompt)
+

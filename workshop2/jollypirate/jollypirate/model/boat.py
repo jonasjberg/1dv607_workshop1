@@ -17,16 +17,22 @@ class BoatType(object):
     UNKNOWN = 'UNKNOWN'
 
     @classmethod
+    def _boat_types(cls):
+        return list(t for t in cls.__dict__.values()
+                    if t and isinstance(t, str) and t.isupper())
+
+    @classmethod
     def validate(cls, _raw_value):
-        return _raw_value in cls.__dict__.values()
+        return (_raw_value and isinstance(_raw_value, str)
+                and _raw_value.upper() in cls._boat_types())
 
     @classmethod
     def all(cls):
-        return list(cls.__dict__)
+        return cls._boat_types()
 
 
 class BoatModel(BaseModel):
-    def __init__(self, type_, length):
+    def __init__(self):
         super().__init__()
 
         self._type = None
