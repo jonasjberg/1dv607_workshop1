@@ -46,15 +46,20 @@ class MemberView(BaseView):
 
             # TODO: List any boats and boat information.
 
-        print('\n\nDetailed Listing of all Registered Members:\n')
+        self.display_msg_heading('Detailed Listing of all Registered Members:')
         print(str(cf))
 
     def _list_compact(self, members):
         # name, id, num boats
         cf = ColumnFormatter()
-        cf.addrow('Name', 'Member ID')
-        cf.addrow()
-        print('TODO: view/member._list_compact()')
+        cf.addrow('Name', 'Member ID', '#Boats')
+        cf.addrow(*['=' * width for width in cf.column_widths])
+
+        for m in members:
+            cf.addrow(m.name_full, str(m.id)[1:10], str(len(m.boats)))
+
+        self.display_msg_heading('Compact Listing of all Registered Members:')
+        print(str(cf))
 
     def get_selection_from(self, menu_items):
         while True:

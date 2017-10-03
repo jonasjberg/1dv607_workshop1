@@ -9,6 +9,7 @@ from jollypirate import (
     exceptions,
     util
 )
+from jollypirate.model import BoatModel
 from jollypirate.model.base import BaseModel
 from jollypirate.util import types
 
@@ -20,6 +21,7 @@ class MemberModel(BaseModel):
         self._name_first = None
         self._name_last = None
         self._social_sec_number = None
+        self._boats = []
 
     @property
     def name_first(self):
@@ -50,6 +52,10 @@ class MemberModel(BaseModel):
             )
 
     @property
+    def name_full(self):
+        return str(self.name_first + self.name_last) or ''
+
+    @property
     def social_sec_number(self):
         return self._social_sec_number or 1337
 
@@ -61,6 +67,24 @@ class MemberModel(BaseModel):
         else:
             raise exceptions.InvalidUserInput(
                 'Expected social security number to contain at least one digit'
+            )
+
+    def add_boat(self, new_boat):
+        if not isinstance(new_boat, BoatModel):
+            raise exceptions.JollyPirateModelError(
+                'Expected an instance of "BoatModel"'
+            )
+
+        self._boats.append(new_boat)
+
+    @property
+    def boats(self):
+        return self._boats or []
+
+    def remove_boat(self, boat_id):
+        if any(boat.id == boat_id for boat in self.boats):
+            self.log.info(
+                'TODO: Remove boat "{!s}'.format(self.boats.get(boat_id))
             )
 
     def __hash__(self):

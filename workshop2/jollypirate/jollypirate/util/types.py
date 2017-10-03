@@ -244,7 +244,7 @@ class Boolean(BaseType):
             return self.null()
 
         try:
-            string_value = AW_STRING(value)
+            string_value = STRING(value)
         except AWTypeError:
             pass
         else:
@@ -253,7 +253,7 @@ class Boolean(BaseType):
                 return _maybe_bool
 
         try:
-            float_value = AW_FLOAT(value)
+            float_value = FLOAT(value)
         except AWTypeError:
             pass
         else:
@@ -431,7 +431,7 @@ class Date(BaseType):
 
     def coerce(self, value):
         try:
-            string_value = AW_STRING(value)
+            string_value = STRING(value)
         except AWTypeError as e:
             self._fail_coercion(value, msg=e)
         else:
@@ -654,27 +654,36 @@ def try_coerce(value):
 def coercer_for(value):
     if value is None:
         return None
-    return PRIMITIVE_AW_TYPE_MAP.get(type(value), None)
+    return PRIMITIVE_CUSTOMTYPE_MAP.get(type(value), None)
 
 
 def force_string(raw_value):
     try:
-        str_value = AW_STRING(raw_value)
+        str_value = STRING(raw_value)
     except AWTypeError:
-        return AW_STRING.null()
+        return STRING.null()
     else:
         return str_value
 
 
+def force_integer(raw_value):
+    try:
+        int_value = INTEGER(raw_value)
+    except AWTypeError:
+        return INTEGER.null()
+    else:
+        return int_value
+
+
 # Singletons for actual use.
-AW_BOOLEAN = Boolean()
-AW_DATE = Date()
-AW_PATH = Path()
-AW_PATHCOMPONENT = PathComponent()
-AW_INTEGER = Integer()
-AW_FLOAT = Float()
-AW_STRING = String()
-AW_TIMEDATE = TimeDate()
+BOOLEAN = Boolean()
+DATE = Date()
+PATH = Path()
+PATHCOMPONENT = PathComponent()
+INTEGER = Integer()
+FLOAT = Float()
+STRING = String()
+TIMEDATE = TimeDate()
 
 
 # This is not clearly defined otherwise.
@@ -683,12 +692,12 @@ BUILTIN_REGEX_TYPE = type(re.compile(''))
 
 # NOTE: Wrapping paths (potentially bytes) with this automatic type
 #       detection would coerce them to Unicode strings when we actually
-#       want to do path coercion with one the "AW_Path"-types ..
-PRIMITIVE_AW_TYPE_MAP = {
-    bool: AW_BOOLEAN,
-    datetime: AW_TIMEDATE,
-    int: AW_INTEGER,
-    float: AW_FLOAT,
-    str: AW_STRING,
-    bytes: AW_STRING
+#       want to do path coercion with one the custom types ..
+PRIMITIVE_CUSTOMTYPE_MAP = {
+    bool: BOOLEAN,
+    datetime: TIMEDATE,
+    int: INTEGER,
+    float: FLOAT,
+    str: STRING,
+    bytes: STRING
 }
