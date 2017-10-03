@@ -28,7 +28,7 @@ class ApplicationView(BaseView):
             ): Events.BOAT_REGISTER,
             MenuItem(
                 shortcut='b', description='Update a Boat'
-            ): Events.BOAT_UPDATE,
+            ): Events.BOAT_MODIFY,
             MenuItem(
                 shortcut='u', description='Delete a Member'
             ): Events.MEMBER_DELETE,
@@ -54,7 +54,10 @@ class ApplicationView(BaseView):
             self.display_menu(_menu_items_to_include.keys())
 
             # Read input from stdin.
-            _choice = input()
+            try:
+                _choice = input('Select: ')
+            except UnicodeDecodeError:
+                continue
             try:
                 # Coerce the input to type str.
                 choice = str(_choice)

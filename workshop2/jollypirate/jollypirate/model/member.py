@@ -88,6 +88,16 @@ class MemberModel(BaseModel):
             # )
             self._boats = [b for b in self.boats if b != boat_to_remove]
 
+    @classmethod
+    def copy(cls, other):
+        _copy = cls()
+        _copy.name_first = other.name_first
+        _copy.name_last = other.name_last
+        _copy.social_sec_number = other.social_sec_number
+        for b in other.boats:
+            _copy.add_boat(b)
+        return _copy
+
     def __hash__(self):
         return hash(
             (self.name_first, self.name_last, self.social_sec_number)
@@ -97,18 +107,21 @@ class MemberModel(BaseModel):
         if not isinstance(other, self.__class__):
             return False
         return (
-            (self.name_first, self.name_last, self.social_sec_number) ==
-            (other.name_first, other.name_last, other.social_sec_number)
+            (self.name_first, self.name_last, self.social_sec_number,
+             self.boats, self.id) ==
+            (other.name_first, other.name_last, other.social_sec_number,
+             other.boats, other.id)
         )
 
     def __ne__(self, other):
         return not (self == other)
 
     def __repr__(self):
-        _r = 'Member(first="{!s}", last="{!s}", ssn="{!s}", id="{!s}")'.format(
-            self.name_first, self.name_last, self.social_sec_number, self.id
+        return (
+            'Member(first="{!s}", last="{!s}", boats="{!s}", ssn="{!s}", '
+            'id="{!s}")'.format(self.name_first, self.name_last, self.boats,
+                                self.social_sec_number, self.id)
         )
-        return _r
 
     @property
     def id(self):

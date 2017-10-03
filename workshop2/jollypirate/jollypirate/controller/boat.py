@@ -50,10 +50,15 @@ class BoatController(BaseController):
 
         _boatless = deepcopy(_boat_owner)
         _boatless.remove_boat(_boat_to_delete)
-        self.member_registry.remove(_boat_owner)
-        self.member_registry.add(_boatless)
-        self.member_registry.flush()
-        self.view.msg_boat_deletion_success()
+        try:
+            self.member_registry.remove(_boat_owner)
+            self.member_registry.add(_boatless)
+            self.member_registry.flush()
+        except exceptions.JollyPirateModelError as e:
+            self.view.display_msg_failure(str(e))
+            self.view.msg_member_modify_failure()
+        else:
+            self.view.msg_boat_deletion_success()
 
     def register(self):
         self.view.msg_boat_registration_start()
@@ -70,20 +75,58 @@ class BoatController(BaseController):
 
         _members = self.member_registry.getall()
         _candidates = self._members_as_menu_items(_members)
-        _member = self.view.get_selection_from(_candidates)
-        if not _member:
+        _selected_member = self.view.get_selection_from(_candidates)
+        if not _selected_member:
             self.view.msg_boat_registration_failure()
             return
 
-        _boat_owner = deepcopy(_member)
-        _boat_owner.add_boat(_new_boat)
-        self.member_registry.remove(_member)
-        self.member_registry.add(_boat_owner)
-        self.member_registry.flush()
-        self.view.msg_boat_registration_success()
+        # _boat_owner = deepcopy(_selected_member)
+        # _boat_owner.add_boat(_new_boat)
+        # self.member_registry.remove(_selected_member)
+        # self.member_registry.add(_boat_owner)
+        # self.member_registry.flush()
 
-    def update(self):
-        print('TODO: BoatController.register()')
+        _boat_owner = deepcopy(_selected_member)
+        _boat_owner.add_boat(_new_boat)
+        try:
+            self.member_registry.remove(_selected_member)
+            self.member_registry.add(_boat_owner)
+        except exceptions.JollyPirateModelError as e:
+            self.view.msg_boat_registration_failure()
+            return
+        else:
+            self.view.msg_member_modify_success()
+
+    def modify(self):
+        self.view.msg_member_modify_start()
+
+        _members = self.member_registry.getall()
+        _candidates = self._members_as_menu_items(_members)
+        _should_modify = self.view.get_selection_from(_candidates)
+        if not _should_modify:
+            self.view.msg_member_modify_failure()
+            return
+
+        _member = deepcopy(_should_modify)
+        self.populate_model_data(
+            _member, model_field='name_first', field_name='First Name'
+        )
+        self.populate_model_data(
+            _member, model_field='name_last', field_name='Last Name'
+        )
+        self.populate_model_data(
+            _member, model_field='social_sec_number',
+            field_name='Social Security Number'
+        )
+
+        try:
+            self.member_registry.remove(_should_modify)
+            self.member_registry.add(_member)
+        except exceptions.JollyPirateModelError as e:
+            self.view.display_msg_failure(str(e))
+            self.view.msg_member_modify_failure()
+        else:
+            self.view.msg_member_modify_success()
 
     def populate_model_data(self, model_, model_field, field_name):
         _valid = False
