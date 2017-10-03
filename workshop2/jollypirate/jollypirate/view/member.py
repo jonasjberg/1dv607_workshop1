@@ -48,6 +48,7 @@ class MemberView(BaseView):
 
         self.display_msg_heading('Detailed Listing of all Registered Members:')
         print(str(cf))
+        print('\n')
 
     def _list_compact(self, members):
         # name, id, num boats
@@ -60,6 +61,7 @@ class MemberView(BaseView):
 
         self.display_msg_heading('Compact Listing of all Registered Members:')
         print(str(cf))
+        print('\n')
 
     def get_selection_from(self, menu_items):
         while True:
@@ -121,3 +123,24 @@ class MemberView(BaseView):
 
     def msg_member_modify_failure(self):
         self.display_msg_failure('The Member has nott been modified ..')
+
+    def msg_member_info_start(self):
+        self.display_msg_heading('Get information about a specific Member')
+
+    def msg_member_info_success(self):
+        self.display_msg_success('The information was provided!')
+
+    def msg_member_info_failure(self):
+        self.display_msg_failure('Requested information was not provided ..')
+
+    def display_member_info(self, member):
+        cf = ColumnFormatter()
+        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
+        cf.addrow('==========', '=========', '======================', '=========')
+        cf.setalignment('left', 'left', 'right', 'right')
+        cf.addrow(member.name_first, member.name_last,
+                  member.social_sec_number, str(member.id)[1:10])
+
+        self.display_msg_heading('Information on Specified Member:')
+        print(str(cf))
+        print('\n')

@@ -34,8 +34,14 @@ class MemberController(BaseController):
                 self.view.msg_member_deletion_success()
 
     def get_info(self):
-        # TODO: ..
-        print('TODO: MemberController.get_info()')
+        self.view.msg_member_info_start()
+
+        _members = self.member_registry.getall()
+        _candidates = self._members_as_menu_items(_members)
+        _requested_info_for = self.view.get_selection_from(_candidates)
+        if _requested_info_for:
+            self.view.display_member_info(_requested_info_for)
+            self.view.msg_member_info_success()
 
     def register(self):
         self.view.msg_member_registration_start()
