@@ -22,12 +22,12 @@ Workshop 1 --- Domain Modeling
 
 * Version #1 (peer reviewed)
     * [PDF Document](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-1-peer-reviewed.pdf)
-    * [LaTeX Sources (`.zip`)[https://github.com/jonasjberg/1dv607_workshops/archive/workshop1_anon.zip]
+    * [LaTeX Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop1_anon.zip)
 
 * Version #2 (FINAL)
     * [PDF Document](https://github.com/jonasjberg/1dv607_workshops/raw/master/workshop1/release/js224eh_version-2-final.pdf)
-    * [LaTeX Sources (`.zip`)[https://github.com/jonasjberg/1dv607_workshops/archive/workshop1-final-submission.zip]
-    * [LaTeX Sources (`.tar.gz`)[https://github.com/jonasjberg/1dv607_workshops/archive/workshop1-final-submission.tar.gz]
+    * [LaTeX Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop1-final-submission.zip)
+    * [LaTeX Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop1-final-submission.tar.gz)
 
 
 
