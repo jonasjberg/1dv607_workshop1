@@ -7,7 +7,10 @@
 
 import logging
 
-from jollypirate import persistence
+from jollypirate import (
+    exceptions,
+    persistence
+)
 from jollypirate.model import MemberModel
 
 
@@ -34,10 +37,12 @@ class MemberRegistry(object):
 
     def add(self, new_member):
         if not isinstance(new_member, MemberModel):
-            raise TypeError('Expected an instance of "MemberModel"')
+            raise exceptions.JollyPirateModelError(
+                'Expected an instance of "MemberModel"'
+            )
 
         if new_member in self._members:
-            raise ValueError(
+            raise exceptions.JollyPirateModelError(
                 'Member "{!s}" is already in {}'.format(new_member, self)
             )
 

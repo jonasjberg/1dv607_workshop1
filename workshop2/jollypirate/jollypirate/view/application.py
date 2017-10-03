@@ -5,8 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-import logging
-
 from ..controller.event import Events
 from .base import (
     BaseView,
@@ -14,12 +12,9 @@ from .base import (
 )
 
 
-log = logging.getLogger(__name__)
-
-
 class ApplicationView(BaseView):
     def __init__(self):
-        super(ApplicationView).__init__()
+        super().__init__()
 
         self.menuitems_event_map = {
             MenuItem(
@@ -73,10 +68,10 @@ class ApplicationView(BaseView):
                 # Return the event associated with the users choice, if any.
                 for menu_item, event in _menu_items_to_include.items():
                     if choice == menu_item.shortcut:
-                        log.debug('Valid choice: {!s}'.format(choice))
+                        self.log.debug('Valid choice: {!s}'.format(choice))
                         return event
 
-                log.debug('Invalid Selection')
+                self.log.debug('Invalid Selection')
 
     def _map_events_to_menuitem(self, events):
         return {

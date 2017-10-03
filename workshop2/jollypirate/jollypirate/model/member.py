@@ -5,6 +5,7 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+from jollypirate import exceptions
 from .. import util
 from ..util import types
 
@@ -21,11 +22,13 @@ class MemberModel(object):
 
     @name_first.setter
     def name_first(self, new_name):
-        string = types.force_string(new_name)
-        if string.strip():
-            self._name_first = string
+        valid = _to_non_empty_string(new_name)
+        if not valid:
+            raise exceptions.InvalidUserInput(
+                'Expected first name to be a non-empty string'
+            )
         else:
-            raise ValueError('Expected first name to be a non-empty string')
+            self._name_first = valid
 
     @property
     def name_last(self):
@@ -33,24 +36,26 @@ class MemberModel(object):
 
     @name_last.setter
     def name_last(self, new_name):
-        string = types.force_string(new_name)
-        if string.strip():
-            self._name_last = string
+        valid = _to_non_empty_string(new_name)
+        if valid:
+            self._name_last = valid
         else:
-            raise ValueError('Expected last name to be a non-empty string')
+            raise exceptions.InvalidUserInput(
+                'Expected last name to be a non-empty string'
+            )
 
     @property
     def social_security_number(self):
-        return self._social_security_number or ''
+        return self._social_security_number or 1337
 
     @social_security_number.setter
     def social_security_number(self, new_ssn):
-        digits = util.text.extract_digits(new_ssn)
-        if digits.strip():
-            self._social_security_number = digits
+        valid = _to_digits(new_ssn)
+        if valid:
+            self._social_security_number = valid
         else:
-            raise ValueError(
-                'Expected social security number to contain digits'
+            raise exceptions.InvalidUserInput(
+                'Expected social security number to contain at least one digit'
             )
 
     def __hash__(self):
@@ -61,11 +66,10 @@ class MemberModel(object):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        else:
-            return (
-                (self.name_first, self.name_last, self.social_security_number) ==
-                (other.name_first, other.name_last, other.social_security_number)
-            )
+        return (
+            (self.name_first, self.name_last, self.social_security_number) ==
+            (other.name_first, other.name_last, other.social_security_number)
+        )
 
     def __ne__(self, other):
         return not (self == other)
@@ -75,5 +79,17 @@ class MemberModel(object):
         return self.__hash__()
 
 
+def _to_non_empty_string(input_):
+    string = types.force_string(input_)
+    if string.strip():
+        return string
+    return None
 
 
+def _to_digits(input_):
+    string = types.force_string(input_)
+    if string:
+        digits = util.text.extract_digits(string)
+        if digits.strip():
+            return digits
+    return None

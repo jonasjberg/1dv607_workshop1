@@ -4,21 +4,16 @@
 #   Personal site:   http://www.jonasjberg.com
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
-
-import logging
-
+from jollypirate import exceptions
 from .base import (
     BaseView,
     MenuItem
 )
 
 
-log = logging.getLogger(__name__)
-
-
 class MemberView(BaseView):
     def __init__(self):
-        super(MemberView).__init__()
+        super().__init__()
 
         self.menuitem_list_verbosity_map = {
             MenuItem(
@@ -34,7 +29,7 @@ class MemberView(BaseView):
         if callable(choice):
             choice(members)
         else:
-            log.warning('Invalid selection: "{!s}"'.format(choice))
+            self.log.warning('Invalid selection: "{!s}"'.format(choice))
 
     def _list_verbose(self, members):
         print('TODO: view/member._list_verbose()')
@@ -46,7 +41,6 @@ class MemberView(BaseView):
         while True:
             self._print_menu(menu_items.keys())
 
-            # Read input from stdin.
             _choice = input()
             try:
                 # Coerce the input to type str.
@@ -61,10 +55,10 @@ class MemberView(BaseView):
                 # Return the event associated with the users choice, if any.
                 for menu_item, handler in menu_items.items():
                     if choice == menu_item.shortcut:
-                        log.debug('Valid choice: {!s}'.format(choice))
+                        self.log.debug('Valid choice: {!s}'.format(choice))
                         return handler
 
-                log.debug('Invalid Selection')
+                self.log.debug('Invalid Selection')
 
     def _map_events_to_menuitem(self, events):
         return {
@@ -72,3 +66,13 @@ class MemberView(BaseView):
             for menu_item, event in self.menuitem_list_verbosity_map.items()
             if event in events
         }
+
+    def get_member_field(self, field):
+        _prompt = '[{}]:  '.format(field)
+        return input(_prompt)
+
+    def msg_member_registration_start(self):
+        print('')
+        print('Register new Member')
+        print('~~~~~~~~~~~~~~~~~~~')
+        print('')

@@ -8,3 +8,11 @@
 
 class JollyPirateException(Exception):
     """Base exception. All custom exceptions should subclass this."""
+
+
+class InvalidUserInput(JollyPirateException):
+    """Raised by views given invalid data from the user."""
+
+
+class JollyPirateModelError(JollyPirateException):
+    """Raised by models when provided unexpected data."""
