@@ -5,6 +5,8 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+import re
+
 from .. import (
     exceptions,
     util
@@ -12,6 +14,11 @@ from .. import (
 from ..util import types
 from .boat import BoatModel
 from .base import BaseModel
+
+
+# This regex barely manages to validate dates, included for brevity.
+# Insert arbitrarily complex validation of "Lugn Algorithm"-derived SSNs here..
+RE_VALID_SOCIAL_SECURITY_NUMBER = re.compile(r'(19|20)\d{2}(0|1)\d[0-3]\d\d{4}')
 
 
 class MemberModel(BaseModel):
@@ -61,9 +68,14 @@ class MemberModel(BaseModel):
 
     @social_sec_number.setter
     def social_sec_number(self, new_ssn):
-        valid = _to_digits(new_ssn)
-        if valid:
-            self._social_sec_number = valid
+        digits = _to_digits(new_ssn)
+        if digits:
+            if RE_VALID_SOCIAL_SECURITY_NUMBER.match(digits):
+                self._social_sec_number = digits
+            else:
+                raise exceptions.InvalidUserInput(
+                    'Invalid social security number. Expected form: YYMMDD-XXXX'
+                )
         else:
             raise exceptions.InvalidUserInput(
                 'Expected social security number to contain at least one digit'

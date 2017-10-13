@@ -55,7 +55,7 @@ class MemberController(BaseController):
         )
         self.populate_model_data(
             _new_member, model_field='social_sec_number',
-            field_name='Social Security Number'
+            field_name='Social Security Number (YYMMDD-XXXX)'
         )
 
         try:
@@ -83,9 +83,10 @@ class MemberController(BaseController):
         self.populate_model_data(
             _member, model_field='name_last', field_name='Last Name'
         )
+
         self.populate_model_data(
             _member, model_field='social_sec_number',
-            field_name='Social Security Number'
+            field_name='Social Security Number',
         )
 
         try:
