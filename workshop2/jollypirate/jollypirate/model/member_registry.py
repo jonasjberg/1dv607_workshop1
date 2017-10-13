@@ -11,7 +11,7 @@ from .. import (
     exceptions,
     persistence
 )
-from ..persistence.abstract import DataPersistenceError
+from jollypirate.exceptions import DataPersistenceError
 
 
 class MemberRegistry(BaseModel):

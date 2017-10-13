@@ -16,3 +16,12 @@ class InvalidUserInput(JollyPirateException):
 
 class JollyPirateModelError(JollyPirateException):
     """Raised by models when provided unexpected data."""
+
+
+class FilesystemError(JollyPirateException):
+    """Errors occured while reading/writing files on disk. Should be used by
+    the filesystem abstraction layer as a catch-all for failed operations."""
+
+
+class DataPersistenceError(JollyPirateException):
+    """Irrecoverable error while reading or writing data to disk."""

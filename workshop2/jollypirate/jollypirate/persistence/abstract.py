@@ -45,28 +45,24 @@ assert DATA_STORAGE_ABSPATH not in ('', None)
 log = logging.getLogger(__name__)
 
 
-class DataPersistenceError(exceptions.JollyPirateException):
-    """Irrecoverable error while reading or writing data to disk."""
-
-
 class BaseStorage(object):
     """
-    Abstract base class for all file-based cache implementations.
+    Abstract base class for all file-based storage implementations.
 
     Example initialization and storage:
 
-        c = AutonameowCache('mycache')
+        c = BaseStorage('mystorage')
         c.set('mydata', {'a': 1, 'b': 2})
 
-    This will cache the data in memory by storing in a class instance dict,
+    This will storage the data in memory by storing in a class instance dict,
     and also write the data to disk using the path:
 
-        "DATA_STORAGE_ABSPATH/mycache_mydata"
+        "STORAGE_DIR_ABSPATH/mystorage_mydata"
 
     Example retrieval:
 
-        cached_data = c.get('mydata')
-        assert cached_data == {'a': 1, 'b': 2}
+        stored_data = c.get('mydata')
+        assert stored_data == {'a': 1, 'b': 2}
 
     The idea is to keep many smaller files instead of a single shared file
     for possibly easier pruning of old date, file size limits, etc.
@@ -74,47 +70,62 @@ class BaseStorage(object):
     Inheriting class must implement '_load' and '_dump' which does the actual
     serialization and reading/writing to disk.
     """
-    CACHEFILE_PREFIX_SEPARATOR = '_'
+    STORAGEFILE_PREFIX_SEPARATOR = '_'
 
-    def __init__(self, cachefile_prefix):
+    def __init__(self, storagefile_prefix):
         self._data = dict()
 
-        _prefix = types.force_string(cachefile_prefix)
+        _prefix = types.force_string(storagefile_prefix)
         if not _prefix.strip():
             raise ValueError(
-                'Argument "cachefile_prefix" must be a valid string'
+                'Argument "storagefile_prefix" must be a valid string'
             )
-        self.cachefile_prefix = _prefix
+        self.storagefile_prefix = _prefix
 
-        if not os.path.exists(enc.syspath(DATA_STORAGE_ABSPATH)):
-            # TODO: [TD0097] Add proper handling of cache directories.
+        self._dp = enc.displayable_path(JOLLYPIRATE_APPDATA_ABSPATH)
+
+        if not self.has_storagedir():
+            log.debug('Storage directory does not exist: "{!s}"'.format(self._dp))
+
             try:
-                os.makedirs(enc.syspath(JOLLYPIRATE_APPDATA_ABSPATH))
-            except OSError as e:
-                raise DataPersistenceError(
-                    'Error while creating cache directory "{!s}": '
-                    '{!s}'.format(
-                        enc.displayable_path(JOLLYPIRATE_APPDATA_ABSPATH), e
-                    )
+                util.makedirs(JOLLYPIRATE_APPDATA_ABSPATH)
+            except exceptions.FilesystemError as e:
+                raise exceptions.DataPersistenceError(
+                    'Unable to create storage directory "{!s}";'
+                    ' {!s}'.format(self._dp, e)
                 )
-        else:
-            if not util.has_permissions(DATA_STORAGE_ABSPATH, 'rwx'):
-                raise DataPersistenceError(
-                    'Cache directory path requires RWX-permissions: '
-                    '"{!s}'.format(enc.displayable_path(DATA_STORAGE_ABSPATH))
-                )
-        log.debug('{!s} Using _cache_dir "{!s}'.format(
-            self, enc.displayable_path(DATA_STORAGE_ABSPATH))
-        )
+            else:
+                log.info('Created storage directory: "{!s}"'.format(self._dp))
 
-    def _cache_file_abspath(self, key):
+        if not self.has_storagedir_permissions():
+            raise exceptions.DataPersistenceError(
+                'Storage path requires RWX-permissions: "{!s}'.format(self._dp)
+            )
+        log.debug('{!s} Using storage path "{!s}'.format(self, self._dp))
+
+    @staticmethod
+    def has_storagedir_permissions():
+        try:
+            return util.has_permissions(JOLLYPIRATE_APPDATA_ABSPATH, 'rwx')
+        except (TypeError, ValueError):
+            return False
+
+    @staticmethod
+    def has_storagedir():
+        _path = enc.syspath(JOLLYPIRATE_APPDATA_ABSPATH)
+        try:
+            return bool(os.path.exists(_path) and os.path.isdir(_path))
+        except (OSError, ValueError, TypeError):
+            return False
+
+    def _storage_file_abspath(self, key):
         string_key = types.force_string(key)
         if not string_key.strip():
             raise KeyError('Invalid key: "{!s}" ({!s})'.format(key, type(key)))
 
         _basename = '{pre}{sep}{key}'.format(
-            pre=self.cachefile_prefix,
-            sep=self.CACHEFILE_PREFIX_SEPARATOR,
+            pre=self.storagefile_prefix,
+            sep=self.STORAGEFILE_PREFIX_SEPARATOR,
             key=key
         )
         _p = enc.normpath(
@@ -125,70 +136,78 @@ class BaseStorage(object):
 
     def get(self, key):
         """
-        Returns data from the cache.
+        Returns data from the persistent data store.
 
         Args:
             key (str): The key of the data to retrieve.
-                       Postfix of the cache file that is written to disk.
+                       Postfix of the storage file that is written to disk.
 
         Returns:
-            Any cached data stored with the given key, as any serializable type.
+            Any stored data stored with the given key, as any serializable type.
         Raises:
             KeyError: The given 'key' is not a valid non-empty string,
-                      or the key is not found in the cached data.
-            CacheError: Failed to read cached data for some reason;
-                        data corruption, encoding errors, missing files, etc..
+                      or the key is not found in the persistent data.
+            DataPersistenceError: Failed to read persistent data due to data
+                                  corruption, encoding errors, missing files, ..
         """
         if not key:
             raise KeyError
 
         if key not in self._data:
-            _file_path = self._cache_file_abspath(key)
-            _dp = enc.displayable_path(_file_path)
+            _file_path = self._storage_file_abspath(key)
+            if not os.path.exists(enc.syspath(_file_path)):
+                # Avoid displaying errors on first use.
+                raise KeyError
+
             try:
                 value = self._load(_file_path)
                 self._data[key] = value
             except ValueError as e:
+                _dp = enc.displayable_path(_file_path)
                 log.error(
-                    'Error when reading key "{!s}" from cache file "{!s}" '
+                    'Error when reading key "{!s}" from storage file "{!s}" '
                     '(corrupt file?); {!s}'.format(key, _dp, e)
                 )
                 self.delete(key)
             except OSError as e:
+                _dp = enc.displayable_path(_file_path)
                 log.debug(
-                    'Error while trying to read key "{!s}" from cache file '
+                    'Error while trying to read key "{!s}" from storage file '
                     '"{!s}"; {!s}'.format(key, _dp, e)
                 )
                 raise KeyError
             except Exception as e:
-                raise DataPersistenceError('Error while reading cache; {!s}'.format(e))
+                raise exceptions.DataPersistenceError(
+                    'Error while reading storage; {!s}'.format(e)
+                )
 
         return self._data.get(key)
 
     def set(self, key, value):
         """
-        Stores data in the cache.
+        Stores data in the persistent data store.
 
         Args:
             key (str): The key to store the data under.
-                       Postfix of the cache file that is written to disk.
+                       Postfix of the storage file that is written to disk.
             value: The data to store, as any serializable type.
         """
         self._data[key] = value
 
-        _file_path = self._cache_file_abspath(key)
-        _dp = enc.displayable_path(_file_path)
+        _file_path = self._storage_file_abspath(key)
         try:
             self._dump(value, _file_path)
         except OSError as e:
+            _dp = enc.displayable_path(_file_path)
             log.error(
                 'Error while trying to write key "{!s}" with value "{!s}" to '
-                'cache file "{!s}"; {!s}'.format(key, value, _dp, e)
+                'storage file "{!s}"; {!s}'.format(key, value, _dp, e)
             )
         else:
+            _dp = enc.displayable_path(_file_path)
             log.debug(
                 'Wrote key "{!s}" with value "{!s}" to '
-                'cache file "{!s}"'.format(key, value, _dp)
+                'storage file "{!s}"'.format(key, value, _dp)
             )
 
     def delete(self, key):
@@ -197,13 +216,13 @@ class BaseStorage(object):
         except KeyError:
             pass
 
-        _dp = enc.displayable_path(self._cache_file_abspath(key))
+        _p = self._storage_file_abspath(key)
+        _dp = enc.displayable_path(_p)
+        log.debug('Deleting file "{!s}"'.format(_dp))
         try:
-            log.critical('would have deleted "{!s}"'.format(_dp))
-            # TODO: [TD0097] Double-check this and actually delete the file ..
-            pass
+            util.delete(_p, ignore_missing=True)
         except OSError as e:
-            raise DataPersistenceError(
+            raise exceptions.DataPersistenceError(
                 'Error when trying to delete "{!s}"; {!s}'.format(_dp, e)
             )
 
@@ -212,7 +231,7 @@ class BaseStorage(object):
         if key in self._data:
             return True
 
-        _file_path = self._cache_file_abspath(key)
+        _file_path = self._storage_file_abspath(key)
         try:
             os.path.exists(_file_path)
         except OSError:
