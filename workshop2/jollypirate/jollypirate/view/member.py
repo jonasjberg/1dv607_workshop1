@@ -75,16 +75,10 @@ class MemberView(BaseView):
         while True:
             self.display_menu(menu_items.keys())
 
-            _choice = input()
-            try:
-                # Coerce the input to type str.
-                choice = str(_choice)
-            except (ValueError, TypeError):
-                # Silently ignore failed coercion.
-                pass
-            else:
+            _choice = self.get_user_input()
+            if _choice:
                 # Make lower case and strip any leading/trailing whitespace.
-                choice = choice.lower().strip()
+                choice = _choice.lower().strip()
 
                 # Return the event associated with the users choice, if any.
                 for menu_item, handler in menu_items.items():

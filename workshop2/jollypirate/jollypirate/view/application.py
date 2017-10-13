@@ -5,11 +5,12 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from ..controller.event import Events
+from .. import exceptions
 from .base import (
     BaseView,
     MenuItem
 )
+from ..controller.event import Events
 
 
 class ApplicationView(BaseView):
@@ -55,18 +56,19 @@ class ApplicationView(BaseView):
 
             # Read input from stdin.
             try:
-                _choice = input('Select: ')
-            except UnicodeDecodeError:
+                _choice = self.get_user_input()
+            except exceptions.InvalidUserInput:
                 continue
+
             try:
                 # Coerce the input to type str.
-                choice = str(_choice)
-            except (ValueError, TypeError):
-                # Silently ignore failed coercion.
-                pass
+                choice = self.force_non_empty_string(_choice)
+            except exceptions.InvalidUserInput as e:
+                # Silently ignore failed coercion, include only in debug log.
+                self.log.debug(str(e))
             else:
-                # Make lower case and strip any leading/trailing whitespace.
-                choice = choice.lower().strip()
+                # Transform string to lower-case.
+                choice = choice.lower()
 
                 # Return the event associated with the users choice, if any.
                 for menu_item, event in _menu_items_to_include.items():

@@ -56,10 +56,10 @@ class BaseView(object):
         _prefix = cli.colorize('[SUCCESS]', fore='GREEN')
         print('{!s} {!s}'.format(_prefix, message))
 
-    @staticmethod
-    def should_abort():
+    @classmethod
+    def should_abort(cls):
         while True:
-            _raw_input = input('Abort? (y/[N])  ')
+            _raw_input = cls.get_user_input(message='Abort? (y/[N])  ')
             string = types.force_string(_raw_input)
             if string:
                 string = string.lower().strip()
@@ -70,24 +70,41 @@ class BaseView(object):
             else:
                 return False
 
-    @staticmethod
-    def get_non_empty_string():
-        # Read input from stdin.
-        _raw_input = input()
-
+    @classmethod
+    def force_non_empty_string(cls, raw_input):
         # Coerce to the 'str' type. Failed coercion returns an empty string.
-        string = types.force_string(_raw_input)
+        string = types.force_string(raw_input)
         if string.strip():
+            # Strip any leading/trailing whitespace.
             return string.strip()
         else:
-            raise exceptions.JollyPirateModelError(
-                'Expected non-empty, not only whitespace string'
+            raise exceptions.InvalidUserInput(
+                'Expected non-empty and not only whitespace string. '
+                'Got "{!s}"'.format(string)
             )
+
+    @classmethod
+    def get_user_input(cls, message=None):
+        if not message:
+            message = 'INPUT: '
+
+        # Read input from stdin.
+        try:
+            return input(message)
+        except Exception:
+            raise exceptions.InvalidUserInput
 
     def __str__(self):
         return self.__class__.__name__
 
-    def get_field_data(self, field):
-        _prompt = '[{}]:  '.format(field)
-        return input(_prompt)
+    @classmethod
+    def get_field_data(cls, field, should_choose_one_of=None):
+        if should_choose_one_of:
+            # Include comma-separated elements in 'should_choose_one_of'.
+            alternatives = ', '.join(str(a) for a in should_choose_one_of)
+            _prompt_message = '[{}] ({}):  '.format(field, alternatives)
+        else:
+            _prompt_message = '[{}]:  '.format(field)
+
+        return cls.get_user_input(_prompt_message)
 
