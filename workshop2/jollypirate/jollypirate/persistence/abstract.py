@@ -32,7 +32,7 @@ from ..util import types
 
 
 # Absolute path to persistent storage.
-JOLLYPIRATE_APPDATA_ABSPATH = os.path.normpath(
+JOLLYPIRATE_APPDATA_ABSPATH = enc.normpath(
     os.path.realpath(os.path.join(constants.PROJECT_ROOT_ABSPATH,
                                   'appdata'))
 )
