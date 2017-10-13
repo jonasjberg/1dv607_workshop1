@@ -53,19 +53,6 @@ class BaseController(object):
             out[_key] = member
         return out
 
-    def populate_model_data(self, model_, model_field, field_name):
-        _valid = False
-        while not _valid:
-            _user_input = self.view.get_field_data(field_name)
-            try:
-                setattr(model_, model_field, _user_input)
-            except exceptions.InvalidUserInput as e:
-                self.view.display_msg_failure(e)
-                if self.view.should_abort():
-                    return
-            else:
-                _valid = True
-
     @staticmethod
     def int_to_char(number):
         _num_chars = len(INT_CHAR_LOOKUP)
