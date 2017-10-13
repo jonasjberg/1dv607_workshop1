@@ -45,6 +45,24 @@ class BaseController(object):
     def view(self, new_view):
         self._view = new_view
 
+    def populate_model_data(self, model_, model_field, field_name,
+                            valid_choices=None):
+        _valid = False
+        while not _valid:
+            _user_input = self.view.get_field_data(field_name, valid_choices)
+            # if valid_choices and _user_input not in valid_choices:
+            #     continue
+
+            try:
+                setattr(model_, model_field, _user_input)
+            except (exceptions.InvalidUserInput,
+                    exceptions.JollyPirateModelError) as e:
+                self.view.display_msg_failure(e)
+                if self.view.should_abort():
+                    return
+            else:
+                _valid = True
+
     def _members_as_menu_items(self, members):
         out = {}
         for i, member in enumerate(members):
