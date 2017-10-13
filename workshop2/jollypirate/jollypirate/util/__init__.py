@@ -9,3 +9,4 @@ from .disk import (
     has_permissions,
     makedirs
 )
+from . import text

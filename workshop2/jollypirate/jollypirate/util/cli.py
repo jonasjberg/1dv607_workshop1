@@ -20,17 +20,11 @@
 #   You should have received a copy of the GNU General Public License
 #   along with autonameow.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
-
 try:
     import colorama
     colorama.init()
 except ImportError:
     colorama = None
-
-
-from . import sanity
-from . import types
 
 
 CLI_MSG_HEADING_CHAR = '~'
@@ -89,55 +83,7 @@ def colorize(text, fore=None, back=None, style=None):
     return ''.join(buffer)
 
 
-def colorize_re_match(text, regex, color=None):
-    sanity.check_isinstance(regex, types.BUILTIN_REGEX_TYPE)
-
-    if color is not None:
-        _color = color
-    else:
-        _color = 'LIGHTGREEN_EX'
-
-    replacements = []
-    match_iter = regex.findall(text)
-    for match in match_iter:
-        replacements.append((match, colorize(match, fore=_color)))
-
-    out = ''
-    for old, new in replacements:
-        # Find position of the first match:  text = a "B" b "B"
-        #                                              ^
-        # Work on a bit at a time to avoid replacing the same match.
-        # Store from start to the first match + 1 (catch ") in 'temp_text'.
-        #
-        #          text = 'a "B" b "B"'
-        #                     ^
-        #     temp_text = 'a "B"'
-        #
-        # Do replacement in temp_text, append to 'out'. Continue to work
-        # on the rest of the text:  text = ' b "B"'
-        old_pos = text.find(old)
-        strip_to = old_pos + len(old) + 1
-        temp_text = text[:strip_to]
-
-        temp_text = temp_text.replace(old, new, 1)
-        out = out + temp_text
-
-        text = text[strip_to:]
-
-    if text:
-        out = out + text
-
-    return out
-
-
-RE_ANYTHING_QUOTED = re.compile(r'"([^"]*)"')
-
-
-def colorize_quoted(text, color=None):
-    return colorize_re_match(text, RE_ANYTHING_QUOTED, color)
-
-
-def msg(message, style=None, ignore_quiet=False):
+def msg(message, style=None):
     """
     Displays a message to the user using preset formatting options.
 
@@ -170,9 +116,6 @@ def msg(message, style=None, ignore_quiet=False):
         print(_colored_heading_text)
         print(_colored_heading_underline)
 
-    elif style == 'color_quoted':
-        print(colorize_quoted(message))
-
     else:
         print_default_msg(message)
 
@@ -201,13 +144,14 @@ class ColumnFormatter(object):
                                                         1337  4E4F4F42
     """
     COLUMN_PADDING = 2
+    PADDING_CHAR = ' '
     ALIGNMENT_STRINGS = {
         'left': 'ljust',
         'right': 'rjust'
     }
 
     def __init__(self, align='left'):
-        self._columns = 0
+        self._column_count = 0
         self._data = []
         self._column_widths = []
         self._default_align = self.ALIGNMENT_STRINGS.get(align, 'ljust')
@@ -239,12 +183,12 @@ class ColumnFormatter(object):
 
     @property
     def number_columns(self):
-        return self._columns
+        return self._column_count
 
     def _update_number_columns(self, strings):
         count = len(strings)
-        if count > self._columns:
-            self._columns = count
+        if count > self._column_count:
+            self._column_count = count
 
     def addrow(self, *args):
         maybe_strings = list(args)
@@ -254,6 +198,9 @@ class ColumnFormatter(object):
         self._update_number_columns(strings)
         self._update_column_widths(strings)
         self._data.append(strings)
+
+    def addemptyrow(self):
+        self.addrow(' ')
 
     def _update_column_widths(self, strings):
         # strings = [textutils.strip_ansiescape(s) for s in strings]
@@ -289,7 +236,7 @@ class ColumnFormatter(object):
 
     def max_column_width(self):
         max_width = ((self.number_columns * self.COLUMN_PADDING)
-                     + sum(self.column_widths))
+                     + sum(self.column_widths) - self.COLUMN_PADDING)
         return max_width
 
     @staticmethod
@@ -315,13 +262,18 @@ class ColumnFormatter(object):
         if not self._data:
             return ''
 
-        out = []
+        padding = self.PADDING_CHAR * self.COLUMN_PADDING
+
+        lines = []
         for row in self._data:
-            out.append(
-                "".join(getattr(word, align)(width + self.COLUMN_PADDING)
-                        for word, width, align in zip(row, self._column_widths, self.alignment))
+            lines.append(
+                padding.join(
+                    getattr(word, align)(width)
+                    for word, width, align in zip(
+                        row, self._column_widths,
+                        self.alignment
+                    )
+                )
             )
 
-        return '\n'.join(s.rstrip() for s in out if s.strip())
-
-
+        return '\n'.join(l.rstrip() for l in lines)

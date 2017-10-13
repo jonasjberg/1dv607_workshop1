@@ -34,14 +34,7 @@ types --- they are shared and should not retain any kind of state.
 import os
 import re
 
-from datetime import datetime
-
-from . import (
-    encoding,
-    sanity,
-    text
-)
-from .. import constants as C
+from . import encoding
 
 
 class AWTypeError(Exception):
@@ -380,12 +373,6 @@ class Float(BaseType):
 
 class String(BaseType):
     COERCIBLE_TYPES = (str, bytes, int, float, bool)
-    try:
-        from PyPDF2.generic import TextStringObject
-        COERCIBLE_TYPES = COERCIBLE_TYPES + (TextStringObject,)
-    except ImportError:
-        pass
-
     EQUIVALENT_TYPES = (str, )
     NULL = ''
 
@@ -411,234 +398,6 @@ class String(BaseType):
     def format(self, value, **kwargs):
         value = self.__call__(value)
         return value
-
-
-class Date(BaseType):
-    COERCIBLE_TYPES = (str, bytes, int, float)
-    EQUIVALENT_TYPES = (datetime, )
-
-    # Make sure to never return "null" -- raise a 'AWTypeError' exception.
-    NULL = 'INVALID DATE'
-
-    # TODO: [TD0054] Represent datetime as UTC within autonameow.
-
-    # Override parent 'null' method to force returning only valid 'datetime'
-    # instances. Otherwise, raise an exception to be handled by the caller.
-    def null(self):
-        raise AWTypeError(
-            '"{!r}" got incoercible data'.format(self)
-        )
-
-    def coerce(self, value):
-        try:
-            string_value = STRING(value)
-        except AWTypeError as e:
-            self._fail_coercion(value, msg=e)
-        else:
-            try:
-                return try_parse_date(string_value)
-            except ValueError as e:
-                self._fail_coercion(value, msg=e)
-
-    def normalize(self, value):
-        value = self.__call__(value)
-        if isinstance(value, datetime):
-            return value.replace(microsecond=0)
-
-        self._fail_normalization(value)
-
-    def format(self, value, **kwargs):
-        value = self.__call__(value)
-
-        format_string = kwargs.get('format_string')
-        if format_string is None:
-            format_string = C.DEFAULT_DATETIME_FORMAT_DATE
-            if not isinstance(format_string, str):
-                raise AWTypeError('Expected "format_string" to be Unicode str')
-
-            try:
-                return datetime.strftime(value, format_string)
-            except TypeError:
-                pass
-
-        raise AWTypeError(
-            'Invalid "format_string": "{!s}"'.format(format_string)
-        )
-
-
-class TimeDate(BaseType):
-    COERCIBLE_TYPES = (str, bytes, int, float)
-    EQUIVALENT_TYPES = (datetime, )
-
-    # Make sure to never return "null" -- raise a 'AWTypeError' exception.
-    NULL = 'INVALID DATE'
-
-    # TODO: [TD0054] Represent datetime as UTC within autonameow.
-
-    # Override parent 'null' method to force returning only valid 'datetime'
-    # instances. Otherwise, raise an exception to be handled by the caller.
-    def null(self):
-        raise AWTypeError(
-            '"{!r}" got incoercible data'.format(self)
-        )
-
-    def coerce(self, value):
-        try:
-            return try_parse_datetime(value)
-        except (TypeError, ValueError) as e:
-            self._fail_coercion(value, msg=e)
-
-    def normalize(self, value):
-        value = self.__call__(value)
-        if isinstance(value, datetime):
-            return value.replace(microsecond=0)
-
-        self._fail_normalization(value)
-
-    def format(self, value, **kwargs):
-        value = self.__call__(value)
-
-        format_string = kwargs.get('format_string')
-        if format_string is None:
-            format_string = C.DEFAULT_DATETIME_FORMAT_DATETIME
-            if not isinstance(format_string, str):
-                raise AWTypeError('Expected "format_string" to be Unicode str')
-
-            try:
-                return datetime.strftime(value, format_string)
-            except TypeError:
-                pass
-
-        raise AWTypeError(
-            'Invalid "format_string": "{!s}"'.format(format_string)
-        )
-
-
-_pat_loose_date = '{year}{sep}{month}{sep}{day}'.format(
-    year=r'(\d{4})', month=r'(\d{2})', day=r'(\d{2})', sep=r'[:_ \-]?'
-)
-_pat_loose_time = '{hour}{sep}{minute}{sep}{second}'.format(
-    hour=r'(\d{2})', minute=r'(\d{2})', second=r'(\d{2})', sep=r'[:_ \-]?'
-)
-_pat_datetime_sep = r'[:_ tT\-]?'
-_pat_timezone = r'([-+])?(\d{2}).?(\d{2})'
-_pat_microseconds = r'[\._ ]?(\d{6})'
-
-RE_LOOSE_TIME = re.compile(_pat_loose_time)
-RE_LOOSE_DATE = re.compile(_pat_loose_date)
-RE_LOOSE_DATETIME = re.compile(
-    _pat_loose_date + _pat_datetime_sep + _pat_loose_time
-)
-RE_LOOSE_DATETIME_TZ = re.compile(
-    _pat_loose_date + _pat_datetime_sep + _pat_loose_time + _pat_timezone
-)
-RE_LOOSE_DATETIME_US = re.compile(
-    _pat_loose_date + _pat_datetime_sep + _pat_loose_time + _pat_microseconds
-)
-
-
-def normalize_date(string):
-    match = RE_LOOSE_DATE.search(string)
-    if match:
-        _normalized = re.sub(RE_LOOSE_DATE, r'\1-\2-\3', string)
-        return _normalized
-    return None
-
-
-def normalize_datetime_with_timezone(string):
-    match = RE_LOOSE_DATETIME_TZ.search(string)
-    if match:
-        _normalized = re.sub(RE_LOOSE_DATETIME_TZ,
-                             r'\1-\2-\3T\4:\5:\6 \7\8\9',
-                             string)
-        return _normalized.replace(' ', '')
-    return None
-
-
-def normalize_datetime(string):
-    match = RE_LOOSE_DATETIME.search(string)
-    if match:
-        _normalized = re.sub(RE_LOOSE_DATETIME, r'\1-\2-\3T\4:\5:\6', string)
-        return _normalized.replace(' ', '')
-    return None
-
-
-def normalize_datetime_with_microseconds(string):
-    match = RE_LOOSE_DATETIME_US.search(string)
-    if match:
-        _normalized = re.sub(RE_LOOSE_DATETIME_US, r'\1-\2-\3T\4:\5:\6.\7',
-                             string)
-        return _normalized
-    return None
-
-
-def try_parse_datetime(string):
-    _error_msg = 'Unable to parse datetime: "{!s}" ({})'.format(string,
-                                                                type(string))
-
-    if not string:
-        raise ValueError(_error_msg)
-    if not isinstance(string, str):
-        raise ValueError(_error_msg)
-
-    # Handles malformed dates produced by "Mac OS X 10.11.5 Quartz PDFContext".
-    if string.endswith('Z'):
-        string = string[:-1]
-
-    match = normalize_datetime_with_timezone(string)
-    if match:
-        try:
-            return datetime.strptime(match, '%Y-%m-%dT%H:%M:%S%z')
-        except (ValueError, TypeError):
-            pass
-
-    match = normalize_datetime_with_microseconds(string)
-    if match:
-        try:
-            return datetime.strptime(match, '%Y-%m-%dT%H:%M:%S.%f')
-        except (ValueError, TypeError):
-            pass
-
-    match = normalize_datetime(string)
-    if match:
-        try:
-            return datetime.strptime(match, '%Y-%m-%dT%H:%M:%S')
-        except (ValueError, TypeError):
-            pass
-
-    raise ValueError(_error_msg)
-
-
-def try_parse_date(string):
-    _error_msg = 'Unable to parse date: "{!s}" ({})'.format(string,
-                                                            type(string))
-
-    if not string:
-        raise ValueError(_error_msg)
-    if not isinstance(string, str):
-        raise ValueError(_error_msg)
-
-    match = normalize_date(string)
-    if match:
-        try:
-            return datetime.strptime(match, '%Y-%m-%d')
-        except (ValueError, TypeError):
-            pass
-
-    # Alternative, bruteforce method. Extract digits.
-    # Assumes year, month, day is in ISO-date-like order.
-    digits = text.extract_digits(string)
-    if digits:
-        sanity.check_internal_string(digits)
-
-        date_formats = ['%Y%m%d', '%Y%m', '%Y']
-        for date_format in date_formats:
-            try:
-                return datetime.strptime(digits, date_format)
-            except (ValueError, TypeError):
-                pass
-
-    raise ValueError(_error_msg)
 
 
 def try_coerce(value):
@@ -677,13 +436,11 @@ def force_integer(raw_value):
 
 # Singletons for actual use.
 BOOLEAN = Boolean()
-DATE = Date()
 PATH = Path()
 PATHCOMPONENT = PathComponent()
 INTEGER = Integer()
 FLOAT = Float()
 STRING = String()
-TIMEDATE = TimeDate()
 
 
 # This is not clearly defined otherwise.
@@ -695,7 +452,6 @@ BUILTIN_REGEX_TYPE = type(re.compile(''))
 #       want to do path coercion with one the custom types ..
 PRIMITIVE_CUSTOMTYPE_MAP = {
     bool: BOOLEAN,
-    datetime: TIMEDATE,
     int: INTEGER,
     float: FLOAT,
     str: STRING,
