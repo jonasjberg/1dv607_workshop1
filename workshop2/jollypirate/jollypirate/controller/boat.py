@@ -67,7 +67,8 @@ class BoatController(BaseController):
 
         # Data validation is handled in the model.
         self.populate_model_data(
-            _new_boat, model_field='type_', field_name='Boat Type'
+            _new_boat, model_field='type_', field_name='Boat Type',
+            should_choose_one_of=self.model.BOAT_TYPES.all()
         )
         self.populate_model_data(
             _new_boat, model_field='length', field_name='Length'
