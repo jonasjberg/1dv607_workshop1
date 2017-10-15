@@ -9,4 +9,6 @@
 
 set -o nounset -o pipefail
 
+(
 ./build/jollypirate_linux
+)
