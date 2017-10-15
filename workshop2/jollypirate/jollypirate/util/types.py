@@ -443,10 +443,6 @@ FLOAT = Float()
 STRING = String()
 
 
-# This is not clearly defined otherwise.
-BUILTIN_REGEX_TYPE = type(re.compile(''))
-
-
 # NOTE: Wrapping paths (potentially bytes) with this automatic type
 #       detection would coerce them to Unicode strings when we actually
 #       want to do path coercion with one the custom types ..

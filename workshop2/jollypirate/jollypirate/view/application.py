@@ -5,7 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .. import exceptions
 from .base import (
     BaseView,
     MenuItem
