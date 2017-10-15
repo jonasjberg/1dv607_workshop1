@@ -33,8 +33,6 @@ class MemberView(BaseView):
             self.log.warning('Invalid selection: "{!s}"'.format(lister))
 
     def _list_verbose(self, members):
-        print('Boats owned by members are inserted in the table in a '
-              '_somewhat_ non-obvious way because command-line interfaces.')
         cf = cli.ColumnFormatter()
         cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
         cf.addrow(*['=' * width for width in cf.column_widths])
@@ -47,12 +45,15 @@ class MemberView(BaseView):
 
             _boats = m.boats
             if _boats:
-                cf.addrow(*['.' * width for width in cf.column_widths])
-                cf.addrow(':', 'Boat Type', 'Boat Length', ':')
-                cf.addrow(':', '=========', '===========', ':')
+                cf.addemptyrow()
+
+                cf.addrow(None, 'Boat Type', 'Boat Length', None)
+                cf.addrow(None, '=========', '===========', None)
                 for b in _boats:
-                    cf.addrow(':', b.type_, str(b.length), '.')
-                cf.addrow(*[':' * width for width in cf.column_widths])
+                    cf.addrow(None, b.type_, str(b.length), None)
+
+                cf.addrow(*['_' * width for width in cf.column_widths])
+                cf.addemptyrow()
 
         self.display_msg_heading('Detailed Listing of all Registered Members:')
         print(str(cf))
