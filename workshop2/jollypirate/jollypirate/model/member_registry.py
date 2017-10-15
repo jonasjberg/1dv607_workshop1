@@ -11,7 +11,6 @@ from .. import (
     exceptions,
     persistence
 )
-from jollypirate.exceptions import DataPersistenceError
 
 
 # Keep a shared registry instance across the application instance.
@@ -27,7 +26,7 @@ class MemberRegistry(BaseModel):
         self._members = set()
         try:
             self._persistence = persistence.get_implementation(self.STORAGE_KEY)
-        except DataPersistenceError as e:
+        except exceptions.DataPersistenceError as e:
             raise exceptions.JollyPirateException(e)
 
         try:
