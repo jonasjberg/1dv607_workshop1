@@ -11,5 +11,5 @@ REM TODO: Verify that this is working!
 
 SET self_path=%~dp0
 pushd %self_path%
-python jollypirate
+python3 jollypirate
 popd
