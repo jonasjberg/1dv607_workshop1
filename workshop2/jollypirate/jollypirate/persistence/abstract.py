@@ -130,10 +130,9 @@ class BaseStorage(object):
             sep=self.STORAGEFILE_PREFIX_SEPARATOR,
             key=key
         )
-        _p = enc.normpath(
-            os.path.join(enc.syspath(DATA_STORAGE_ABSPATH),
-                         enc.syspath(enc.encode_(_basename)))
-        )
+        _basename = enc.encode_(_basename)
+
+        _p = enc.normpath(os.path.join(DATA_STORAGE_ABSPATH, _basename))
         return _p
 
     def get(self, key):
