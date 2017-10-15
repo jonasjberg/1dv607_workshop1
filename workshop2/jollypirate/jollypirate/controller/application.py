@@ -49,7 +49,8 @@ class ApplicationController(BaseController):
 
     def infinite_loop(self):
         while True:
-            choice = self.view.get_selection_from(self.event_handlers.keys())
+            _choices = self.event_handlers.keys()
+            choice = self.view.get_main_menu_selection_from(_choices)
             self.log.debug('User entered "{!s}"'.format(choice))
 
             event_func = None

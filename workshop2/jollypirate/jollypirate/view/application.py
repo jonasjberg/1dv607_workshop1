@@ -47,38 +47,12 @@ class ApplicationView(BaseView):
             ): Events.MEMBER_LISTALL,
         }
 
-    def get_selection_from(self, events):
-        # Get menu items that are mapped to an event in argument "events".
-        _menu_items_to_include = self._map_events_to_menuitem(events)
-
-        while True:
-            self.display_menu(_menu_items_to_include.keys())
-
-            # Read input from stdin.
-            try:
-                _choice = self.get_user_input()
-            except exceptions.InvalidUserInput:
-                continue
-
-            try:
-                # Coerce the input to type str.
-                choice = self.force_non_empty_string(_choice)
-            except exceptions.InvalidUserInput as e:
-                # Silently ignore failed coercion, include only in debug log.
-                self.log.debug(str(e))
-            else:
-                # Transform string to lower-case.
-                choice = choice.lower()
-
-                # Return the event associated with the users choice, if any.
-                for menu_item, event in _menu_items_to_include.items():
-                    if choice == menu_item.shortcut:
-                        self.log.debug('Valid choice: {!s}'.format(choice))
-                        return event
-
-            self.log.debug('Invalid Selection')
+    def get_main_menu_selection_from(self, events):
+        _menu_items = self._map_events_to_menuitem(events)
+        return self.get_selection_from(_menu_items)
 
     def _map_events_to_menuitem(self, events):
+        # Get menu items that are mapped to an event in argument "events".
         return {
             menu_item: event
             for menu_item, event in self.menuitems_event_map.items()

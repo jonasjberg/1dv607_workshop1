@@ -74,23 +74,6 @@ class MemberView(BaseView):
         print(str(cf))
         print('\n')
 
-    def get_selection_from(self, menu_items):
-        while True:
-            self.display_menu(menu_items.keys())
-
-            _choice = self.get_user_input()
-            if _choice:
-                # Make lower case and strip any leading/trailing whitespace.
-                choice = _choice.lower().strip()
-
-                # Return the event associated with the users choice, if any.
-                for menu_item, handler in menu_items.items():
-                    if choice == menu_item.shortcut:
-                        self.log.debug('Valid choice: {!s}'.format(choice))
-                        return handler
-
-            self.log.debug('Invalid Selection')
-
     def _map_events_to_menuitem(self, events):
         return {
             menu_item: event

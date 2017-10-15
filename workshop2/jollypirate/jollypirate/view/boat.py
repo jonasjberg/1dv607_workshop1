@@ -12,29 +12,6 @@ class BoatView(BaseView):
     def __init__(self):
         super().__init__()
 
-    def get_selection_from(self, menu_items):
-        while True:
-            self.display_menu(menu_items.keys())
-
-            _choice = input()
-            try:
-                # Coerce the input to type str.
-                choice = str(_choice)
-            except (ValueError, TypeError):
-                # Silently ignore failed coercion.
-                pass
-            else:
-                # Make lower case and strip any leading/trailing whitespace.
-                choice = choice.lower().strip()
-
-                # Return the event associated with the users choice, if any.
-                for menu_item, handler in menu_items.items():
-                    if choice == menu_item.shortcut:
-                        self.log.debug('Valid choice: {!s}'.format(choice))
-                        return handler
-
-            self.log.debug('Invalid Selection')
-
     def msg_boat_registration_start(self):
         self.display_msg_heading('Register a new Boat')
 

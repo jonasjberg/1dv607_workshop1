@@ -31,8 +31,8 @@ class BoatController(BaseController):
             self.view.msg_boat_deletion_failure()
             return
 
-        _candidates = self._boats_as_menu_items(_boats)
-        _boat_to_delete = self.view.get_selection_from(_candidates)
+        _menu_items = self._boats_as_menu_items(_boats)
+        _boat_to_delete = self.view.get_selection_from(_menu_items)
         if not _boat_to_delete:
             self.view.msg_boat_deletion_failure()
             return
@@ -69,8 +69,8 @@ class BoatController(BaseController):
         )
 
         _members = self.member_registry.getall()
-        _candidates = self._members_as_menu_items(_members)
-        _selected_member = self.view.get_selection_from(_candidates)
+        _menu_items = self._members_as_menu_items(_members)
+        _selected_member = self.view.get_selection_from(_menu_items)
         if not _selected_member:
             self.view.msg_boat_registration_failure()
             return
@@ -99,8 +99,8 @@ class BoatController(BaseController):
             self.view.msg_boat_modify_failure()
             return
 
-        _candidates = self._boats_as_menu_items(_boats)
-        _boat_to_modify = self.view.get_selection_from(_candidates)
+        _menu_items = self._boats_as_menu_items(_boats)
+        _boat_to_modify = self.view.get_selection_from(_menu_items)
         if not _boat_to_modify:
             self.view.msg_boat_modify_failure()
             return

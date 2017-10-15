@@ -108,3 +108,28 @@ class BaseView(object):
 
         return cls.get_user_input(_prompt_message)
 
+    def get_selection_from(self, menu_items):
+        while True:
+            self.display_menu(menu_items.keys())
+
+            _choice = self.get_user_input()
+            if _choice:
+                try:
+                    # Coerce the input to type str.
+                    choice = self.force_non_empty_string(_choice)
+                except exceptions.InvalidUserInput as e:
+                    # Silently ignore failed coercion, include in debug log.
+                    self.log.debug(str(e))
+                    continue
+
+                # Transform string to lower-case.
+                choice = choice.lower()
+
+                # Return the event associated with the users choice, if any.
+                for menu_item, handler in menu_items.items():
+                    if choice == menu_item.shortcut:
+                        self.log.debug('Valid choice: {!s}'.format(choice))
+                        return handler
+
+            self.log.debug('Invalid Selection')
+
