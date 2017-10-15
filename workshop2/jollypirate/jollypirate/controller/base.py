@@ -9,7 +9,7 @@ import logging
 import string
 
 from .. import exceptions
-from ..model import MemberRegistry
+from ..model import member_registry
 from ..view import MenuItem
 
 
@@ -27,7 +27,7 @@ class BaseController(object):
         self.model = model
         self.view = view
 
-        self.member_registry = MemberRegistry()
+        self.member_registry = member_registry.singleton()
 
     @property
     def model(self):

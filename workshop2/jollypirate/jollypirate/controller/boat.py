@@ -9,7 +9,10 @@ from copy import deepcopy
 
 from .. import exceptions
 from ..controller import BaseController
-from ..model import BoatModel
+from ..model import (
+    BoatModel,
+    MemberModel
+)
 from ..view import MenuItem
 
 
@@ -74,13 +77,7 @@ class BoatController(BaseController):
             self.view.msg_boat_registration_failure()
             return
 
-        # _boat_owner = deepcopy(_selected_member)
-        # _boat_owner.add_boat(_new_boat)
-        # self.member_registry.remove(_selected_member)
-        # self.member_registry.add(_boat_owner)
-        # self.member_registry.flush()
-
-        _boat_owner = deepcopy(_selected_member)
+        _boat_owner = MemberModel.copy(_selected_member)
         _boat_owner.add_boat(_new_boat)
         try:
             self.member_registry.remove(_selected_member)
