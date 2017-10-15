@@ -47,7 +47,6 @@ class BoatController(BaseController):
         try:
             self.member_registry.remove(_boat_owner)
             self.member_registry.add(_boatless)
-            self.member_registry.flush()
         except exceptions.JollyPirateModelError as e:
             self.view.display_msg_failure(str(e))
             self.view.msg_boat_modify_failure()
@@ -127,7 +126,6 @@ class BoatController(BaseController):
             try:
                 self.member_registry.remove(_boat_owner)
                 self.member_registry.add(_owner_copy)
-                self.member_registry.flush()
             except exceptions.JollyPirateModelError as e:
                 self.view.display_msg_failure(str(e))
                 self.view.msg_boat_modify_failure()
