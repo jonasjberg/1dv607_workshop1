@@ -7,10 +7,7 @@
 
 import re
 
-from .. import (
-    exceptions,
-    util
-)
+from .. import exceptions
 from ..util import types
 from .boat import BoatModel
 from .base import BaseModel
@@ -18,17 +15,25 @@ from .base import BaseModel
 
 # This regex barely manages to validate dates, included for brevity.
 # Insert arbitrarily complex validation of "Lugn Algorithm"-derived SSNs here..
-RE_VALID_SOCIAL_SECURITY_NUMBER = re.compile(r'(19|20)\d{2}(0|1)\d[0-3]\d\d{4}')
+RE_VALID_SOCIAL_SECURITY_NUMBER = re.compile(
+    r'(19|20)\d{2}([01])\d[0-3]\d\d{4}'
+)
 
 
 class MemberModel(BaseModel):
     def __init__(self, first_name=None, last_name=None, ssn=None):
         super().__init__()
-
         self._name_first = None
         self._name_last = None
         self._social_sec_number = None
         self._boats = []
+
+        if first_name is not None:
+            self.name_first = first_name
+        if last_name is not None:
+            self.name_last = last_name
+        if ssn is not None:
+            self.social_sec_number = ssn
 
     @property
     def name_first(self):
@@ -150,7 +155,12 @@ def _to_non_empty_string(input_):
 def _to_digits(input_):
     string = types.force_string(input_)
     if string:
-        digits = util.text.extract_digits(string)
+        digits = ''
+        for char in string:
+            if char.isdigit():
+                digits += char
+
         if digits.strip():
             return digits
+
     return None

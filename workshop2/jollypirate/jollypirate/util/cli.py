@@ -165,7 +165,8 @@ class ColumnFormatter(object):
 
         _column_alignment = []
         for i in range(0, self.number_columns):
-            if i < len(strings) and [s in self.ALIGNMENT_STRINGS.keys() for s in strings]:
+            if i < len(strings) and [s in self.ALIGNMENT_STRINGS.keys()
+                                     for s in strings]:
                 _column_alignment.append(self.ALIGNMENT_STRINGS.get(strings[i]))
             else:
                 _column_alignment.append(self._default_align)

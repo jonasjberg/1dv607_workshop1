@@ -34,7 +34,9 @@ class MemberView(BaseView):
 
     def _list_verbose(self, members):
         cf = cli.ColumnFormatter()
-        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
+        cf.addrow(
+            'First Name', 'Last Name', 'Social Security Number', 'Member ID'
+        )
         cf.addrow(*['=' * width for width in cf.column_widths])
         cf.setalignment('left', 'left', 'right', 'right')
 
@@ -134,11 +136,16 @@ class MemberView(BaseView):
 
     def display_member_info(self, member):
         cf = cli.ColumnFormatter()
-        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
-        cf.addrow('==========', '=========', '======================', '=========')
-        cf.setalignment('left', 'left', 'right', 'right')
-        cf.addrow(member.name_first, member.name_last,
-                  member.social_sec_number, str(member.id)[1:10])
+        cf.addrow(
+            'First Name', 'Last Name', 'Social Security Number', 'Member ID',
+            '# Boats'
+        )
+        cf.addrow(*['=' * width for width in cf.column_widths])
+        cf.setalignment('left', 'left', 'right', 'right', 'left')
+        cf.addrow(
+            member.name_first, member.name_last, member.social_sec_number,
+            str(member.id)[1:10], str(len(member.boats))
+        )
 
         self.display_msg_heading('Information on Specified Member:')
         print(str(cf))

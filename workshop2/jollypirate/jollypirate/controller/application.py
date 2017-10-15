@@ -40,7 +40,7 @@ class ApplicationController(BaseController):
 
         try:
             self.infinite_loop()
-        except exceptions.JollyPirateException as e:
+        except exceptions.JollyPirateException:
             self.exit_failure()
         except KeyboardInterrupt:
             self.exit_success()
@@ -61,7 +61,9 @@ class ApplicationController(BaseController):
             if not event_func or not callable(event_func):
                 self.log.warning('Invalid selection: "{!s}"'.format(choice))
             else:
-                self.log.debug('Calling event handler "{!s}"'.format(event_func))
+                self.log.debug(
+                    'Calling event handler "{!s}"'.format(event_func)
+                )
                 event_func()
 
     def exit_success(self):

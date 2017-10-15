@@ -80,7 +80,7 @@ class BoatController(BaseController):
         try:
             self.member_registry.remove(_selected_member)
             self.member_registry.add(_boat_owner)
-        except exceptions.JollyPirateModelError as e:
+        except exceptions.JollyPirateModelError:
             self.view.msg_boat_registration_failure()
             return
         else:

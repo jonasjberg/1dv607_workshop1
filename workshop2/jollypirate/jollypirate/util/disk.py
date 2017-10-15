@@ -22,7 +22,6 @@
 import os
 
 from .. import exceptions
-from . import sanity
 from . import encoding as enc
 
 
@@ -106,7 +105,6 @@ def delete(path, ignore_missing=False):
                          exist and "ignore_missing" is False.
         ValueError: Argument "path" is empty or only whitespace.
     """
-    sanity.check_internal_bytestring(path)
     if not path or not path.strip():
         raise ValueError('Argument "path" is empty or only whitespace')
 

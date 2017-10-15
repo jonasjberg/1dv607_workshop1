@@ -85,7 +85,9 @@ class BaseStorage(object):
         self._dp = enc.displayable_path(JOLLYPIRATE_APPDATA_ABSPATH)
 
         if not self.has_storagedir():
-            log.debug('Storage directory does not exist: "{!s}"'.format(self._dp))
+            log.debug(
+                'Storage directory does not exist: "{!s}"'.format(self._dp)
+            )
 
             try:
                 util.makedirs(JOLLYPIRATE_APPDATA_ABSPATH)
