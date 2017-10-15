@@ -42,7 +42,7 @@ class BoatView(BaseView):
         self.display_msg_success('The new Boat has been Registered!')
 
     def msg_boat_registration_failure(self):
-        self.display_msg_failure('The new Boat has been Registered!')
+        self.display_msg_failure('The new Boat was NOT Registered ..')
 
     def msg_boat_deletion_start(self):
         self.display_msg_heading('Delete an existing Boat')
@@ -53,4 +53,11 @@ class BoatView(BaseView):
     def msg_boat_deletion_failure(self):
         self.display_msg_failure('The Boat was NOT Deleted ..')
 
+    def msg_boat_modify_start(self):
+        self.display_msg_heading('Modify an existing Boat')
 
+    def msg_boat_modify_success(self):
+        self.display_msg_success('The Boat has been Modified!')
+
+    def msg_boat_modify_failure(self):
+        self.display_msg_failure('The Boat was NOT Modified ..')

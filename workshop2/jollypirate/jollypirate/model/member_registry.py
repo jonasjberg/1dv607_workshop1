@@ -94,6 +94,15 @@ class MemberRegistry(BaseModel):
     def getall(self):
         return list(self._members)
 
+    def getall_boatowners(self):
+        return [m for m in self._members if m.boats]
+
+    def getowner(self, boat):
+        for _member in self.getall():
+            if boat in _member.boats:
+                return _member
+        return None
+
     def flush(self):
         self._update_persistent_data()
 

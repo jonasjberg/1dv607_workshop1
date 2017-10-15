@@ -21,10 +21,9 @@ class BoatController(BaseController):
         self.view.msg_boat_deletion_start()
 
         _boats = []
-        _members = self.member_registry.getall()
+        _members = self.member_registry.getall_boatowners()
         for m in _members:
-            if m.boats:
-                _boats.extend(m.boats)
+            _boats.extend(m.boats)
 
         if not _boats:
             self.view.display_msg_failure('No boats have been registered!')
@@ -37,13 +36,7 @@ class BoatController(BaseController):
             self.view.msg_boat_deletion_failure()
             return
 
-        # TODO: Move mapping boat-owner-mapping to 'registry' ..
-        _boat_owner = None
-        for m in _members:
-            if _boat_to_delete in m.boats:
-                _boat_owner = m
-                break
-
+        _boat_owner = self.member_registry.getowner(_boat_to_delete)
         if not _boat_owner:
             self.view.msg_boat_deletion_failure()
             return
@@ -56,7 +49,7 @@ class BoatController(BaseController):
             self.member_registry.flush()
         except exceptions.JollyPirateModelError as e:
             self.view.display_msg_failure(str(e))
-            self.view.msg_member_modify_failure()
+            self.view.msg_boat_modify_failure()
         else:
             self.view.msg_boat_deletion_success()
 
@@ -99,35 +92,52 @@ class BoatController(BaseController):
             self.view.msg_boat_registration_success()
 
     def modify(self):
-        self.view.msg_member_modify_start()
+        self.view.msg_boat_modify_start()
 
-        _members = self.member_registry.getall()
-        _candidates = self._members_as_menu_items(_members)
-        _should_modify = self.view.get_selection_from(_candidates)
-        if not _should_modify:
-            self.view.msg_member_modify_failure()
+        _boats = []
+        _members = self.member_registry.getall_boatowners()
+        for m in _members:
+            _boats.extend(m.boats)
+
+        if not _boats:
+            self.view.display_msg_failure('No boats have been registered!')
+            self.view.msg_boat_modify_failure()
             return
 
-        _member = deepcopy(_should_modify)
+        _candidates = self._boats_as_menu_items(_boats)
+        _boat_to_modify = self.view.get_selection_from(_candidates)
+        if not _boat_to_modify:
+            self.view.msg_boat_modify_failure()
+            return
+
+        _boat_owner = self.member_registry.getowner(_boat_to_modify)
+        if not _boat_owner:
+            self.view.msg_boat_modify_failure()
+            return
+
+        _owner_copy = deepcopy(_boat_owner)
+
+        _new_boat = BoatModel()
         self.populate_model_data(
-            _member, model_field='name_first', field_name='First Name'
+            _new_boat, model_field='type_', field_name='Boat Type',
+            should_choose_one_of=self.model.BOAT_TYPES.all()
         )
         self.populate_model_data(
-            _member, model_field='name_last', field_name='Last Name'
-        )
-        self.populate_model_data(
-            _member, model_field='social_sec_number',
-            field_name='Social Security Number'
+            _new_boat, model_field='length', field_name='Length'
         )
 
-        try:
-            self.member_registry.remove(_should_modify)
-            self.member_registry.add(_member)
-        except exceptions.JollyPirateModelError as e:
-            self.view.display_msg_failure(str(e))
-            self.view.msg_member_modify_failure()
-        else:
-            self.view.msg_member_modify_success()
+        if _new_boat:
+            _owner_copy.remove_boat(_boat_to_modify)
+            _owner_copy.add_boat(_new_boat)
+            try:
+                self.member_registry.remove(_boat_owner)
+                self.member_registry.add(_owner_copy)
+                self.member_registry.flush()
+            except exceptions.JollyPirateModelError as e:
+                self.view.display_msg_failure(str(e))
+                self.view.msg_boat_modify_failure()
+            else:
+                self.view.msg_boat_modify_success()
 
     def _boats_as_menu_items(self, boats):
         out = {}
