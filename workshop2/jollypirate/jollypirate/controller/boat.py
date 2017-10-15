@@ -88,17 +88,17 @@ class BoatController(BaseController):
     def modify(self):
         self.view.msg_boat_modify_start()
 
-        _boats = []
+        _all_boats = []
         _members = self.member_registry.getall_boatowners()
         for m in _members:
-            _boats.extend(m.boats)
+            _all_boats.extend(m.boats)
 
-        if not _boats:
+        if not _all_boats:
             self.view.display_msg_failure('No boats have been registered!')
             self.view.msg_boat_modify_failure()
             return
 
-        _menu_items = self._boats_as_menu_items(_boats)
+        _menu_items = self._boats_as_menu_items(_all_boats)
         _boat_to_modify = self.view.get_selection_from(_menu_items)
         if not _boat_to_modify:
             self.view.msg_boat_modify_failure()
