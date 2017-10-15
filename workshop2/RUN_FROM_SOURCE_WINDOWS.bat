@@ -9,6 +9,6 @@ REM University mail: js224eh[a]student.lnu.se
 
 SET self_path=%~dp0
 pushd %self_path%
-python3 jollypirate
+python jollypirate
 popd
 
