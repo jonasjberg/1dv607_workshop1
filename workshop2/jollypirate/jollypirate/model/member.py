@@ -74,7 +74,7 @@ class MemberModel(BaseModel):
                 self._social_sec_number = digits
             else:
                 raise exceptions.InvalidUserInput(
-                    'Invalid social security number. Expected form: YYMMDD-XXXX'
+                    'Invalid social security number. Expected "YYYYMMDD-XXXX"'
                 )
         else:
             raise exceptions.InvalidUserInput(
