@@ -5,8 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from copy import deepcopy
-
 from .. import exceptions
 from ..controller import BaseController
 from ..model import (
@@ -44,7 +42,7 @@ class BoatController(BaseController):
             self.view.msg_boat_deletion_failure()
             return
 
-        _boatless = deepcopy(_boat_owner)
+        _boatless = MemberModel.copy(_boat_owner)
         _boatless.remove_boat(_boat_to_delete)
         try:
             self.member_registry.remove(_boat_owner)
@@ -112,7 +110,7 @@ class BoatController(BaseController):
             self.view.msg_boat_modify_failure()
             return
 
-        _owner_copy = deepcopy(_boat_owner)
+        _owner_copy = MemberModel.copy(_boat_owner)
 
         _new_boat = BoatModel()
         self.populate_model_data(

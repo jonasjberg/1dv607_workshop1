@@ -5,8 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from copy import deepcopy
-
 from .. import exceptions
 from ..model import MemberModel
 from .base import BaseController
@@ -76,7 +74,7 @@ class MemberController(BaseController):
             self.view.msg_member_modify_failure()
             return
 
-        _member = deepcopy(_should_modify)
+        _member = MemberModel.copy(_should_modify)
         self.populate_model_data(
             _member, model_field='name_first', field_name='First Name'
         )
