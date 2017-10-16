@@ -5,4 +5,8 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .disk import has_permissions
+from .disk import (
+    delete,
+    has_permissions,
+    makedirs
+)

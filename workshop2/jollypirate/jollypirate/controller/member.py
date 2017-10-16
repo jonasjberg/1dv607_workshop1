@@ -5,8 +5,6 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from copy import deepcopy
-
 from .. import exceptions
 from ..model import MemberModel
 from .base import BaseController
@@ -20,8 +18,8 @@ class MemberController(BaseController):
         self.view.msg_member_deletion_start()
 
         _members = self.member_registry.getall()
-        _candidates = self._members_as_menu_items(_members)
-        _should_delete = self.view.get_selection_from(_candidates)
+        _menu_items = self._members_as_menu_items(_members)
+        _should_delete = self.view.get_selection_from(_menu_items)
         if _should_delete:
             try:
                 self.member_registry.remove(_should_delete)
@@ -35,10 +33,10 @@ class MemberController(BaseController):
         self.view.msg_member_info_start()
 
         _members = self.member_registry.getall()
-        _candidates = self._members_as_menu_items(_members)
-        _requested_info_for = self.view.get_selection_from(_candidates)
-        if _requested_info_for:
-            self.view.display_member_info(_requested_info_for)
+        _menu_items = self._members_as_menu_items(_members)
+        _get_info_on = self.view.get_selection_from(_menu_items)
+        if _get_info_on:
+            self.view.display_member_info(_get_info_on)
             self.view.msg_member_info_success()
 
     def register(self):
@@ -55,7 +53,7 @@ class MemberController(BaseController):
         )
         self.populate_model_data(
             _new_member, model_field='social_sec_number',
-            field_name='Social Security Number'
+            field_name='Social Security Number (YYYYMMDD-XXXX)'
         )
 
         try:
@@ -70,22 +68,23 @@ class MemberController(BaseController):
         self.view.msg_member_modify_start()
 
         _members = self.member_registry.getall()
-        _candidates = self._members_as_menu_items(_members)
-        _should_modify = self.view.get_selection_from(_candidates)
+        _menu_items = self._members_as_menu_items(_members)
+        _should_modify = self.view.get_selection_from(_menu_items)
         if not _should_modify:
             self.view.msg_member_modify_failure()
             return
 
-        _member = deepcopy(_should_modify)
+        _member = MemberModel.copy(_should_modify)
         self.populate_model_data(
             _member, model_field='name_first', field_name='First Name'
         )
         self.populate_model_data(
             _member, model_field='name_last', field_name='Last Name'
         )
+
         self.populate_model_data(
             _member, model_field='social_sec_number',
-            field_name='Social Security Number'
+            field_name='Social Security Number',
         )
 
         try:

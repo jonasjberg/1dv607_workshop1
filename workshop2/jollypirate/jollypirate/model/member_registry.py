@@ -11,7 +11,10 @@ from .. import (
     exceptions,
     persistence
 )
-from ..persistence.abstract import DataPersistenceError
+
+
+# Keep a shared registry instance across the application instance.
+REGISTRY_SINGLETON = None
 
 
 class MemberRegistry(BaseModel):
@@ -23,7 +26,7 @@ class MemberRegistry(BaseModel):
         self._members = set()
         try:
             self._persistence = persistence.get_implementation(self.STORAGE_KEY)
-        except DataPersistenceError as e:
+        except exceptions.DataPersistenceError as e:
             raise exceptions.JollyPirateException(e)
 
         try:
@@ -55,7 +58,7 @@ class MemberRegistry(BaseModel):
                 'Expected an instance of "MemberModel"'
             )
 
-        if new_member in self._members:
+        if new_member in self.getall():
             raise exceptions.JollyPirateModelError(
                 'Member "{!s}" is already in {}'.format(new_member, self)
             )
@@ -78,14 +81,14 @@ class MemberRegistry(BaseModel):
             return False
 
         return bool(
-            any(member.id == member.id for member in self._members)
+            any(member.id == member.id for member in self.getall())
         )
 
     def get(self, member_id):
         if not self.contains(member_id):
             return None
 
-        for member in self._members:
+        for member in self.getall():
             if member.id == member_id:
                 return member
 
@@ -94,8 +97,14 @@ class MemberRegistry(BaseModel):
     def getall(self):
         return list(self._members)
 
-    def flush(self):
-        self._update_persistent_data()
+    def getall_boatowners(self):
+        return [m for m in self.getall() if m.boats]
+
+    def getowner(self, boat):
+        for _member in self.getall():
+            if boat in _member.boats:
+                return _member
+        return None
 
     def _update_persistent_data(self):
         _data = {'all': self.getall()}
@@ -103,3 +112,10 @@ class MemberRegistry(BaseModel):
             'Updating persistent data ({!s}) {!s}'.format(type(_data), _data)
         )
         self._persistence.set('members', _data)
+
+
+def singleton():
+    global REGISTRY_SINGLETON
+    if not REGISTRY_SINGLETON:
+        REGISTRY_SINGLETON = MemberRegistry()
+    return REGISTRY_SINGLETON

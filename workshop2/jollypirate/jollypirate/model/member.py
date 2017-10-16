@@ -5,23 +5,35 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from .. import (
-    exceptions,
-    util
-)
+import re
+
+from .. import exceptions
 from ..util import types
 from .boat import BoatModel
 from .base import BaseModel
 
 
+# This regex barely manages to validate dates, included for brevity.
+# Insert arbitrarily complex validation of "Lugn Algorithm"-derived SSNs here..
+RE_VALID_SOCIAL_SECURITY_NUMBER = re.compile(
+    r'(19|20)\d{2}([01])\d[0-3]\d\d{4}'
+)
+
+
 class MemberModel(BaseModel):
     def __init__(self, first_name=None, last_name=None, ssn=None):
         super().__init__()
-
         self._name_first = None
         self._name_last = None
         self._social_sec_number = None
         self._boats = []
+
+        if first_name is not None:
+            self.name_first = first_name
+        if last_name is not None:
+            self.name_last = last_name
+        if ssn is not None:
+            self.social_sec_number = ssn
 
     @property
     def name_first(self):
@@ -61,9 +73,14 @@ class MemberModel(BaseModel):
 
     @social_sec_number.setter
     def social_sec_number(self, new_ssn):
-        valid = _to_digits(new_ssn)
-        if valid:
-            self._social_sec_number = valid
+        digits = _to_digits(new_ssn)
+        if digits:
+            if RE_VALID_SOCIAL_SECURITY_NUMBER.match(digits):
+                self._social_sec_number = digits
+            else:
+                raise exceptions.InvalidUserInput(
+                    'Invalid social security number. Expected "YYYYMMDD-XXXX"'
+                )
         else:
             raise exceptions.InvalidUserInput(
                 'Expected social security number to contain at least one digit'
@@ -138,7 +155,12 @@ def _to_non_empty_string(input_):
 def _to_digits(input_):
     string = types.force_string(input_)
     if string:
-        digits = util.text.extract_digits(string)
+        digits = ''
+        for char in string:
+            if char.isdigit():
+                digits += char
+
         if digits.strip():
             return digits
+
     return None

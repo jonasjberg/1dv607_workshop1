@@ -33,10 +33,10 @@ class MemberView(BaseView):
             self.log.warning('Invalid selection: "{!s}"'.format(lister))
 
     def _list_verbose(self, members):
-        print('Boats owned by members are inserted in the table in a '
-              '_somewhat_ non-obvious way because command-line interfaces.')
         cf = cli.ColumnFormatter()
-        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
+        cf.addrow(
+            'First Name', 'Last Name', 'Social Security Number', 'Member ID'
+        )
         cf.addrow(*['=' * width for width in cf.column_widths])
         cf.setalignment('left', 'left', 'right', 'right')
 
@@ -47,12 +47,15 @@ class MemberView(BaseView):
 
             _boats = m.boats
             if _boats:
-                cf.addrow(*['.' * width for width in cf.column_widths])
-                cf.addrow(':', 'Boat Type', 'Boat Length', ':')
-                cf.addrow(':', '=========', '===========', ':')
+                cf.addemptyrow()
+
+                cf.addrow(None, 'Boat Type', 'Boat Length', None)
+                cf.addrow(None, '=========', '===========', None)
                 for b in _boats:
-                    cf.addrow(':', b.type_, str(b.length), '.')
-                cf.addrow(*[':' * width for width in cf.column_widths])
+                    cf.addrow(None, b.type_, str(b.length), None)
+
+                cf.addrow(*['_' * width for width in cf.column_widths])
+                cf.addemptyrow()
 
         self.display_msg_heading('Detailed Listing of all Registered Members:')
         print(str(cf))
@@ -70,29 +73,6 @@ class MemberView(BaseView):
         self.display_msg_heading('Compact Listing of all Registered Members:')
         print(str(cf))
         print('\n')
-
-    def get_selection_from(self, menu_items):
-        while True:
-            self.display_menu(menu_items.keys())
-
-            _choice = input()
-            try:
-                # Coerce the input to type str.
-                choice = str(_choice)
-            except (ValueError, TypeError):
-                # Silently ignore failed coercion.
-                pass
-            else:
-                # Make lower case and strip any leading/trailing whitespace.
-                choice = choice.lower().strip()
-
-                # Return the event associated with the users choice, if any.
-                for menu_item, handler in menu_items.items():
-                    if choice == menu_item.shortcut:
-                        self.log.debug('Valid choice: {!s}'.format(choice))
-                        return handler
-
-            self.log.debug('Invalid Selection')
 
     def _map_events_to_menuitem(self, events):
         return {
@@ -139,11 +119,16 @@ class MemberView(BaseView):
 
     def display_member_info(self, member):
         cf = cli.ColumnFormatter()
-        cf.addrow('First Name', 'Last Name', 'Social Security Number', 'Member ID')
-        cf.addrow('==========', '=========', '======================', '=========')
-        cf.setalignment('left', 'left', 'right', 'right')
-        cf.addrow(member.name_first, member.name_last,
-                  member.social_sec_number, str(member.id)[1:10])
+        cf.addrow(
+            'First Name', 'Last Name', 'Social Security Number', 'Member ID',
+            '# Boats'
+        )
+        cf.addrow(*['=' * width for width in cf.column_widths])
+        cf.setalignment('left', 'left', 'right', 'right', 'left')
+        cf.addrow(
+            member.name_first, member.name_last, member.social_sec_number,
+            str(member.id)[1:10], str(len(member.boats))
+        )
 
         self.display_msg_heading('Information on Specified Member:')
         print(str(cf))

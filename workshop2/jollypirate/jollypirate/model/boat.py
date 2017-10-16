@@ -11,6 +11,10 @@ from ..util import types
 
 
 class BoatType(object):
+    """
+    Simple "struct"-like singleton class that wraps "constant" values and
+    utility methods for accessing and formatting these "constants".
+    """
     KAYAK = 'KAYAK'
     MOTORSAILER = 'MOTORSAILER'
     OTHER = 'OTHER'
@@ -33,6 +37,8 @@ class BoatType(object):
 
 
 class BoatModel(BaseModel):
+    BOAT_TYPES = BoatType
+
     def __init__(self):
         super().__init__()
 
@@ -42,15 +48,15 @@ class BoatModel(BaseModel):
     @property
     def type_(self):
         # Names that shadow built-ins get a trailing '_' by convention.
-        return self._type or BoatType.UNKNOWN
+        return self._type or self.BOAT_TYPES.UNKNOWN
 
     @type_.setter
     def type_(self, new_type):
         # Names that shadow built-ins get a trailing '_' by convention.
-        if BoatType.validate(new_type):
+        if self.BOAT_TYPES.validate(new_type):
             self._type = new_type
         else:
-            _all_boat_types = ', '.join(str(t) for t in BoatType.all())
+            _all_boat_types = ', '.join(str(t) for t in self.BOAT_TYPES.all())
             raise exceptions.JollyPirateModelError(
                 'Expected boat type to be one of "{}"'.format(_all_boat_types)
             )

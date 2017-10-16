@@ -5,11 +5,11 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
-from ..controller.event import Events
 from .base import (
     BaseView,
     MenuItem
 )
+from ..controller.event import Events
 
 
 class ApplicationView(BaseView):
@@ -46,37 +46,12 @@ class ApplicationView(BaseView):
             ): Events.MEMBER_LISTALL,
         }
 
-    def get_selection_from(self, events):
-        # Get menu items that are mapped to an event in argument "events".
-        _menu_items_to_include = self._map_events_to_menuitem(events)
-
-        while True:
-            self.display_menu(_menu_items_to_include.keys())
-
-            # Read input from stdin.
-            try:
-                _choice = input('Select: ')
-            except UnicodeDecodeError:
-                continue
-            try:
-                # Coerce the input to type str.
-                choice = str(_choice)
-            except (ValueError, TypeError):
-                # Silently ignore failed coercion.
-                pass
-            else:
-                # Make lower case and strip any leading/trailing whitespace.
-                choice = choice.lower().strip()
-
-                # Return the event associated with the users choice, if any.
-                for menu_item, event in _menu_items_to_include.items():
-                    if choice == menu_item.shortcut:
-                        self.log.debug('Valid choice: {!s}'.format(choice))
-                        return event
-
-            self.log.debug('Invalid Selection')
+    def get_main_menu_selection_from(self, events):
+        _menu_items = self._map_events_to_menuitem(events)
+        return self.get_selection_from(_menu_items)
 
     def _map_events_to_menuitem(self, events):
+        # Get menu items that are mapped to an event in argument "events".
         return {
             menu_item: event
             for menu_item, event in self.menuitems_event_map.items()

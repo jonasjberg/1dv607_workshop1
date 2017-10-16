@@ -9,7 +9,7 @@ import logging
 import string
 
 from .. import exceptions
-from ..model import MemberRegistry
+from ..model import member_registry
 from ..view import MenuItem
 
 
@@ -27,7 +27,7 @@ class BaseController(object):
         self.model = model
         self.view = view
 
-        self.member_registry = MemberRegistry()
+        self.member_registry = member_registry.singleton()
 
     @property
     def model(self):
@@ -45,6 +45,22 @@ class BaseController(object):
     def view(self, new_view):
         self._view = new_view
 
+    def populate_model_data(self, model_, model_field, field_name,
+                            should_choose_one_of=None):
+        _valid = False
+        while not _valid:
+            _user_input = self.view.get_field_data(field_name,
+                                                   should_choose_one_of)
+            try:
+                setattr(model_, model_field, _user_input)
+            except (exceptions.InvalidUserInput,
+                    exceptions.JollyPirateModelError) as e:
+                self.view.display_msg_failure(e)
+                if self.view.should_abort():
+                    return
+            else:
+                _valid = True
+
     def _members_as_menu_items(self, members):
         out = {}
         for i, member in enumerate(members):
@@ -52,19 +68,6 @@ class BaseController(object):
                             description=member.name_full)
             out[_key] = member
         return out
-
-    def populate_model_data(self, model_, model_field, field_name):
-        _valid = False
-        while not _valid:
-            _user_input = self.view.get_field_data(field_name)
-            try:
-                setattr(model_, model_field, _user_input)
-            except exceptions.InvalidUserInput as e:
-                self.view.display_msg_failure(e)
-                if self.view.should_abort():
-                    return
-            else:
-                _valid = True
 
     @staticmethod
     def int_to_char(number):

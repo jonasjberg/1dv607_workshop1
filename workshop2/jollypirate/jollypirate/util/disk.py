@@ -20,98 +20,9 @@
 #   along with autonameow.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import re
-import itertools
-import logging
 
+from .. import exceptions
 from . import encoding as enc
-
-
-log = logging.getLogger(__name__)
-
-
-# Needed by 'sanitize_filename' for sanitizing filenames in restricted mode.
-ACCENT_CHARS = dict(zip('ÂÃÄÀÁÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖŐØŒÙÚÛÜŰÝÞßàáâãäåæçèéêëìíîïðñòóôõöőøœùúûüűýþÿ',
-                        itertools.chain('AAAAAA', ['AE'], 'CEEEEIIIIDNOOOOOOO', ['OE'], 'UUUUUYP', ['ss'],
-                                        'aaaaaa', ['ae'], 'ceeeeiiiionooooooo', ['oe'], 'uuuuuypy')))
-
-
-def sanitize_filename(s, restricted=False, is_id=False):
-    """Sanitizes a string so it could be used as part of a filename.
-    If restricted is set, use a stricter subset of allowed characters.
-    Set is_id if this is not an arbitrary string, but an ID that should be kept
-    if possible.
-
-    NOTE:  This function was lifted as-is from the "youtube-dl" project.
-
-           https://github.com/rg3/youtube-dl/blob/master/youtube_dl/utils.py
-           Commit: b407d8533d3956a7c27ad42cbde9a877c36df72c
-    """
-    def replace_insane(char):
-        if restricted and char in ACCENT_CHARS:
-            return ACCENT_CHARS[char]
-        if char == '?' or ord(char) < 32 or ord(char) == 127:
-            return ''
-        elif char == '"':
-            return '' if restricted else '\''
-        elif char == ':':
-            return '_-' if restricted else ' -'
-        elif char in '\\/|*<>':
-            return '_'
-        if restricted and (char in '!&\'()[]{}$;`^,#' or char.isspace()):
-            return '_'
-        if restricted and ord(char) > 127:
-            return '_'
-        return char
-
-    # Handle timestamps
-    s = re.sub(r'[0-9]+(?::[0-9]+)+', lambda m: m.group(0).replace(':', '_'), s)
-    result = ''.join(map(replace_insane, s))
-    if not is_id:
-        while '__' in result:
-            result = result.replace('__', '_')
-        result = result.strip('_')
-        # Common case of "Foreign band name - English song title"
-        if restricted and result.startswith('-_'):
-            result = result[2:]
-        if result.startswith('-'):
-            result = '_' + result[len('-'):]
-        result = result.lstrip('.')
-        if not result:
-            result = '_'
-    return result
-
-
-def rename_file(source_path, new_basename):
-    dest_base = enc.syspath(new_basename)
-    source = enc.syspath(source_path)
-
-    source = os.path.realpath(os.path.normpath(source))
-    if not os.path.exists(source):
-        raise FileNotFoundError('Source does not exist: "{!s}"'.format(
-            enc.displayable_path(source)
-        ))
-
-    dest_abspath = os.path.normpath(
-        os.path.join(os.path.dirname(source), dest_base)
-    )
-    if os.path.exists(dest_abspath):
-        raise FileExistsError('Destination exists: "{!s}"'.format(
-            enc.displayable_path(dest_abspath)
-        ))
-
-    log.debug('Renaming "{!s}" to "{!s}"'.format(
-        enc.displayable_path(source),
-        enc.displayable_path(dest_abspath))
-    )
-    try:
-        os.rename(source, dest_abspath)
-    except OSError:
-        raise
-
-
-def file_basename(file_path):
-    return enc.syspath(os.path.basename(file_path))
 
 
 CHAR_PERMISSION_LOOKUP = {
@@ -164,3 +75,44 @@ def has_permissions(path, permissions):
                     return False
 
     return True
+
+
+def makedirs(path):
+    if not isinstance(path, bytes):
+        raise TypeError('Expected "path" to be a bytestring path')
+    if not path or not path.strip():
+        raise ValueError('Got empty argument "path"')
+
+    try:
+        os.makedirs(enc.syspath(path))
+    except (OSError, ValueError, TypeError) as e:
+        raise exceptions.FilesystemError(e)
+
+
+def delete(path, ignore_missing=False):
+    """
+    Deletes the file at "path".
+
+    Args:
+        path: The path to delete as an "internal bytestring".
+        ignore_missing: Controls whether to ignore non-existent paths.
+                        False: Non-existent paths raises 'FilesystemError'.
+                        True: Non-existent paths are silently ignored.
+
+    Raises:
+        EncodingBoundaryViolation: Argument "path" is not of type 'bytes'.
+        FilesystemError: The path could not be removed, or the path does not
+                         exist and "ignore_missing" is False.
+        ValueError: Argument "path" is empty or only whitespace.
+    """
+    if not path or not path.strip():
+        raise ValueError('Argument "path" is empty or only whitespace')
+
+    p = enc.syspath(path)
+    if ignore_missing and not os.path.exists(p):
+        return
+
+    try:
+        os.remove(enc.syspath(p))
+    except OSError as e:
+        raise exceptions.FilesystemError(e)
