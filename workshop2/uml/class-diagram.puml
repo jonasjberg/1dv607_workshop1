@@ -1,0 +1,260 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 2: Design
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-10-03.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+@startuml
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+' allow_mixing
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ CLASS DIAGRAM ___________________________________________________________
+
+header
+1DV607 - Workshop 2: Design
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nJolly Pirate Class Diagram\n
+
+namespace jollypirate.controller {
+    class BaseController {
+        - log
+        - model
+        - view
+
+        ~ int_to_char(value)
+        ~ _members_as_menu_items(members)
+        # populate_model_data(model, model_field, field_name, should_choose_one_of)
+    }
+
+    class ApplicationController {
+        + exit_failure()
+        + exit_success()
+        + infinite_loop()
+        + run()
+    }
+
+    class BoatController {
+        - _boats_as_menu_items(boats)
+        + delete()
+        + modify()
+        + register()
+    }
+
+    class MemberController {
+        + delete()
+        + get_info()
+        + list_all()
+        + modify()
+        + register()
+    }
+
+    class Events {
+        + APP_QUIT
+        + BOAT_DELETE
+        + BOAT_MODIFY
+        + BOAT_REGISTER
+        + MEMBER_DELETE
+        + MEMBER_LIST
+        + MEMBER_LISTLL
+        + MEMBER_MODIFY
+        + MEMBER_REGISTER
+    }
+
+    BaseController <|-- ApplicationController
+    BaseController <|-- BoatController
+    BaseController <|-- MemberController
+
+    Events "1..1" --o ApplicationController
+}
+
+
+namespace jollypirate.model {
+    class BaseModel {
+        - log
+
+        + __getstate__()
+    }
+
+    class BoatModel {
+        - BOAT_TYPES
+        + type_
+        + length
+        + id
+    }
+    class BoatTypes {
+        + KAYAK
+        + MOTORSAILER
+        + OTHER
+        + SAILBOAT
+        + UNKNOWN
+
+        validate(value)
+        all()
+    }
+    BoatModel "1..1" *-- BoatTypes
+
+    class MemberModel {
+        + boats
+        + id
+        + name_first
+        + name_last
+        + name_full
+        + social_sec_number
+
+        + add_boat(boat)
+        + remove_boat(boat)
+        + copy()
+    }
+
+    class MemberRegistry {
+        - _persistence
+        - _members
+
+        add(new_member)
+        remove(member_to_remove)
+        contains(member)
+        get(member_id)
+        getall()
+        getall_boatowners()
+        getowner(boat)
+    }
+
+    BaseModel <|-- BoatModel
+    BaseModel <|-- MemberModel
+    BaseModel <|-- MemberRegistry
+}
+
+
+namespace jollypirate.view {
+    class BaseView {
+        - log
+
+        + display_menu(menu_items)
+        + display_msg_failure(message)
+        + display_msg_heading(message)
+        + display_msg_success(message)
+        # force_non_empty_string(value)
+        + get_field_data(field, should_choose_one_of)
+        + get_selection_from(menu_items)
+        + get_user_input(message)
+        + should_abort()
+    }
+
+    class ApplicationView {
+        - menuitems_event_map
+
+        + get_main_menu_selection_from(events)
+        - _map_events_to_menuitem(events)
+        + msg_application_info_failure()
+        + msg_application_info_start()
+        + msg_application_info_success()
+    }
+
+    class BoatView {
+        + msg_boat_deletion_failure()
+        + msg_boat_deletion_start()
+        + msg_boat_deletion_success()
+        + msg_boat_modify_failure()
+        + msg_boat_modify_start()
+        + msg_boat_modify_success()
+        + msg_boat_registration_failure()
+        + msg_boat_registration_start()
+        + msg_boat_registration_success()
+    }
+
+    class MemberView {
+        + display_member_info(member)
+        - _map_events_to_menuitem(events)
+        + list(members)
+        - _list_compact(members)
+        - _list_verbose(members)
+        + msg_member_deletion_failure()
+        + msg_member_deletion_start()
+        + msg_member_deletion_success()
+        + msg_member_info_failure()
+        + msg_member_info_start()
+        + msg_member_info_success()
+        + msg_member_modify_failure()
+        + msg_member_modify_start()
+        + msg_member_modify_success()
+        + msg_member_registration_failure()
+        + msg_member_registration_start()
+        + msg_member_registration_success()
+    }
+
+    BaseView <|-- ApplicationView
+    BaseView <|-- BoatView
+    BaseView <|-- MemberView
+
+    jollypirate.controller.Events "1..1" --o ApplicationView
+}
+
+namespace jollypirate.persistence {
+    class BaseStorage {
+        + delete(key)
+        - has_storagedir_permissions()
+        - has_storagedir()
+        + get(key)
+        + has(key)
+        + set(key, value)
+
+        ---
+        {abstract} _load(file_path)
+        {abstract} _dump(file_path, value)
+    }
+
+    class PickleStorage {
+        _load(file_path)
+        _dump(file_path, value)
+    }
+
+    BaseStorage <|-- PickleStorage
+}
+
+'''''
+jollypirate.model.MemberRegistry "*..1" ..* jollypirate.persistence.PickleStorage
+'jollypirate.persistence.PickleStorage "1..*" *.. jollypirate.model.MemberRegistry
+
+'''''
+'jollypirate.controller.MemberController "1..1" ..o jollypirate.model.MemberModel
+jollypirate.model.MemberModel "1..1" o.. jollypirate.controller.MemberController
+
+'''''
+jollypirate.controller.MemberController "1..1" ..o jollypirate.view.MemberView
+'jollypirate.view.MemberView "1..1" o.. jollypirate.controller.MemberController
+
+'''''
+jollypirate.controller.BoatController "1..1" ..o jollypirate.model.BoatModel
+'jollypirate.model.BoatModel "1..1" o.. jollypirate.controller.BoatController
+
+'''''
+'jollypirate.controller.BoatController "1..1" ..o jollypirate.view.BoatView
+jollypirate.view.BoatView "1..1" o.. jollypirate.controller.BoatController
+
+'''''
+'jollypirate.controller.ApplicationController "1..1" ..o jollypirate.controller.BoatController
+jollypirate.controller.BoatController "1..1" o.. jollypirate.controller.ApplicationController
+
+'''''
+jollypirate.controller.ApplicationController "1..1" ..o jollypirate.controller.MemberController
+'jollypirate.controller.MemberController "1..1" o.. jollypirate.controller.ApplicationController
+
+@enduml
+
