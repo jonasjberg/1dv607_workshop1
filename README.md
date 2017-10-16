@@ -41,4 +41,14 @@ Application implementation written in Python.
     * [Python Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-peer-review-submission.tar.gz)
 
 * Version #2 (FINAL)
-    * N/A
+    * [Class Diagram (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/class-diagram.png)
+    * [Class Diagram (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/class-diagram.eps)
+    * [Sequence Diagram - List all Members (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/seq_list-all-members.eps)
+    * [Sequence Diagram - List all Members (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/seq_list-all-members.png)
+    * [Sequence Diagram - Register Member (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/seq_register-member.eps)
+    * [Sequence Diagram - Register Member (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/uml/seq_register-member.png)
+    * [Stand-alone MacOS/OSX Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/build/jollypirate_osx)
+    * [Stand-alone Linux Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/build/jollypirate_linux)
+    * [Stand-alone Windows Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/build/jollypirate_win.exe)
+    * [Python and Diagram Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.zip)
+    * [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.tar.gz)
