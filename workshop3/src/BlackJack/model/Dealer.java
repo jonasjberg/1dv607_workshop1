@@ -67,4 +67,31 @@ public class Dealer extends Player
         }
         return false;
     }
+
+    /**
+     * Implemented as per 'BlackJack_Stand_sequencediagram.png'
+     */
+    public boolean Stand()
+    {
+        if (m_deck != null) {
+            ShowHand();
+
+            while (m_hitRule.DoHit(this)) {
+                DealCard(dealAndShowCard());
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Gets a card from the deck, "shows" and returns the card.
+     * @return A card from the deck as an instance of 'Card'.
+     */
+    public Card dealAndShowCard()
+    {
+        Card dealtCard = m_deck.GetCard();
+        dealtCard.Show(true);
+        return dealtCard;
+    }
 }
