@@ -11,6 +11,7 @@ public interface IView
         QUIT,
         STAND
     }
+
     void DisplayWelcomeMessage();
 
     int GetInput();
