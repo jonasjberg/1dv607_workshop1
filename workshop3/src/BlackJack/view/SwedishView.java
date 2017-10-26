@@ -14,7 +14,7 @@ public class SwedishView implements IView
         System.out.println("Hej Black Jack Världen");
         System.out.println("----------------------");
         System.out.println(
-                "Skriv 'p' för att Spela, 'h' för nytt kort, 's' för att stanna 'q' för att avsluta\n");
+                "Skriv 's' för att Spela, 'j' för nytt kort, 'n' för att stanna 'q' för att avsluta\n");
     }
 
     public int GetInput()
@@ -77,5 +77,23 @@ public class SwedishView implements IView
         }
         System.out.println("Poäng: " + a_score);
         System.out.println("");
+    }
+
+    @Override
+    public Event GetEvent()
+    {
+        char input = (char) GetInput();
+        switch (input) {
+            case 'j':
+                return Event.HIT;
+            case 's':
+                return Event.PLAY;
+            case 'q':
+                return Event.QUIT;
+            case 'n':
+                return Event.STAND;
+            default:
+                return Event.NONE;
+        }
     }
 }

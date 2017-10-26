@@ -66,4 +66,22 @@ public class SimpleView implements IView
             System.out.println("You Won!");
         }
     }
+
+    @Override
+    public Event GetEvent()
+    {
+        char input = (char) GetInput();
+        switch (input) {
+            case 'h':
+                return Event.HIT;
+            case 'p':
+                return Event.PLAY;
+            case 'q':
+                return Event.QUIT;
+            case 's':
+                return Event.STAND;
+            default:
+                return Event.NONE;
+        }
+    }
 }
