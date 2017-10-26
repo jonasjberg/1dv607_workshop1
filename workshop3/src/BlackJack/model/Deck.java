@@ -52,4 +52,11 @@ public class Deck
             AddCard(c);
         }
     }
+
+    public void DealAndPossiblyShowCard(Player a_player, Boolean shouldShowCard)
+    {
+        Card c = GetCard();
+        c.Show(shouldShowCard);
+        a_player.DealCard(c);
+    }
 }

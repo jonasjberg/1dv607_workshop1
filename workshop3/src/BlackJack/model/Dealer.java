@@ -40,10 +40,8 @@ public class Dealer extends Player
     {
         if (m_deck != null && a_player.CalcScore() < g_maxScore &&
             !IsGameOver()) {
-            Card c;
-            c = m_deck.GetCard();
-            c.Show(true);
-            a_player.DealCard(c);
+
+            m_deck.DealAndPossiblyShowCard(a_player, true);
 
             return true;
         }
