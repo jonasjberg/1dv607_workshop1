@@ -72,7 +72,7 @@ public class Dealer extends Player
             ShowHand();
 
             while (m_hitRule.DoHit(this)) {
-                DealCard(dealAndShowCard());
+                DealCard(DealAndShowCard());
             }
         }
 
@@ -83,7 +83,7 @@ public class Dealer extends Player
      * Gets a card from the deck, "shows" and returns the card.
      * @return A card from the deck as an instance of 'Card'.
      */
-    public Card dealAndShowCard()
+    public Card DealAndShowCard()
     {
         Card dealtCard = m_deck.GetCard();
         dealtCard.Show(true);
