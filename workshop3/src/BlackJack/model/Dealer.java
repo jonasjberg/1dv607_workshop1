@@ -72,21 +72,10 @@ public class Dealer extends Player
             ShowHand();
 
             while (m_hitRule.DoHit(this)) {
-                DealCard(DealAndShowCard());
+                m_deck.DealAndPossiblyShowCard(this, true);
             }
         }
 
         return true;
-    }
-
-    /**
-     * Gets a card from the deck, "shows" and returns the card.
-     * @return A card from the deck as an instance of 'Card'.
-     */
-    public Card DealAndShowCard()
-    {
-        Card dealtCard = m_deck.GetCard();
-        dealtCard.Show(true);
-        return dealtCard;
     }
 }

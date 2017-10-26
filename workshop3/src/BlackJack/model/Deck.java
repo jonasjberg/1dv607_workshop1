@@ -53,6 +53,13 @@ public class Deck
         }
     }
 
+    /**
+     * Gets a card from the deck, modifies the card "shown" state and deals
+     * the card to a specified player.
+     *
+     * @param a_player The player that the card will be dealt to.
+     * @param shouldShowCard Whether the card should be shown or not.
+     */
     public void DealAndPossiblyShowCard(Player a_player, Boolean shouldShowCard)
     {
         Card c = GetCard();
