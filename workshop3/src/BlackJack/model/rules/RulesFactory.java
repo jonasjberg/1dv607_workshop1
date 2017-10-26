@@ -14,4 +14,10 @@ public class RulesFactory
     {
         return new AmericanNewGameStrategy();
     }
+
+    public IWinStrategy GetWinRule()
+    {
+        // return new WinStrategyBasic();
+        return new WinStrategyPlayerWinsIfTied();
+    }
 }

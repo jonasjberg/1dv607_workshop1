@@ -3,6 +3,7 @@ package BlackJack.model;
 
 import BlackJack.model.rules.IHitStrategy;
 import BlackJack.model.rules.INewGameStrategy;
+import BlackJack.model.rules.IWinStrategy;
 import BlackJack.model.rules.RulesFactory;
 
 
@@ -12,13 +13,15 @@ public class Dealer extends Player
     private Deck             m_deck;
     private INewGameStrategy m_newGameRule;
     private IHitStrategy     m_hitRule;
+    private IWinStrategy     m_winRule;
 
     public Dealer(RulesFactory a_rulesFactory)
     {
 
         m_newGameRule = a_rulesFactory.GetNewGameRule();
         m_hitRule = a_rulesFactory.GetHitRule();
-    
+        m_winRule = a_rulesFactory.GetWinRule();
+
     /*for(Card c : m_deck.GetCards()) {
       c.Show(true);
       System.out.println("" + c.GetValue() + " of " + c.GetColor());
@@ -50,12 +53,7 @@ public class Dealer extends Player
 
     public boolean IsDealerWinner(Player a_player)
     {
-        if (a_player.CalcScore() > g_maxScore) {
-            return true;
-        } else if (CalcScore() > g_maxScore) {
-            return false;
-        }
-        return CalcScore() >= a_player.CalcScore();
+        return !m_winRule.DealerWon(a_player, this);
     }
 
     public boolean IsGameOver()
