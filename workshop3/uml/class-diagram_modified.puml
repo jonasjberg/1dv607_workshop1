@@ -1,0 +1,117 @@
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 1DV607 -- Object-Oriented Design and Analysis with UML
+' Workshop 3: Design Using Patterns
+' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' Created by Jonas Sjöberg (js224eh) on 2017-10-27.
+' Linnaeus University
+' ""js224eh@student.lnu.se""
+' ""http://www.jonasjberg.com""
+' ""https://github.com/jonasjberg""
+
+@startuml
+' ______________________________________________________________________________
+' ____ CONFIGURATION OPTIONS ___________________________________________________
+' debug flag creates a 'svek.dot' and 'svek.svg' file in ~/
+' !pragma svek_trace on
+' allow_mixing
+
+skinparam {
+    monochrome true
+    'backgroundColor transparent
+    classBackgroundColor transparent
+'    style strictuml
+}
+
+' ______________________________________________________________________________
+' ____ CLASS DIAGRAM ___________________________________________________________
+
+header
+1DV607 - Workshop 3: Design Using Patterns
+Jonas Sjöberg <""js224eh@student.lnu.se"">
+end header
+
+title \nBlack Jack Class Diagram\n
+
+package controller {
+    class PlayGame
+}
+
+package view {
+    interface IView
+
+    class SimpleView
+    class SwedishView
+
+    IView <|.. SimpleView
+    IView <|.. SwedishView
+}
+
+package model {
+    together {
+        class Game
+
+        class Player
+        class Dealer
+
+        class Card
+        class Deck
+    }
+
+    Card "*" <- Player : m_hand
+    Player <- Game : m_player
+    Game --> Dealer : m_dealer
+
+    Card "*" <-- Deck : m_cards
+    Dealer -> Deck : m_deck
+    Dealer --|> Player
+
+
+    interface ICardDealtObserver
+    ICardDealtObserver <|.. PlayGame
+    ICardDealtObserver <.. Player
+
+    package rules {
+        interface IHitStrategy
+        class BasicHitStrategy
+        class Soft17HitStrategy
+
+        IHitStrategy <|.. BasicHitStrategy
+        IHitStrategy <|.. Soft17HitStrategy
+
+        interface INewGameStrategy
+        class AmericanNewGameStrategy
+        class InternationalNewGameStrategy
+
+        INewGameStrategy <|.. AmericanNewGameStrategy
+        INewGameStrategy <|.. InternationalNewGameStrategy
+
+        class RulesFactory
+        BasicHitStrategy <.. RulesFactory
+        AmericanNewGameStrategy <.. RulesFactory
+        InternationalNewGameStrategy <.. RulesFactory
+        Soft17HitStrategy <.. RulesFactory
+        WinStrategyBasic <.. RulesFactory
+        WinStrategyPlayerWinsIfTied <.. RulesFactory
+
+        interface IWinStrategy
+        class WinStrategyBasic
+        class WinStrategyPlayerWinsIfTied
+
+        IWinStrategy <|.. WinStrategyBasic
+        IWinStrategy <|.. WinStrategyPlayerWinsIfTied
+    }
+
+    Dealer --> IHitStrategy : m_hitRule
+    Dealer --> INewGameStrategy : m_newGameRule
+    Dealer ..> RulesFactory
+
+    Dealer --> IWinStrategy : m_winRule
+}
+
+PlayGame ..> Game
+IView <.. PlayGame
+Card <.. IView
+
+
+@enduml
+
