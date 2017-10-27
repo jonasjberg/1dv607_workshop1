@@ -44,6 +44,10 @@ package view {
 
     IView <|.. SimpleView
     IView <|.. SwedishView
+
+    enum Event
+
+    IView -> Event
 }
 
 package model {
@@ -108,9 +112,11 @@ package model {
     Dealer --> IWinStrategy : m_winRule
 }
 
-PlayGame ..> Game
-IView <.. PlayGame
+PlayGame --> "1" Game
+IView "1" <-- PlayGame
 Card <.. IView
+
+PlayGame ..> Event
 
 
 @enduml
