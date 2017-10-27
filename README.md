@@ -64,3 +64,20 @@ Version #2 (FINAL)
 * [Stand-alone Windows Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission/workshop2/build/jollypirate_win.exe)
 * [Python and Diagram Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.zip)
 * [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.tar.gz)
+
+
+
+Workshop 3 --- Design Using Patterns
+====================================
+Refactoring and modifications of an exiting Java application.
+
+
+Version #1 (FINAL)
+------------------
+
+* [Class Diagram (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop3-final-submission/workshop3/uml/class-diagram_modified.png)
+* [Class Diagram (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop3-final-submission/workshop3/uml/class-diagram_modified.eps)
+* [Stand-alone cross-platform Executable (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop3-final-submission.zip)
+* [Stand-alone cross-platform Executable (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop3-final-submission.tar.gz)
+* [Java and Diagram Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop3-final-submission.zip)
+* [Java and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop3-final-submission.tar.gz)
