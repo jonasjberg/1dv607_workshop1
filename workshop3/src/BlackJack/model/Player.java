@@ -11,7 +11,7 @@ public class Player
 
     private List<Card> m_hand;
     protected final int g_maxScore = 21;
-    protected ArrayList<ICardDealtObserver> m_subscribers;
+    private ArrayList<ICardDealtObserver> m_subscribers;
 
     public Player()
     {
