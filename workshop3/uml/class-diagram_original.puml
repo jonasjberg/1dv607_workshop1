@@ -30,7 +30,7 @@ header
 Jonas Sjöberg <""js224eh@student.lnu.se"">
 end header
 
-title \nBlack Jack Class Diagram\n
+title \nBlack Jack Class Diagram --- Redrawn Original Version\n
 
 package controller {
     class PlayGame
