@@ -16,7 +16,6 @@ public class Player
     public Player()
     {
         m_hand = new LinkedList<Card>();
-        System.out.println("Hello List World");
         m_subscribers = new ArrayList<>();
     }
 
