@@ -51,12 +51,13 @@ public class PlayGame implements ICardDealtObserver
     @Override
     public void CardDealt()
     {
+        System.out.printf(".");
         Sleep();
     }
 
     private void Sleep()
     {
-        final long SLEEP_MILLISECONDS = 1250;
+        final long SLEEP_MILLISECONDS = 750;
         try {
             Thread.sleep(SLEEP_MILLISECONDS);
         } catch (InterruptedException e) {
