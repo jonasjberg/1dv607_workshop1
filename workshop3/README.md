@@ -22,8 +22,8 @@ Running/Requirements
 ====================
 Java *(8?)* is required to run this program.
 
-Use the appropriate launcher script to run the program or execute it manually
-by executing `java -jar workshop3.jar` from the `build` directory.
+Use the appropriate launcher script or run it manually by executing
+`java -jar workshop3.jar` from the `build` directory.
 
 UML diagrams are located in the `uml` directory.
 
