@@ -1,6 +1,7 @@
 package BlackJack.model;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,17 +11,19 @@ public class Player
 
     private List<Card> m_hand;
     protected final int g_maxScore = 21;
+    protected ArrayList<ICardDealtObserver> m_subscribers;
 
     public Player()
     {
-
         m_hand = new LinkedList<Card>();
         System.out.println("Hello List World");
+        m_subscribers = new ArrayList<>();
     }
 
     public void DealCard(Card a_addToHand)
     {
         m_hand.add(a_addToHand);
+        NotifyObserversCardDealt();
     }
 
     public Iterable<Card> GetHand()
@@ -69,5 +72,17 @@ public class Player
         }
 
         return score;
+    }
+
+    public void RegisterSubscriberCardDealt(ICardDealtObserver newSubscriber)
+    {
+        m_subscribers.add(newSubscriber);
+    }
+
+    public void NotifyObserversCardDealt()
+    {
+        for (ICardDealtObserver s : m_subscribers) {
+            s.CardDealt();
+        }
     }
 }

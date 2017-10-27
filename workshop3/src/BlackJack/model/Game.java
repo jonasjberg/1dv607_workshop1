@@ -57,4 +57,10 @@ public class Game
     {
         return m_player.CalcScore();
     }
+
+    public void AddSubscriberCardDealt(ICardDealtObserver subscriber)
+    {
+        m_dealer.RegisterSubscriberCardDealt(subscriber);
+        m_player.RegisterSubscriberCardDealt(subscriber);
+    }
 }
