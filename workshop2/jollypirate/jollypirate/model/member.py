@@ -5,6 +5,7 @@
 #   GitHub:          https://github.com/jonasjberg
 #   University mail: js224eh[a]student.lnu.se
 
+import hashlib
 import re
 
 from .. import exceptions
@@ -116,6 +117,17 @@ class MemberModel(BaseModel):
         return _copy
 
     def __hash__(self):
+        # Used at run-time as dictionary keys, etc. Uses a different randomized
+        # seed for each execution. From the Python 3 docs;
+        #
+        # > Hash randomisation is turned on by default in Python 3.
+        # > This is a security feature:
+        # > Hash randomization is intended to provide protection against a
+        # > denial-of-service caused by carefully-chosen inputs that exploit
+        # > the worst case performance of a dict construction
+        #
+        # This method should not be used for IDs that should be consistent
+        # across program execution runs, serialization, etc.
         return hash(
             (self.name_first, self.name_last, self.social_sec_number)
         )
@@ -142,7 +154,12 @@ class MemberModel(BaseModel):
 
     @property
     def id(self):
-        return abs(self.__hash__())
+        # Consistent, unique ID for serialization and UI "handle".
+        h = hashlib.md5()
+        h.update(self.name_first.encode('utf-8'))
+        h.update(self.name_last.encode('utf-8'))
+        h.update(self.social_sec_number.encode('utf-8'))
+        return abs(int(h.hexdigest(), 16))
 
 
 def _to_non_empty_string(input_):
