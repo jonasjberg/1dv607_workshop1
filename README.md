@@ -66,8 +66,8 @@ Version #2 (FINAL)
 * [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.tar.gz)
 
 
-Version #2 (FIXES)
-------------------
+Version #3 (FINAL with FIXES)
+-----------------------------
 
 * [Class Diagram (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/class-diagram.png)
 * [Class Diagram (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/class-diagram.eps)
