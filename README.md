@@ -82,6 +82,34 @@ Version #3 (FINAL with FIXES)
 * [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission-fixes.tar.gz)
 
 
+### Changes
+
+* __Update the class diagram__
+* __Remove string formatting from the model__  
+  Removes string formatting property `Member.name_full` from the Member model,
+  from received feedback on the final version.
+* __Fix inconsistent member IDs__  
+    As pointed out in the feedback to the final submission of this project, the
+    Member ID implementation was flawed in that it returned different IDs for
+    each program run.
+
+    This was due to using `Member.__hash__()` to generate the IDs.
+    The method uses a different randomized seed for each execution.
+
+    From the Python 3 documentation>
+
+    > Hash randomisation is turned on by default in Python 3.
+    > This is a security feature:
+    > Hash randomization is intended to provide protection against a
+    > denial-of-service caused by carefully-chosen inputs that exploit
+    > the worst case performance of a dict construction
+
+    This method should not be used for IDs that should be consistent across
+    program execution runs, serialization, etc.
+
+    This commit fixes this by instead calculating a MD5 sum of the same
+    three (arbitrarily chosen) attributes as before.
+
 
 Workshop 3 --- Design Using Patterns
 ====================================
