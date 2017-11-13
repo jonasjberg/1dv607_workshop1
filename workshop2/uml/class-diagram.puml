@@ -81,7 +81,7 @@ namespace jollypirate.controller {
     BaseController <|-- BoatController
     BaseController <|-- MemberController
 
-    Events "1..1" --o ApplicationController
+    Events "1..1" <-- ApplicationController
 }
 
 
@@ -108,7 +108,7 @@ namespace jollypirate.model {
         validate(value)
         all()
     }
-    BoatModel "1..1" *-- BoatTypes
+    BoatModel "1..1" --> BoatTypes
 
     class MemberModel {
         + boats
@@ -203,7 +203,7 @@ namespace jollypirate.view {
     BaseView <|-- BoatView
     BaseView <|-- MemberView
 
-    jollypirate.controller.Events "1..1" --o ApplicationView
+    jollypirate.controller.Events "1..1" <-- ApplicationView
 }
 
 namespace jollypirate.persistence {
@@ -228,33 +228,17 @@ namespace jollypirate.persistence {
     BaseStorage <|-- PickleStorage
 }
 
-'''''
-jollypirate.model.MemberRegistry "*..1" ..* jollypirate.persistence.PickleStorage
-'jollypirate.persistence.PickleStorage "1..*" *.. jollypirate.model.MemberRegistry
+jollypirate.model.MemberRegistry "1..1" --> jollypirate.persistence.PickleStorage
+jollypirate.model.MemberRegistry "1..*" --> jollypirate.model.MemberModel
+jollypirate.model.MemberModel "1..*" <-- jollypirate.controller.MemberController
+jollypirate.model.BoatModel ..> "*..1" jollypirate.model.MemberModel
 
-'''''
-'jollypirate.controller.MemberController "1..1" ..o jollypirate.model.MemberModel
-jollypirate.model.MemberModel "1..1" o.. jollypirate.controller.MemberController
+jollypirate.controller.BoatController "1..*" --> jollypirate.model.BoatModel
+jollypirate.controller.BoatController "1..1" <.. jollypirate.controller.ApplicationController
+jollypirate.controller.ApplicationController "1..1" ..> jollypirate.controller.MemberController
 
-'''''
-jollypirate.controller.MemberController "1..1" ..o jollypirate.view.MemberView
-'jollypirate.view.MemberView "1..1" o.. jollypirate.controller.MemberController
-
-'''''
-jollypirate.controller.BoatController "1..1" ..o jollypirate.model.BoatModel
-'jollypirate.model.BoatModel "1..1" o.. jollypirate.controller.BoatController
-
-'''''
-'jollypirate.controller.BoatController "1..1" ..o jollypirate.view.BoatView
-jollypirate.view.BoatView "1..1" o.. jollypirate.controller.BoatController
-
-'''''
-'jollypirate.controller.ApplicationController "1..1" ..o jollypirate.controller.BoatController
-jollypirate.controller.BoatController "1..1" o.. jollypirate.controller.ApplicationController
-
-'''''
-jollypirate.controller.ApplicationController "1..1" ..o jollypirate.controller.MemberController
-'jollypirate.controller.MemberController "1..1" o.. jollypirate.controller.ApplicationController
-
+jollypirate.view.ApplicationView "1..1" <.. jollypirate.controller.ApplicationController
+jollypirate.view.BoatView "1..1" <.. jollypirate.controller.BoatController
+jollypirate.controller.MemberController "1..1" ..> jollypirate.view.MemberView
 @enduml
 
