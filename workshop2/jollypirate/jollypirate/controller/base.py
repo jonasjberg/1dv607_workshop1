@@ -64,8 +64,9 @@ class BaseController(object):
     def _members_as_menu_items(self, members):
         out = {}
         for i, member in enumerate(members):
+            _full_name = '{!s} {!s}'.format(member.name_first, member.name_last)
             _key = MenuItem(shortcut=self.int_to_char(i+1),
-                            description=member.name_full)
+                            description=_full_name)
             out[_key] = member
         return out
 

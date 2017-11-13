@@ -65,10 +65,6 @@ class MemberModel(BaseModel):
             )
 
     @property
-    def name_full(self):
-        return '{!s} {!s}'.format(self.name_first, self.name_last) or ''
-
-    @property
     def social_sec_number(self):
         return self._social_sec_number or 1337
 

@@ -68,7 +68,8 @@ class MemberView(BaseView):
         cf.addrow(*['=' * width for width in cf.column_widths])
 
         for m in members:
-            cf.addrow(m.name_full, str(m.id)[1:10], str(len(m.boats)))
+            _full_name = '{!s} {!s}'.format(m.name_first, m.name_last)
+            cf.addrow(_full_name, str(m.id)[1:10], str(len(m.boats)))
 
         self.display_msg_heading('Compact Listing of all Registered Members:')
         print(str(cf))
