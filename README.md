@@ -66,6 +66,22 @@ Version #2 (FINAL)
 * [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission.tar.gz)
 
 
+Version #2 (FIXES)
+------------------
+
+* [Class Diagram (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/class-diagram.png)
+* [Class Diagram (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/class-diagram.eps)
+* [Sequence Diagram - List all Members (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/seq_list-all-members.png)
+* [Sequence Diagram - List all Members (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/seq_list-all-members.eps)
+* [Sequence Diagram - Register Member (`.png`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/seq_register-member.png)
+* [Sequence Diagram - Register Member (`.eps`)](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/uml/seq_register-member.eps)
+* [Stand-alone MacOS/OSX Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/build/jollypirate_osx)
+* [Stand-alone Linux Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/build/jollypirate_linux)
+* [Stand-alone Windows Executable](https://github.com/jonasjberg/1dv607_workshops/raw/workshop2-final-submission-fixes/workshop2/build/jollypirate_win.exe)
+* [Python and Diagram Sources (`.zip`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission-fixes.zip)
+* [Python and Diagram Sources (`.tar.gz`)](https://github.com/jonasjberg/1dv607_workshops/archive/workshop2-final-submission-fixes.tar.gz)
+
+
 
 Workshop 3 --- Design Using Patterns
 ====================================
